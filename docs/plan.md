@@ -22,7 +22,7 @@ The player is a new hire at Kerning & Co., a two-person studio run by Ada Kern. 
 Each level is one desk:
 
 1. **Lesson.** About six pages. Each page states the principle, the perceptual or cognitive reason it works with a source, and an interactive demo where the player drags a control and watches a layout fall apart or come together.
-2. **Gates.** Every lesson page ends with a gate, and the next page stays locked until the gate is passed. A gate is either a *choice* (one question, options shuffled; a wrong pick shows why it is wrong and locks that option) or a *goal* (reach a target state in the demo, for example "make the gap between dishes 2× the gap inside them"). Pages already passed stay open. Gates are retrieval practice: answering a question about a page improves recall of it more than rereading the page.
+2. **Gates.** Every lesson page ends with a gate, and the next page stays locked until the gate is passed. A gate is either a *choice* (one question, options shuffled; a wrong pick shows why it is wrong and locks that option) or a *goal* (reach a target state in the demo, for example "make the gap between dishes 2× the gap inside them"). Pages already passed stay open. Gates are retrieval practice, which only helps when the answer is followed by feedback, so every gate explains why each wrong option is wrong.
 3. **Rule cards.** Finishing the lesson adds its rules of thumb to the Field Guide. Each card has a source line.
 4. **Trial.** Five judgment questions ("what's wrong here, and what's the fix?") drawn from a pool of twelve, options shuffled every run.
 5. **Clients.** Three broken client pages. The player edits the page's real stylesheet in a CSS editor. Layout checks measure the rendered page on every edit. All core checks pass: the job can ship. Bonus checks unlock once every core check passes, and each one passed adds a star, up to three.
@@ -32,9 +32,9 @@ A placement test at the start suggests a level order. Once the placement is done
 
 ## Game feel
 
-Every effect answers a player action or marks a change of state. Nothing animates over lesson text while the player reads it. Every effect has a still alternative under `prefers-reduced-motion` and the in-game Motion setting.
+Every effect answers a player action or marks a change of state, and its size tracks how well the player did: feedback that depends on success raises motivation, while amplified feedback on its own lowers it (`research/game-design.md`). Nothing animates over lesson text while the player reads it, because decoration beside reading material lowers learning (`research/learning-science.md`). Every effect has a still alternative under `prefers-reduced-motion` and the in-game Motion setting.
 
-- **The player sprite.** A drawn SVG character in the line style of `src/ui/marks.ts`. On first launch the player picks a name and one of four looks. States: idle, think, cheer, wince, sweat, walk. It walks between desks on the map, sits beside gates and quiz answers, and reacts to checks on the client screen.
+- **The player sprite.** A drawn SVG character in the line style of `src/ui/marks.ts`. On first launch the player picks a name and one of four looks. States: idle, think, cheer, wince, sweat, walk. It walks between desks on the map, stands still beside lesson gates until the player answers, and reacts to quiz answers and to checks on the client screen.
 - **Ada.** A drawn portrait with expressions (neutral, raised eyebrow, nod) in place of initials.
 - **Client problems bar.** On the client screen, each failing core check is one segment of the client's problems bar. Fixing a check knocks a segment out. An empty bar shows the "Ship it" stamp.
 - **Stamps.** Correct answers, passed checks and shipped jobs land as rubber stamps. Wrong answers shake once.

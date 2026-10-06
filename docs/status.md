@@ -21,5 +21,6 @@ Unfinished work only. Delete an entry when it ships.
 - Badges are all tied to the spacing level.
 - Rank thresholds (Creative Director at 4500 XP) are sized for about five levels, not eight.
 - Level 1 lesson copy states contested claims as fact: proximity grouping as pre-attentive, and "28px vs 32px looks the same".
+- The Unassisted (no hints) and Quick Study (under five minutes) badges reward avoiding help and rushing. `research/game-design.md` argues both work against productive struggle. The owner decides whether to replace them.
 - No sound yet.
 - No `docs/post-mortem.md` until the project ends.
