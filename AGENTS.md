@@ -2,9 +2,7 @@
 
 A browser game that teaches web design theory. Players read a short lesson, pass a judgment quiz, then fix a deliberately broken client page with real CSS while layout checks measure the rendered DOM. Static Vite build, vanilla TypeScript, no framework, published to itch.io as an HTML5 game.
 
-Organisation-wide Git, approval and live-system rules come from the [Cognisearch central router](https://github.com/Cognisearch/.github/blob/main/AGENTS.md). This file adds only what is specific to this repository.
-
-This repository is personal and not yet registered in the Cognisearch org. Until Vovo approves moving it there, the org CI caller, `config/repositories.json` registration and Vercel deploy rules do not apply. Everything else below does.
+This file is the complete rulebook for the repository. There is no outside rule set to fetch.
 
 ## Non-negotiables
 
@@ -31,12 +29,13 @@ Source owners: `src/engine/` (sandbox, measurement, judges, quiz draw), `src/lev
 ## Delivery
 
 - Run `git status` before changing anything. Never reset, discard or overwrite files with uncommitted changes; leave them for the owner.
-- Branch as `feature/<task>` (or `docs/`, `chore/`) from `main`, open a pull request, and never commit straight to `main`.
+- Branch as `feature/<task>` (or `docs/`, `chore/`) from the latest `origin/main`, in a git worktree if the main checkout is busy. Never commit, push, rebase or force-push to `main`.
 - The pre-commit hook is lefthook. Before the first commit in a fresh clone, run `npm ci` and `npm run lefthook:install`, then confirm `git rev-parse --git-path hooks/pre-commit` exists. Never use `--no-verify`. Fix the failure and commit again.
 - Stage only files that belong to the task.
-- GitHub CI is authoritative once the repository has a remote; never merge a failing pull request. The temporary Actions-minutes exception in the owner's workflow rules applies only when no job ran at all.
-- Completion reports state `Local hook: installed and executed successfully` and the GitHub CI result in the owner's exact wording.
-- At the end of the project, write `docs/post-mortem.md` (model: `primultaucfo.ro/docs/post-mortem.md`) and submit it as its own pull request.
+- Push the branch and open a draft pull request. The `CI / required` check (`.github/workflows/ci.yml`, which runs `npm run ci:repo`) is authoritative: never merge a failing pull request.
+- Merging is the owner's call, given for that pull request at its current head. Never infer it, and a new push needs a new approval. Merge with a regular merge commit (`gh pr ready`, then `gh pr merge --merge`), then delete the merged branch. Never delete dirty or unmerged work.
+- Completion reports state `Local hook: installed and executed successfully` and `GitHub CI: all required checks passed`.
+- At the end of the project, write `docs/post-mortem.md` and submit it as its own pull request.
 
 ## Writing rules
 

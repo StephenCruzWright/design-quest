@@ -42,7 +42,7 @@ Everything respects `prefers-reduced-motion` and the in-game Motion setting.
 
 ## Does this look AI-made?
 
-Check every new screen against this list before merging. It is adapted from the Cognisearch standard in `web-starter-claude/docs/research/web-design-and-structure-best-practices.md`, section 7.
+Check every new screen against this list before merging.
 
 - Type: the three faces above, set with intent. No default sans left untouched.
 - Colour: role tokens only. No decorative gradients, and no purple-to-blue anything.
