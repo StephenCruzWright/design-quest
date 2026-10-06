@@ -1,4 +1,4 @@
-import type { Rect } from '../types';
+import type { Rect } from "../types";
 
 /**
  * Visual distance between two boxes. If they are stacked (no vertical overlap)

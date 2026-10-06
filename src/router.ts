@@ -1,4 +1,5 @@
 export type Cleanup = () => void;
+// biome-ignore lint/suspicious/noConfusingVoidType: a screen or demo may return a cleanup or nothing; void is the idiomatic return type
 export type Screen = (root: HTMLElement, params: Record<string, string>) => void | Cleanup;
 
 interface Route {
@@ -14,12 +15,12 @@ const routes: Route[] = [];
 export function route(path: string, screen: Screen, opts: { chrome?: boolean } = {}): void {
   const keys: string[] = [];
   const pattern = new RegExp(
-    '^' +
+    "^" +
       path.replace(/\/:([a-z]+)/gi, (_, k) => {
         keys.push(k);
-        return '/([^/]+)';
+        return "/([^/]+)";
       }) +
-      '/?$',
+      "/?$",
   );
   routes.push({ pattern, keys, screen, chrome: opts.chrome ?? true });
 }
@@ -29,22 +30,24 @@ export function go(path: string): void {
 }
 
 export function startRouter(root: HTMLElement, onChrome: (visible: boolean) => void): void {
-  let cleanup: Cleanup | void;
+  let cleanup: Cleanup | undefined;
   const render = () => {
-    const path = location.hash.replace(/^#/, '') || '/';
+    const path = location.hash.replace(/^#/, "") || "/";
     const match = routes.find((r) => r.pattern.test(path)) ?? routes[0];
     const values = path.match(match.pattern)?.slice(1) ?? [];
-    const params = Object.fromEntries(match.keys.map((k, i) => [k, decodeURIComponent(values[i] ?? '')]));
+    const params = Object.fromEntries(
+      match.keys.map((k, i) => [k, decodeURIComponent(values[i] ?? "")]),
+    );
     if (cleanup) cleanup();
     root.replaceChildren();
     root.scrollTo?.(0, 0);
     window.scrollTo(0, 0);
     onChrome(match.chrome);
-    cleanup = match.screen(root, params);
+    cleanup = match.screen(root, params) || undefined;
     // Move focus to the new screen's heading for keyboard and screen-reader users.
-    root.querySelector<HTMLElement>('h1')?.setAttribute('tabindex', '-1');
-    root.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
+    root.querySelector<HTMLElement>("h1")?.setAttribute("tabindex", "-1");
+    root.querySelector<HTMLElement>("h1")?.focus({ preventScroll: true });
   };
-  window.addEventListener('hashchange', render);
+  window.addEventListener("hashchange", render);
   render();
 }

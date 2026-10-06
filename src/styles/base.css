@@ -80,7 +80,7 @@ pre {
 }
 
 /* Headings receive programmatic focus on navigation; no ring for that. */
-h1[tabindex='-1']:focus {
+h1[tabindex="-1"]:focus {
   outline: none;
 }
 
@@ -121,9 +121,9 @@ h1[tabindex='-1']:focus {
     transition-duration: 1ms !important;
   }
 }
-:root[data-motion='reduced'] *,
-:root[data-motion='reduced'] *::before,
-:root[data-motion='reduced'] *::after {
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
   animation-duration: 1ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 1ms !important;

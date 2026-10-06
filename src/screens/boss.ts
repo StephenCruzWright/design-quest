@@ -1,20 +1,20 @@
-import type { EditorView } from '@codemirror/view';
-import type { Screen } from '../router';
-import { go } from '../router';
-import { levelById } from '../levels';
-import type { BossDef, LevelDef } from '../levels/types';
-import { Sandbox, SANDBOX_WIDTH } from '../engine/sandbox';
-import { starsFor, type CheckResult } from '../engine/types';
-import { store, emptyLevel } from '../state/save';
-import { commit } from '../state/rewards';
-import { bossXp, improvement } from '../state/progress';
-import { cssEditor, htmlViewer, setEditorText } from '../ui/editor';
-import { renderJudgePanel } from '../ui/judge-panel';
-import { toggleGroup } from '../ui/controls';
-import { confirmModal, openModal } from '../ui/modal';
-import { starsHtml } from '../ui/stars';
-import { debounce, el, esc, formatTime } from '../util/dom';
-import { notFound } from './not-found';
+import type { EditorView } from "@codemirror/view";
+import { SANDBOX_WIDTH, Sandbox } from "../engine/sandbox";
+import { type CheckResult, starsFor } from "../engine/types";
+import { levelById } from "../levels";
+import type { BossDef, LevelDef } from "../levels/types";
+import type { Screen } from "../router";
+import { go } from "../router";
+import { bossXp, improvement } from "../state/progress";
+import { commit } from "../state/rewards";
+import { emptyLevel, store } from "../state/save";
+import { toggleGroup } from "../ui/controls";
+import { cssEditor, htmlViewer, setEditorText } from "../ui/editor";
+import { renderJudgePanel } from "../ui/judge-panel";
+import { confirmModal, openModal } from "../ui/modal";
+import { starsHtml } from "../ui/stars";
+import { debounce, el, esc, formatTime } from "../util/dom";
+import { notFound } from "./not-found";
 
 const MIN_RATIONALE = 30;
 
@@ -28,24 +28,40 @@ function askRationale(previous: string): Promise<string | null> {
         <p class="rationale-words">Words to reach for: <em>proximity</em>, <em>between &gt; within</em>, <em>ratio scale</em>, <em>tiers</em>, <em>tokens</em>.</p>
         <p class="rationale-count" aria-live="polite"></p>
       </div>`);
-    const ta = body.querySelector('textarea')!;
-    const count = body.querySelector<HTMLElement>('.rationale-count')!;
+    const ta = body.querySelector("textarea")!;
+    const count = body.querySelector<HTMLElement>(".rationale-count")!;
     ta.value = previous;
     const modal = openModal({
-      title: 'Explain your fix',
+      title: "Explain your fix",
       body,
       actions: [
-        { label: 'Back to editing', kind: 'ghost', onClick: (close) => { close(); resolve(null); } },
-        { label: 'Submit to client', onClick: (close) => { if (ta.value.trim().length >= MIN_RATIONALE) { close(); resolve(ta.value.trim()); } } },
+        {
+          label: "Back to editing",
+          kind: "ghost",
+          onClick: (close) => {
+            close();
+            resolve(null);
+          },
+        },
+        {
+          label: "Submit to client",
+          onClick: (close) => {
+            if (ta.value.trim().length >= MIN_RATIONALE) {
+              close();
+              resolve(ta.value.trim());
+            }
+          },
+        },
       ],
     });
-    const submit = modal.root.querySelector<HTMLButtonElement>('.btn-primary')!;
+    const submit = modal.root.querySelector<HTMLButtonElement>(".btn-primary")!;
     const sync = () => {
       const n = ta.value.trim().length;
       submit.disabled = n < MIN_RATIONALE;
-      count.textContent = n < MIN_RATIONALE ? `${MIN_RATIONALE - n} more characters to go` : 'Ready to submit';
+      count.textContent =
+        n < MIN_RATIONALE ? `${MIN_RATIONALE - n} more characters to go` : "Ready to submit";
     };
-    ta.addEventListener('input', sync);
+    ta.addEventListener("input", sync);
     sync();
     ta.focus();
   });
@@ -66,14 +82,18 @@ function showResults(opts: {
   const next = level.bosses[(idx + 1) % level.bosses.length];
   const passed = results.filter((r) => r.pass).length;
   const lines = [
-    stars === 3 ? 'Three stars. The client wants to frame your stylesheet.' : stars === 2 ? 'Client is happy. One bonus check left on the table.' : 'Shipped! The core problem is fixed. Bonus checks would earn more stars.',
+    stars === 3
+      ? "Three stars. The client wants to frame your stylesheet."
+      : stars === 2
+        ? "Client is happy. One bonus check left on the table."
+        : "Shipped! The core problem is fixed. Bonus checks would earn more stars.",
   ];
   const body = el(`
     <div class="results">
-      <div class="results-stars">${starsHtml(stars, 3, 'l')}</div>
+      <div class="results-stars">${starsHtml(stars, 3, "l")}</div>
       <p class="results-line">${esc(lines[0])}</p>
       <dl class="results-stats">
-        <div><dt>XP</dt><dd>${xp > 0 ? `+${xp}` : stars <= prevStars ? 'No new XP (best was ' + prevStars + '★)' : '+0'}</dd></div>
+        <div><dt>XP</dt><dd>${xp > 0 ? `+${xp}` : stars <= prevStars ? `No new XP (best was ${prevStars}★)` : "+0"}</dd></div>
         <div><dt>Time</dt><dd>${formatTime(seconds)}</dd></div>
         <div><dt>Hints</dt><dd>${hints}</dd></div>
         <div><dt>Checks</dt><dd>${passed}/${results.length}</dd></div>
@@ -83,9 +103,22 @@ function showResults(opts: {
     title: `${boss.client}: job done`,
     body,
     actions: [
-      { label: 'Keep polishing', kind: 'ghost', onClick: (close) => close() },
-      { label: 'Back to desk', kind: 'ghost', onClick: (close) => { close(); go(`/level/${level.id}`); } },
-      { label: `Next client: ${next.client}`, onClick: (close) => { close(); go(`/level/${level.id}/boss/${next.id}`); } },
+      { label: "Keep polishing", kind: "ghost", onClick: (close) => close() },
+      {
+        label: "Back to desk",
+        kind: "ghost",
+        onClick: (close) => {
+          close();
+          go(`/level/${level.id}`);
+        },
+      },
+      {
+        label: `Next client: ${next.client}`,
+        onClick: (close) => {
+          close();
+          go(`/level/${level.id}/boss/${next.id}`);
+        },
+      },
     ],
   });
 }
@@ -96,7 +129,9 @@ export const bossScreen: Screen = (root, params) => {
   if (!level || !boss) return notFound(root);
   if (!store.level(level.id).quizTotal) {
     root.append(
-      el(`<div class="page"><h1>Not so fast</h1><p>Ada wants you to pass the trial before you talk to clients.</p><a class="btn btn-primary" href="#/level/${level.id}">Back to the desk</a></div>`),
+      el(
+        `<div class="page"><h1>Not so fast</h1><p>Ada wants you to pass the trial before you talk to clients.</p><a class="btn btn-primary" href="#/level/${level.id}">Back to the desk</a></div>`,
+      ),
     );
     return;
   }
@@ -121,7 +156,7 @@ export const bossScreen: Screen = (root, params) => {
         <a class="back" href="#/level/${level.id}">← Desk</a>
         <div class="boss-title">
           <h1>${esc(boss.client)}</h1>
-          <p>${esc(boss.tagline)}${hard ? ' · <span class="ngplus">New Game+</span>' : ''}</p>
+          <p>${esc(boss.tagline)}${hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
         </div>
         <span class="boss-timer" aria-label="Time on this job">0:00</span>
         <span class="boss-stars"></span>
@@ -159,22 +194,22 @@ export const bossScreen: Screen = (root, params) => {
 
   const q = <T extends HTMLElement>(sel: string) => shell.querySelector<T>(sel)!;
   const submitBtn = q<HTMLButtonElement>('[data-act="submit"]');
-  const starsEl = q('.boss-stars');
-  const panel = q('.judge-panel');
+  const starsEl = q(".boss-stars");
+  const panel = q(".judge-panel");
   const afterHost = q('[data-view="after"]');
   const beforeHost = q('[data-view="before"]');
 
-  q('.preview-bar').prepend(
+  q(".preview-bar").prepend(
     toggleGroup({
-      label: 'Preview',
+      label: "Preview",
       options: [
-        { value: 'after', label: 'Your version' },
-        { value: 'before', label: 'Original' },
+        { value: "after", label: "Your version" },
+        { value: "before", label: "Original" },
       ],
-      value: 'after',
+      value: "after",
       onChange: (v) => {
-        afterHost.hidden = v !== 'after';
-        beforeHost.hidden = v !== 'before';
+        afterHost.hidden = v !== "after";
+        beforeHost.hidden = v !== "before";
       },
     }),
   );
@@ -190,33 +225,47 @@ export const bossScreen: Screen = (root, params) => {
   };
   const judgeSoon = debounce(judge, 250);
   const saveDraft = debounce(() => {
-    if (!disposed) store.update((s) => void (s.drafts[draftKey] = css));
+    if (!disposed)
+      store.update((s) => {
+        s.drafts[draftKey] = css;
+      });
   }, 800);
 
   // Tabs
-  shell.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((tab) =>
-    tab.addEventListener('click', () => {
+  for (const tab of shell.querySelectorAll<HTMLButtonElement>('[role="tab"]')) {
+    tab.addEventListener("click", () => {
       const name = tab.dataset.tab!;
-      shell.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-      shell.querySelectorAll<HTMLElement>('[data-pane]').forEach((p) => (p.hidden = p.dataset.pane !== name));
-      if (name === 'html' && !viewer) viewer = htmlViewer(q('[data-pane="html"]'), boss.html.trim());
-    }),
-  );
+      shell.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((t) => {
+        t.setAttribute("aria-selected", String(t === tab));
+      });
+      shell.querySelectorAll<HTMLElement>("[data-pane]").forEach((p) => {
+        p.hidden = p.dataset.pane !== name;
+      });
+      if (name === "html" && !viewer)
+        viewer = htmlViewer(q('[data-pane="html"]'), boss.html.trim());
+    });
+  }
 
   // Hints
   const hintBtn = q<HTMLButtonElement>('[data-act="hint"]');
-  hintBtn.addEventListener('click', () => {
+  hintBtn.addEventListener("click", () => {
     if (hintsUsed >= boss.hints.length) return;
-    q('.hints').insertAdjacentHTML('beforeend', `<li>${esc(boss.hints[hintsUsed])}</li>`);
+    q(".hints").insertAdjacentHTML("beforeend", `<li>${esc(boss.hints[hintsUsed])}</li>`);
     hintsUsed++;
     const left = boss.hints.length - hintsUsed;
-    hintBtn.textContent = left ? `Another hint (${left} left)` : 'No hints left';
+    hintBtn.textContent = left ? `Another hint (${left} left)` : "No hints left";
     hintBtn.disabled = left === 0;
   });
 
-  q('[data-act="reset"]').addEventListener('click', async () => {
+  q('[data-act="reset"]').addEventListener("click", async () => {
     if (!editor) return;
-    if (await confirmModal('Reset the stylesheet?', 'Your edits on this client will be replaced with their original CSS.', 'Reset')) {
+    if (
+      await confirmModal(
+        "Reset the stylesheet?",
+        "Your edits on this client will be replaced with their original CSS.",
+        "Reset",
+      )
+    ) {
       setEditorText(editor, boss.css);
     }
   });
@@ -225,16 +274,25 @@ export const bossScreen: Screen = (root, params) => {
     const stars = starsFor(results);
     if (stars === 0) return;
     const prev = store.level(level.id).bosses[key];
-    const rationale = await askRationale(prev?.rationale ?? '');
+    const rationale = await askRationale(prev?.rationale ?? "");
     if (rationale === null || disposed) return;
     const prevStars = prev?.stars ?? 0;
     const xp = improvement(bossXp(prevStars, hard), bossXp(stars, hard));
-    const bonuses = results.filter((r) => r.kind === 'bonus' && r.pass).map((r) => r.id);
+    const bonuses = results.filter((r) => r.kind === "bonus" && r.pass).map((r) => r.id);
     commit(
       (s) => {
-        const lp = (s.levels[level.id] ??= emptyLevel());
+        s.levels[level.id] ??= emptyLevel();
+        const lp = s.levels[level.id];
         if (!prev || stars >= prev.stars) {
-          lp.bosses[key] = { stars, css, rationale, seconds, hintsUsed, bonuses, at: new Date().toISOString() };
+          lp.bosses[key] = {
+            stars,
+            css,
+            rationale,
+            seconds,
+            hintsUsed,
+            bonuses,
+            at: new Date().toISOString(),
+          };
         }
       },
       xp,
@@ -242,19 +300,19 @@ export const bossScreen: Screen = (root, params) => {
     );
     showResults({ level, boss, stars, prevStars, xp, seconds, hints: hintsUsed, results });
   };
-  submitBtn.addEventListener('click', submit);
+  submitBtn.addEventListener("click", submit);
   const onKey = (e: KeyboardEvent) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !submitBtn.disabled) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && !submitBtn.disabled) {
       e.preventDefault();
       submit();
     }
   };
-  window.addEventListener('keydown', onKey);
+  window.addEventListener("keydown", onKey);
 
   const timer = window.setInterval(() => {
-    if (document.visibilityState !== 'visible' || document.querySelector('dialog[open]')) return;
+    if (document.visibilityState !== "visible" || document.querySelector("dialog[open]")) return;
     seconds++;
-    q('.boss-timer').textContent = formatTime(seconds);
+    q(".boss-timer").textContent = formatTime(seconds);
   }, 1000);
 
   (async () => {
@@ -273,12 +331,15 @@ export const bossScreen: Screen = (root, params) => {
 
   return () => {
     // Flush the latest edit so leaving mid-debounce never loses work.
-    if (editor && store.get().drafts[draftKey] !== css) store.update((s) => void (s.drafts[draftKey] = css));
+    if (editor && store.get().drafts[draftKey] !== css)
+      store.update((s) => {
+        s.drafts[draftKey] = css;
+      });
     disposed = true;
     window.clearInterval(timer);
-    window.removeEventListener('keydown', onKey);
+    window.removeEventListener("keydown", onKey);
     editor?.destroy();
     viewer?.destroy();
-    sandboxes.forEach((s) => s.destroy());
+    for (const s of sandboxes) s.destroy();
   };
 };

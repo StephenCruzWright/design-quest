@@ -1,4 +1,4 @@
-import { el } from '../util/dom';
+import { el } from "../util/dom";
 
 export function notFound(root: HTMLElement): void {
   root.append(

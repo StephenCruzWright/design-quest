@@ -1,13 +1,13 @@
-import type { Screen } from '../router';
-import { go } from '../router';
-import { store } from '../state/save';
-import { rankFor } from '../state/progress';
-import { el, esc } from '../util/dom';
+import type { Screen } from "../router";
+import { go } from "../router";
+import { rankFor } from "../state/progress";
+import { store } from "../state/save";
+import { el, esc } from "../util/dom";
 
 export const titleScreen: Screen = (root) => {
   const s = store.get();
   const returning = s.xp > 0 || Object.keys(s.levels).length > 0;
-  const word = 'Design Quest';
+  const word = "Design Quest";
   root.append(
     el(`
     <div class="title-screen">
@@ -15,13 +15,16 @@ export const titleScreen: Screen = (root) => {
         <p class="eyebrow">Kerning &amp; Co. presents</p>
         <h1 class="wordmark" aria-label="${word}">
           ${Array.from(word)
-            .map((ch, i) => `<span aria-hidden="true" style="--i:${i}">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`)
-            .join('')}
+            .map(
+              (ch, i) =>
+                `<span aria-hidden="true" style="--i:${i}">${ch === " " ? "&nbsp;" : esc(ch)}</span>`,
+            )
+            .join("")}
         </h1>
         <p class="title-lede">A design-theory adventure. Learn the rules behind good web design, then prove it by fixing broken client sites with real CSS while the judges measure your work.</p>
         <div class="title-actions">
-          <button class="btn btn-primary btn-lg" data-go="start">${returning ? 'Back to the studio' : 'Start your first day'}</button>
-          ${returning ? `<p class="title-meta">${esc(rankFor(s.xp).rank.title)} · ${s.xp} XP</p>` : ''}
+          <button class="btn btn-primary btn-lg" data-go="start">${returning ? "Back to the studio" : "Start your first day"}</button>
+          ${returning ? `<p class="title-meta">${esc(rankFor(s.xp).rank.title)} · ${s.xp} XP</p>` : ""}
           <a class="btn btn-ghost" href="#/profile">Load a save code</a>
         </div>
       </div>
@@ -33,7 +36,7 @@ export const titleScreen: Screen = (root) => {
       </ul>
     </div>`),
   );
-  root.querySelector('[data-go="start"]')!.addEventListener('click', () => {
-    go(returning ? '/map' : '/level/spacing');
+  root.querySelector('[data-go="start"]')!.addEventListener("click", () => {
+    go(returning ? "/map" : "/level/spacing");
   });
 };

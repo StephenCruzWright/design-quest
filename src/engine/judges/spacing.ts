@@ -1,5 +1,5 @@
-import type { CheckResult } from '../types';
-import { clusterValues, type Sample } from '../measure/geometry';
+import { clusterValues, type Sample } from "../measure/geometry";
+import type { CheckResult } from "../types";
 
 export interface StackMeasure {
   label: string;
@@ -23,8 +23,8 @@ const times = (n: number) => `${n.toFixed(1)}×`;
 /** Proximity: the space between groups must clearly exceed the space inside them. */
 export function judgeProximity(stacks: StackMeasure[], minRatio = 2): CheckResult {
   const base = {
-    id: 'proximity',
-    kind: 'core' as const,
+    id: "proximity",
+    kind: "core" as const,
     label: `Between > within: groups sit at least ${minRatio}× further apart than their contents`,
   };
   const rows = stacks
@@ -34,7 +34,7 @@ export function judgeProximity(stacks: StackMeasure[], minRatio = 2): CheckResul
       const maxWithin = Math.max(1, ...s.within);
       return { ...s, minBetween, maxWithin, r: minBetween / maxWithin };
     });
-  if (rows.length === 0) return { ...base, pass: false, detail: 'No groups found to measure.' };
+  if (rows.length === 0) return { ...base, pass: false, detail: "No groups found to measure." };
   const worst = rows.reduce((a, b) => (b.r < a.r ? b : a));
   if (worst.r >= minRatio) {
     return {
@@ -44,7 +44,10 @@ export function judgeProximity(stacks: StackMeasure[], minRatio = 2): CheckResul
     };
   }
   const failing = rows.filter((r) => r.r < minRatio).length;
-  const others = failing > 1 ? ` ${failing - 1} other set${failing > 2 ? 's' : ''} of groups also blur together.` : '';
+  const others =
+    failing > 1
+      ? ` ${failing - 1} other set${failing > 2 ? "s" : ""} of groups also blur together.`
+      : "";
   return {
     ...base,
     pass: false,
@@ -55,8 +58,8 @@ export function judgeProximity(stacks: StackMeasure[], minRatio = 2): CheckResul
 /** Ratio scale: every spacing step should be visibly different from its neighbour. */
 export function judgeScale(values: Sample[], minStep = 1.25): CheckResult {
   const base = {
-    id: 'scale',
-    kind: 'core' as const,
+    id: "scale",
+    kind: "core" as const,
     label: `Ratio scale: each spacing step is at least ${Math.round((minStep - 1) * 100)}% bigger than the last`,
   };
   const steps = clusterValues(values).filter((s) => s.px >= 2);
@@ -73,13 +76,13 @@ export function judgeScale(values: Sample[], minStep = 1.25): CheckResult {
     return {
       ...base,
       pass: true,
-      detail: `Steps in use: ${steps.map((s) => px(s.px)).join(', ') || 'none'}. Every jump is big enough to see.`,
+      detail: `Steps in use: ${steps.map((s) => px(s.px)).join(", ") || "none"}. Every jump is big enough to see.`,
     };
   }
   return {
     ...base,
     pass: false,
-    detail: `${clashes.length} pair${clashes.length > 1 ? 's' : ''} too close to tell apart: ${clashes.slice(0, 2).join('; ')}. Merge each pair into one step.`,
+    detail: `${clashes.length} pair${clashes.length > 1 ? "s" : ""} too close to tell apart: ${clashes.slice(0, 2).join("; ")}. Merge each pair into one step.`,
   };
 }
 
@@ -88,13 +91,13 @@ export function judgeEconomy(values: Sample[], max = 6): CheckResult {
   const steps = clusterValues(values).filter((s) => s.px >= 2);
   const pass = steps.length <= max;
   return {
-    id: 'economy',
-    kind: 'core',
+    id: "economy",
+    kind: "core",
     label: `Economy: no more than ${max} distinct spacing values`,
     pass,
     detail: pass
       ? `${steps.length} distinct values. A small vocabulary reads as intentional.`
-      : `${steps.length} distinct values (${steps.map((s) => px(s.px)).join(', ')}). Every extra step is one more decision the reader has to decode.`,
+      : `${steps.length} distinct values (${steps.map((s) => px(s.px)).join(", ")}). Every extra step is one more decision the reader has to decode.`,
   };
 }
 
@@ -109,7 +112,7 @@ function isTokenValue(value: string): boolean {
 
 /** Tokens: spacing declared through custom properties, not magic numbers. */
 export function judgeTokens(cssText: string, minShare = 0.9): CheckResult {
-  const css = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
+  const css = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
   let total = 0;
   let tokenised = 0;
   for (const m of css.matchAll(/([a-z-]+)\s*:\s*([^;{}]+)/gi)) {
@@ -122,12 +125,12 @@ export function judgeTokens(cssText: string, minShare = 0.9): CheckResult {
   const share = total === 0 ? 0 : tokenised / total;
   const pass = defines && total > 0 && share >= minShare;
   return {
-    id: 'tokens',
-    kind: 'bonus',
-    label: 'Tokens: spacing comes from custom properties, not magic numbers',
+    id: "tokens",
+    kind: "bonus",
+    label: "Tokens: spacing comes from custom properties, not magic numbers",
     pass,
     detail: !defines
-      ? 'No custom properties yet. Declare a scale such as --space-s: 1rem; on :root and use var(--space-s).'
+      ? "No custom properties yet. Declare a scale such as --space-s: 1rem; on :root and use var(--space-s)."
       : `${tokenised}/${total} spacing declarations use tokens (${Math.round(share * 100)}%, need ${Math.round(minShare * 100)}%).`,
   };
 }
@@ -135,13 +138,13 @@ export function judgeTokens(cssText: string, minShare = 0.9): CheckResult {
 /** Three tiers: within a group < between groups < between sections. */
 export function judgeTiers(snapshot: SpacingSnapshot, minRatio = 1.5): CheckResult {
   const base = {
-    id: 'tiers',
-    kind: 'bonus' as const,
+    id: "tiers",
+    kind: "bonus" as const,
     label: `Three tiers: sections sit ${minRatio}× further apart than the groups inside them`,
   };
   const groupGaps = snapshot.stacks.flatMap((s) => s.between);
   if (snapshot.sectionGaps.length === 0 || groupGaps.length === 0) {
-    return { ...base, pass: false, detail: 'Not enough sections or groups to measure.' };
+    return { ...base, pass: false, detail: "Not enough sections or groups to measure." };
   }
   const minSection = Math.min(...snapshot.sectionGaps);
   const maxGroup = Math.max(...groupGaps);

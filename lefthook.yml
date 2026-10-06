@@ -1,6 +1,8 @@
 pre-commit:
   parallel: true
   commands:
+    check-light:
+      run: npm run check:light
     typecheck:
       run: npm run typecheck
     unit:

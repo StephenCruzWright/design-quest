@@ -1,6 +1,6 @@
-import { store } from '../state/save';
-import { rankFor } from '../state/progress';
-import { el } from '../util/dom';
+import { rankFor } from "../state/progress";
+import { store } from "../state/save";
+import { el } from "../util/dom";
 
 export function mountHud(host: HTMLElement): void {
   const node = el(`
@@ -20,29 +20,32 @@ export function mountHud(host: HTMLElement): void {
       </div>
     </header>`);
   host.append(node);
-  const title = node.querySelector<HTMLElement>('.hud-rank-title')!;
-  const bar = node.querySelector<HTMLElement>('.xpbar')!;
-  const fill = bar.querySelector<HTMLElement>('span')!;
-  const xp = node.querySelector<HTMLElement>('.hud-xp')!;
+  const title = node.querySelector<HTMLElement>(".hud-rank-title")!;
+  const bar = node.querySelector<HTMLElement>(".xpbar")!;
+  const fill = bar.querySelector<HTMLElement>("span")!;
+  const xp = node.querySelector<HTMLElement>(".hud-xp")!;
   const render = () => {
     const s = store.get();
     const { rank, next, progress } = rankFor(s.xp);
     title.textContent = rank.title;
     fill.style.inlineSize = `${Math.round(progress * 100)}%`;
-    bar.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
-    bar.setAttribute('aria-label', next ? `${s.xp} XP, ${next.min - s.xp} to ${next.title}` : `${s.xp} XP, top rank`);
+    bar.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+    bar.setAttribute(
+      "aria-label",
+      next ? `${s.xp} XP, ${next.min - s.xp} to ${next.title}` : `${s.xp} XP, top rank`,
+    );
     xp.textContent = `${s.xp} XP`;
   };
   const markActive = () => {
-    const path = location.hash.replace(/^#/, '');
-    node.querySelectorAll<HTMLAnchorElement>('.hud-nav a').forEach((a) => {
-      const target = a.getAttribute('href')!.slice(1);
-      if (path.startsWith(target)) a.setAttribute('aria-current', 'page');
-      else a.removeAttribute('aria-current');
+    const path = location.hash.replace(/^#/, "");
+    node.querySelectorAll<HTMLAnchorElement>(".hud-nav a").forEach((a) => {
+      const target = a.getAttribute("href")!.slice(1);
+      if (path.startsWith(target)) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
     });
   };
   store.subscribe(render);
-  window.addEventListener('hashchange', markActive);
+  window.addEventListener("hashchange", markActive);
   render();
   markActive();
 }

@@ -14,21 +14,21 @@ export class Sandbox {
     private host: HTMLElement,
     opts: { fit?: boolean; title?: string } = {},
   ) {
-    this.frame = document.createElement('iframe');
-    this.frame.className = 'sandbox-frame';
-    this.frame.title = opts.title ?? 'Client site preview';
+    this.frame = document.createElement("iframe");
+    this.frame.className = "sandbox-frame";
+    this.frame.title = opts.title ?? "Client site preview";
     // allow-same-origin lets the game measure the DOM; no allow-scripts means
     // nothing inside the page can run.
-    this.frame.setAttribute('sandbox', 'allow-same-origin');
+    this.frame.setAttribute("sandbox", "allow-same-origin");
     this.frame.style.width = `${SANDBOX_WIDTH}px`;
-    this.frame.style.border = '0';
-    this.frame.style.display = 'block';
+    this.frame.style.border = "0";
+    this.frame.style.display = "block";
     host.append(this.frame);
     if (opts.fit) {
       this.resize = new ResizeObserver(() => this.fit());
       this.resize.observe(host);
     } else {
-      this.frame.style.height = '1200px';
+      this.frame.style.height = "1200px";
     }
   }
 
@@ -38,13 +38,13 @@ export class Sandbox {
 
   async load(html: string, css: string): Promise<void> {
     await new Promise<void>((resolve) => {
-      this.frame.addEventListener('load', () => resolve(), { once: true });
+      this.frame.addEventListener("load", () => resolve(), { once: true });
       this.frame.srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=${SANDBOX_WIDTH}"><style id="dq-player"></style></head><body>${html}</body></html>`;
     });
-    this.styleEl = this.doc.getElementById('dq-player') as HTMLStyleElement;
+    this.styleEl = this.doc.getElementById("dq-player") as HTMLStyleElement;
     // Links inside client pages go nowhere.
-    this.doc.addEventListener('click', (e) => {
-      if ((e.target as Element).closest('a')) e.preventDefault();
+    this.doc.addEventListener("click", (e) => {
+      if ((e.target as Element).closest("a")) e.preventDefault();
     });
     this.setCss(css);
   }
@@ -59,7 +59,7 @@ export class Sandbox {
     const h = this.host.clientHeight;
     if (!w || !h) return;
     const scale = Math.min(1, w / SANDBOX_WIDTH);
-    this.frame.style.transformOrigin = '0 0';
+    this.frame.style.transformOrigin = "0 0";
     this.frame.style.transform = `scale(${scale})`;
     this.frame.style.height = `${h / scale}px`;
   }

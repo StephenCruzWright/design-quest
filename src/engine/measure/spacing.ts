@@ -1,7 +1,7 @@
-import type { Rect } from '../types';
-import type { SpacingSnapshot, StackMeasure } from '../judges/spacing';
-import { gapBetween, overlapsVertically, type Sample } from './geometry';
-import { contentRect, describe, isRendered, renderedElements, styleOf, visualRect } from './dom';
+import type { SpacingSnapshot, StackMeasure } from "../judges/spacing";
+import type { Rect } from "../types";
+import { contentRect, describe, isRendered, renderedElements, styleOf, visualRect } from "./dom";
+import { gapBetween, overlapsVertically, type Sample } from "./geometry";
 
 /**
  * Boss pages mark their structure with data attributes:
@@ -10,12 +10,12 @@ import { contentRect, describe, isRendered, renderedElements, styleOf, visualRec
  */
 
 const VALUE_PROPS = [
-  'margin-top',
-  'margin-bottom',
-  'padding-top',
-  'padding-right',
-  'padding-bottom',
-  'padding-left',
+  "margin-top",
+  "margin-bottom",
+  "padding-top",
+  "padding-right",
+  "padding-bottom",
+  "padding-left",
 ] as const;
 
 function consecutiveGaps(rects: Rect[], stackedOnly: boolean): number[] {
@@ -30,7 +30,9 @@ function consecutiveGaps(rects: Rect[], stackedOnly: boolean): number[] {
 }
 
 function measureStack(stack: Element): StackMeasure {
-  const groups = Array.from(stack.children).filter((c) => c.hasAttribute('data-dq-group') && isRendered(c));
+  const groups = Array.from(stack.children).filter(
+    (c) => c.hasAttribute("data-dq-group") && isRendered(c),
+  );
   const groupRects = groups.map(visualRect).filter((r): r is Rect => r !== null);
   const within = groups.flatMap((g) => {
     const kids = Array.from(g.children)
@@ -39,7 +41,7 @@ function measureStack(stack: Element): StackMeasure {
     return consecutiveGaps(kids, true);
   });
   return {
-    label: stack.getAttribute('data-dq-stack') || describe(stack),
+    label: stack.getAttribute("data-dq-stack") || describe(stack),
     between: consecutiveGaps(groupRects, false),
     within,
   };
@@ -50,20 +52,21 @@ export function spacingValues(doc: Document): Sample[] {
   for (const el of renderedElements(doc.body)) {
     const cs = styleOf(el);
     const props: string[] = [...VALUE_PROPS];
-    if (/flex|grid/.test(cs.display)) props.push('row-gap', 'column-gap');
+    if (/flex|grid/.test(cs.display)) props.push("row-gap", "column-gap");
     for (const prop of props) {
       const v = Math.abs(parseFloat(cs.getPropertyValue(prop)));
-      if (Number.isFinite(v) && v >= 2) samples.push({ px: Math.round(v * 10) / 10, where: `${describe(el)} ${prop}` });
+      if (Number.isFinite(v) && v >= 2)
+        samples.push({ px: Math.round(v * 10) / 10, where: `${describe(el)} ${prop}` });
     }
   }
   return samples;
 }
 
 export function measureSpacing(doc: Document): SpacingSnapshot {
-  const stacks = Array.from(doc.querySelectorAll('[data-dq-stack]'))
+  const stacks = Array.from(doc.querySelectorAll("[data-dq-stack]"))
     .filter(isRendered)
     .map(measureStack);
-  const sectionRects = Array.from(doc.querySelectorAll('[data-dq-section]'))
+  const sectionRects = Array.from(doc.querySelectorAll("[data-dq-section]"))
     .filter(isRendered)
     .map(contentRect)
     .filter((r): r is Rect => r !== null);

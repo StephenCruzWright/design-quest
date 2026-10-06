@@ -1,4 +1,4 @@
-import type { CheckResult, JudgeOptions } from '../engine/types';
+import type { CheckResult, JudgeOptions } from "../engine/types";
 
 export interface LessonSection {
   id: string;
@@ -6,6 +6,7 @@ export interface LessonSection {
   /** Trusted HTML authored in the repo. */
   body: string;
   /** Optional interactive demo mounted under the body. Returns a cleanup. */
+  // biome-ignore lint/suspicious/noConfusingVoidType: a screen or demo may return a cleanup or nothing; void is the idiomatic return type
   demo?: (host: HTMLElement) => void | (() => void);
 }
 

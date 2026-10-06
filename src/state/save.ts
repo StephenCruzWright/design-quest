@@ -31,12 +31,12 @@ export interface SaveData {
   rules: string[];
   /** In-progress CSS per boss, so a reload never loses work. */
   drafts: Record<string, string>;
-  settings: { theme: 'auto' | 'light' | 'dark'; hard: boolean; reducedMotion: boolean };
+  settings: { theme: "auto" | "light" | "dark"; hard: boolean; reducedMotion: boolean };
   createdAt: string;
 }
 
-const KEY = 'design-quest/save/v1';
-const CODE_PREFIX = 'DQ1.';
+const KEY = "design-quest/save/v1";
+const CODE_PREFIX = "DQ1.";
 
 export function freshSave(): SaveData {
   return {
@@ -46,7 +46,7 @@ export function freshSave(): SaveData {
     badges: {},
     rules: [],
     drafts: {},
-    settings: { theme: 'auto', hard: false, reducedMotion: false },
+    settings: { theme: "auto", hard: false, reducedMotion: false },
     createdAt: new Date().toISOString(),
   };
 }
@@ -58,7 +58,7 @@ export function emptyLevel(): LevelProgress {
 /** Fill in any fields missing from an older or hand-edited save. */
 export function normalise(raw: unknown): SaveData {
   const base = freshSave();
-  if (!raw || typeof raw !== 'object' || (raw as SaveData).v !== 1) return base;
+  if (!raw || typeof raw !== "object" || (raw as SaveData).v !== 1) return base;
   const r = raw as Partial<SaveData>;
   return {
     ...base,
@@ -75,19 +75,20 @@ export function normalise(raw: unknown): SaveData {
 
 export function encodeSave(data: SaveData): string {
   const bytes = new TextEncoder().encode(JSON.stringify(data));
-  let bin = '';
-  bytes.forEach((b) => (bin += String.fromCharCode(b)));
-  return CODE_PREFIX + btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return CODE_PREFIX + btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 export function decodeSave(code: string): SaveData {
   const trimmed = code.trim();
-  if (!trimmed.startsWith(CODE_PREFIX)) throw new Error('That doesn’t look like a Design Quest save code.');
-  const b64 = trimmed.slice(CODE_PREFIX.length).replace(/-/g, '+').replace(/_/g, '/');
-  const bin = atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4));
+  if (!trimmed.startsWith(CODE_PREFIX))
+    throw new Error("That doesn’t look like a Design Quest save code.");
+  const b64 = trimmed.slice(CODE_PREFIX.length).replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4));
   const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
   const parsed = JSON.parse(new TextDecoder().decode(bytes));
-  if (parsed?.v !== 1) throw new Error('Save code is from an unknown version.');
+  if (parsed?.v !== 1) throw new Error("Save code is from an unknown version.");
   return normalise(parsed);
 }
 
@@ -126,7 +127,7 @@ class Store {
     fn(next);
     this.data = next;
     this.persistent = writeStorage(next);
-    this.listeners.forEach((l) => l(next));
+    for (const l of this.listeners) l(next);
   }
 
   replace(data: SaveData): void {

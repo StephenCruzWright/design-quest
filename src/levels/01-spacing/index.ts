@@ -1,14 +1,20 @@
-import type { LevelDef } from '../types';
-import { measureSpacing } from '../../engine/measure/spacing';
-import { judgeEconomy, judgeProximity, judgeScale, judgeTiers, judgeTokens } from '../../engine/judges/spacing';
-import { lesson } from './lesson';
-import { bosses, quiz, rules } from './content';
+import {
+  judgeEconomy,
+  judgeProximity,
+  judgeScale,
+  judgeTiers,
+  judgeTokens,
+} from "../../engine/judges/spacing";
+import { measureSpacing } from "../../engine/measure/spacing";
+import type { LevelDef } from "../types";
+import { bosses, quiz, rules } from "./content";
+import { lesson } from "./lesson";
 
 export const spacingLevel: LevelDef = {
-  id: 'spacing',
+  id: "spacing",
   num: 1,
-  title: 'Spacing & Whitespace',
-  subtitle: 'Space as a system: ratios, tokens, and between > within',
+  title: "Spacing & Whitespace",
+  subtitle: "Space as a system: ratios, tokens, and between > within",
   intro:
     "Welcome to Kerning & Co. First lesson, and the one that pays off on every project: space. Most pages that feel like a template have nothing wrong with their colours or fonts. They're spaced evenly, so nothing on them says what belongs together. Let's fix that. — Ada Kern, studio lead",
   lesson,

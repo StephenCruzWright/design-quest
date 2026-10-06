@@ -14,12 +14,12 @@ export interface Rank {
 }
 
 export const RANKS: Rank[] = [
-  { title: 'Intern', min: 0 },
-  { title: 'Junior Designer', min: 300 },
-  { title: 'Designer', min: 900 },
-  { title: 'Senior Designer', min: 1800 },
-  { title: 'Art Director', min: 3000 },
-  { title: 'Creative Director', min: 4500 },
+  { title: "Intern", min: 0 },
+  { title: "Junior Designer", min: 300 },
+  { title: "Designer", min: 900 },
+  { title: "Senior Designer", min: 1800 },
+  { title: "Art Director", min: 3000 },
+  { title: "Creative Director", min: 4500 },
 ];
 
 export function rankFor(xp: number): { rank: Rank; next: Rank | null; progress: number } {

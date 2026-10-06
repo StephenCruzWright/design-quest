@@ -1,9 +1,9 @@
-import type { Screen } from '../router';
-import { levelById } from '../levels';
-import { store } from '../state/save';
-import { starsHtml } from '../ui/stars';
-import { el, esc } from '../util/dom';
-import { notFound } from './not-found';
+import { levelById } from "../levels";
+import type { Screen } from "../router";
+import { store } from "../state/save";
+import { starsHtml } from "../ui/stars";
+import { el, esc } from "../util/dom";
+import { notFound } from "./not-found";
 
 export const levelScreen: Screen = (root, { id }) => {
   const level = levelById(id);
@@ -17,7 +17,7 @@ export const levelScreen: Screen = (root, { id }) => {
     .map((b) => {
       const rec = p.bosses[hard ? `${b.id}+` : b.id];
       return `
-      <li class="client-card${clientsOpen ? '' : ' is-locked'}">
+      <li class="client-card${clientsOpen ? "" : " is-locked"}">
         <div class="client-head">
           <h3>${esc(b.client)}</h3>
           ${starsHtml(rec?.stars ?? 0)}
@@ -26,19 +26,19 @@ export const levelScreen: Screen = (root, { id }) => {
         <blockquote>${esc(b.brief)}</blockquote>
         ${
           clientsOpen
-            ? `<a class="btn ${rec ? 'btn-ghost' : 'btn-primary'}" href="#/level/${level.id}/boss/${b.id}">${rec ? 'Replay job' : 'Take the job'}</a>`
+            ? `<a class="btn ${rec ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/boss/${b.id}">${rec ? "Replay job" : "Take the job"}</a>`
             : '<p class="locked-note">Finish the trial to meet this client.</p>'
         }
       </li>`;
     })
-    .join('');
+    .join("");
 
   root.append(
     el(`
     <div class="page level">
       <a class="back" href="#/map">← Studio map</a>
       <header class="page-head">
-        <p class="eyebrow">Desk ${level.num}${hard ? ' · <span class="ngplus">New Game+</span>' : ''}</p>
+        <p class="eyebrow">Desk ${level.num}${hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
         <h1>${esc(level.title)}</h1>
         <p class="lede">${esc(level.subtitle)}</p>
       </header>
@@ -53,17 +53,17 @@ export const levelScreen: Screen = (root, { id }) => {
             <h2>Lesson</h2>
             <p>${level.lesson.length} short pages with live demos. You collect ${level.rules.length} rule cards for your Field Guide.</p>
           </div>
-          <a class="btn ${p.lessonDone ? 'btn-ghost' : 'btn-primary'}" href="#/level/${level.id}/lesson">${p.lessonDone ? 'Review' : 'Start lesson'}</a>
+          <a class="btn ${p.lessonDone ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/lesson">${p.lessonDone ? "Review" : "Start lesson"}</a>
         </li>
         <li class="step" data-done="${p.quizTotal > 0}">
           <span class="step-num" aria-hidden="true">2</span>
           <div>
             <h2>Trial</h2>
-            <p>Five judgment calls drawn from a pool of ${level.quiz.length}. ${p.quizTotal ? `Best: ${p.quizBest}/${p.quizTotal}.` : ''}</p>
+            <p>Five judgment calls drawn from a pool of ${level.quiz.length}. ${p.quizTotal ? `Best: ${p.quizBest}/${p.quizTotal}.` : ""}</p>
           </div>
           ${
             trialOpen
-              ? `<a class="btn ${p.quizTotal ? 'btn-ghost' : 'btn-primary'}" href="#/level/${level.id}/trial">${p.quizTotal ? 'Retake' : 'Start trial'}</a>`
+              ? `<a class="btn ${p.quizTotal ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/trial">${p.quizTotal ? "Retake" : "Start trial"}</a>`
               : '<span class="locked-note">Finish the lesson first</span>'
           }
         </li>

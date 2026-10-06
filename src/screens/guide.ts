@@ -1,8 +1,8 @@
-import type { Screen } from '../router';
-import { LEVELS } from '../levels';
-import { store } from '../state/save';
-import { ruleCardHtml } from '../ui/rule-card';
-import { el, esc } from '../util/dom';
+import { LEVELS } from "../levels";
+import type { Screen } from "../router";
+import { store } from "../state/save";
+import { ruleCardHtml } from "../ui/rule-card";
+import { el, esc } from "../util/dom";
 
 export const guideScreen: Screen = (root) => {
   const owned = new Set(store.get().rules);
@@ -26,10 +26,10 @@ export const guideScreen: Screen = (root) => {
                   ? `<li>${ruleCardHtml(r)}</li>`
                   : `<li><article class="rule-card is-locked"><h3>Locked card</h3><p class="rule-text">Finish the ${esc(l.title)} lesson to reveal this card.</p></article></li>`,
               )
-              .join('')}
+              .join("")}
           </ul>
         </section>`,
-      ).join('')}
+      ).join("")}
     </div>`),
   );
 };

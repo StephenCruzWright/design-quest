@@ -2,9 +2,10 @@
  * Test-only page served by Vite in dev. It exposes the real sandbox + judges so
  * Playwright can run any CSS against any boss in a real browser.
  */
-import { LEVELS } from '../../src/levels';
-import { Sandbox } from '../../src/engine/sandbox';
-import type { CheckResult } from '../../src/engine/types';
+
+import { Sandbox } from "../../src/engine/sandbox";
+import type { CheckResult } from "../../src/engine/types";
+import { LEVELS } from "../../src/levels";
 
 declare global {
   interface Window {
@@ -28,4 +29,4 @@ window.dq = {
     return results;
   },
 };
-document.body.dataset.ready = 'true';
+document.body.dataset.ready = "true";
