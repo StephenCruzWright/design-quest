@@ -1,0 +1,118 @@
+/* Reference solution: 3 stars. Scale 4 · 8 · 16 · 24 · 40 · 64. */
+:root {
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 40px;
+  --space-xl: 64px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1d2433;
+  background: #f5f7fb;
+  line-height: 1.5;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-s) var(--space-m);
+  background: #ffffff;
+  border-bottom: 1px solid #dde3ee;
+}
+.brand {
+  margin: 0;
+  font-weight: 700;
+}
+.login {
+  color: #3451b2;
+}
+
+.intro {
+  padding: var(--space-xl) var(--space-m) 0;
+  text-align: center;
+}
+.intro h1 {
+  margin: 0 0 var(--space-2xs);
+  font-size: 34px;
+  line-height: 1.15;
+}
+.intro p {
+  margin: 0;
+  color: #4a5468;
+}
+
+.plans {
+  padding: var(--space-xl) var(--space-m);
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-m);
+}
+.plan {
+  padding: var(--space-m) var(--space-s);
+  background: #ffffff;
+  border: 1px solid #dde3ee;
+  border-radius: 10px;
+}
+.plan-featured {
+  border-color: #3451b2;
+}
+.plan h2 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 20px;
+}
+.price {
+  margin: 0 0 var(--space-2xs);
+  color: #4a5468;
+}
+.price strong {
+  font-size: 30px;
+  color: #1d2433;
+}
+.desc {
+  margin: 0 0 var(--space-2xs);
+  font-size: 15px;
+}
+.features {
+  margin: 0 0 var(--space-2xs);
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+}
+.features li {
+  padding: var(--space-3xs) 0;
+}
+.cta {
+  display: block;
+  padding: var(--space-2xs);
+  border-radius: 6px;
+  background: #3451b2;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.faq {
+  padding: 0 var(--space-m) var(--space-xl);
+}
+.faq h2 {
+  margin: 0 0 var(--space-m);
+  font-size: 24px;
+}
+.qa {
+  margin-bottom: var(--space-m);
+}
+.qa h3 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 17px;
+}
+.qa p {
+  margin: 0;
+  color: #4a5468;
+}

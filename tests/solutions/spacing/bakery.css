@@ -1,0 +1,116 @@
+/* Reference solution: 3 stars. Scale 4 · 8 · 16 · 24 · 40 (each step ≥1.5×). */
+:root {
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 40px;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #2b2118;
+  background: #fbf6ee;
+  line-height: 1.5;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-s) var(--space-m);
+  border-bottom: 1px solid #e6d9c6;
+}
+.logo {
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+}
+.nav {
+  display: flex;
+  gap: var(--space-m);
+}
+.nav a {
+  color: #2b2118;
+}
+
+.hero {
+  padding: var(--space-l) var(--space-m);
+}
+.eyebrow {
+  margin: 0 0 var(--space-2xs);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a5a2b;
+}
+h1 {
+  margin: 0 0 var(--space-s);
+  font-size: 40px;
+  line-height: 1.1;
+}
+.lede {
+  margin: 0 0 var(--space-m);
+  font-size: 18px;
+}
+.btn {
+  display: inline-block;
+  padding: var(--space-2xs) var(--space-s);
+  border-radius: 6px;
+  background: #2b2118;
+  color: #fbf6ee;
+  text-decoration: none;
+}
+
+.menu,
+.visit {
+  padding: var(--space-l) var(--space-m);
+}
+h2 {
+  margin: 0 0 var(--space-m);
+  font-size: 28px;
+}
+.menu-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  margin-bottom: var(--space-m);
+}
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-3xs);
+}
+.item h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.item p {
+  margin: 0;
+}
+
+.hours {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-m);
+}
+.day h3 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 18px;
+}
+.day p {
+  margin: 0;
+}
+
+.footer {
+  padding: var(--space-m);
+  border-top: 1px solid #e6d9c6;
+  font-size: 14px;
+}
+.footer p {
+  margin: 0;
+}

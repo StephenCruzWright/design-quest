@@ -1,0 +1,112 @@
+/* Reference solution: 3 stars. Scale 4 · 8 · 16 · 24 · 40 · 64. */
+:root {
+  --space-3xs: 4px;
+  --space-2xs: 8px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 40px;
+  --space-xl: 64px;
+}
+
+body {
+  margin: 0;
+  font-family: Charter, "Iowan Old Style", Georgia, serif;
+  color: #222;
+  background: #fffefa;
+  line-height: 1.55;
+}
+
+.masthead {
+  padding: var(--space-m);
+  border-bottom: 2px solid #222;
+}
+.site-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+.tagline {
+  margin: 0;
+  font-style: italic;
+  color: #555;
+}
+
+.featured {
+  padding: var(--space-xl) var(--space-m) 0;
+}
+.label {
+  margin: 0 0 var(--space-2xs);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9a3412;
+}
+.featured h1 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 36px;
+  line-height: 1.15;
+}
+.meta {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+.excerpt {
+  margin: var(--space-2xs) 0 0;
+}
+.more {
+  display: inline-block;
+  margin-top: var(--space-2xs);
+  color: #9a3412;
+}
+
+.archive {
+  padding: var(--space-xl) var(--space-m) 0;
+}
+.archive h2 {
+  margin: 0 0 var(--space-m);
+  font-size: 24px;
+}
+.posts {
+  display: grid;
+  gap: var(--space-l);
+}
+.post h3 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 20px;
+}
+
+.newsletter {
+  padding: var(--space-xl) var(--space-m);
+}
+.signup {
+  padding: var(--space-m);
+  background: #f3efe4;
+  border-radius: 8px;
+}
+.signup h2 {
+  margin: 0 0 var(--space-3xs);
+  font-size: 22px;
+}
+.signup p {
+  margin: 0 0 var(--space-s);
+}
+.form {
+  display: flex;
+  gap: var(--space-2xs);
+}
+.form input {
+  flex: 1;
+  padding: var(--space-2xs);
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+}
+.form button {
+  padding: var(--space-2xs) var(--space-m);
+  border: 0;
+  border-radius: 6px;
+  background: #222;
+  color: #fffefa;
+  font: inherit;
+}

@@ -1,0 +1,107 @@
+/*
+  Design Quest's own design system. The game teaches these rules, so the UI
+  follows them: a ratio spacing scale, a modular type scale, an OKLCH palette
+  with every text pair checked for AA contrast.
+*/
+:root {
+  /* Spacing: a ~1.5–2× ratio scale. Steps are far enough apart to read as different. */
+  --space-3xs: 0.25rem; /*  4 */
+  --space-2xs: 0.5rem; /*  8 */
+  --space-xs: 0.75rem; /* 12 */
+  --space-s: 1rem; /* 16 */
+  --space-m: 1.5rem; /* 24 */
+  --space-l: 2.5rem; /* 40 */
+  --space-xl: 4rem; /* 64 */
+  --space-2xl: 6rem; /* 96 */
+
+  /* Type: major-third (1.25) scale; the top steps grow fluidly with the viewport. */
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: clamp(1.4rem, 1.25rem + 0.6vw, 1.5625rem);
+  --step-3: clamp(1.65rem, 1.4rem + 1.1vw, 1.95rem);
+  --step-4: clamp(2rem, 1.5rem + 2.2vw, 2.75rem);
+  --step-5: clamp(2.5rem, 1.6rem + 4vw, 4.25rem);
+
+  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-ui: "Schibsted Grotesk Variable", system-ui, sans-serif;
+  --font-code: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  /* Paper, not pills: small radii, and they vary by object. */
+  --radius-s: 3px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+
+  --measure: 65ch;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 220ms;
+
+  /* Palette (light). Lightness is the axis that carries contrast. */
+  --paper: oklch(97.5% 0.012 85);
+  --card: oklch(99.5% 0.004 85);
+  --sunk: oklch(94% 0.018 85);
+  --line: oklch(87% 0.018 85);
+  --ink: oklch(24% 0.03 265);
+  --ink-2: oklch(45% 0.025 265);
+  --accent: oklch(50% 0.2 264);
+  --accent-ink: oklch(47% 0.2 264);
+  --on-accent: oklch(99% 0 0);
+  --accent-soft: oklch(93% 0.04 264);
+  --good: oklch(48% 0.12 150);
+  --good-bg: oklch(94% 0.05 150);
+  --bad: oklch(51% 0.19 27);
+  --bad-bg: oklch(94% 0.04 27);
+  --star: oklch(84% 0.16 85);
+  --on-star: oklch(24% 0.03 265);
+  /* Shadows only for things that float: notes, toasts, dialogs. */
+  --shadow: 0 1px 2px oklch(24% 0.03 265 / 0.08), 0 8px 24px oklch(24% 0.03 265 / 0.08);
+  --note: oklch(95.5% 0.06 95);
+  --tape: oklch(88% 0.03 85 / 0.7);
+  --index-rule: oklch(68% 0.14 25);
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: oklch(19% 0.02 265);
+    --card: oklch(24% 0.025 265);
+    --sunk: oklch(16% 0.02 265);
+    --line: oklch(34% 0.025 265);
+    --ink: oklch(95% 0.012 85);
+    --ink-2: oklch(76% 0.02 265);
+    --accent: oklch(72% 0.15 264);
+    --accent-ink: oklch(78% 0.12 264);
+    --on-accent: oklch(19% 0.02 265);
+    --accent-soft: oklch(30% 0.06 264);
+    --good: oklch(78% 0.14 150);
+    --good-bg: oklch(30% 0.06 150);
+    --bad: oklch(74% 0.15 27);
+    --bad-bg: oklch(30% 0.07 27);
+    --shadow: 0 1px 2px oklch(0% 0 0 / 0.3), 0 8px 24px oklch(0% 0 0 / 0.3);
+    --note: oklch(31% 0.035 85);
+    --tape: oklch(55% 0.02 85 / 0.5);
+    --index-rule: oklch(62% 0.13 25);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: oklch(19% 0.02 265);
+  --card: oklch(24% 0.025 265);
+  --sunk: oklch(16% 0.02 265);
+  --line: oklch(34% 0.025 265);
+  --ink: oklch(95% 0.012 85);
+  --ink-2: oklch(76% 0.02 265);
+  --accent: oklch(72% 0.15 264);
+  --accent-ink: oklch(78% 0.12 264);
+  --on-accent: oklch(19% 0.02 265);
+  --accent-soft: oklch(30% 0.06 264);
+  --good: oklch(78% 0.14 150);
+  --good-bg: oklch(30% 0.06 150);
+  --bad: oklch(74% 0.15 27);
+  --bad-bg: oklch(30% 0.07 27);
+  --shadow: 0 1px 2px oklch(0% 0 0 / 0.3), 0 8px 24px oklch(0% 0 0 / 0.3);
+  --note: oklch(31% 0.035 85);
+  --tape: oklch(55% 0.02 85 / 0.5);
+  --index-rule: oklch(62% 0.13 25);
+}

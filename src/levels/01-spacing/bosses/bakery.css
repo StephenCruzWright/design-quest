@@ -1,0 +1,108 @@
+/* Crumb & Co. site stylesheet, last touched by the owner's nephew */
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #2b2118;
+  background: #fbf6ee;
+  line-height: 1.5;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e6d9c6;
+}
+.logo {
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+}
+.nav {
+  display: flex;
+  gap: 15px;
+}
+.nav a {
+  color: #2b2118;
+}
+
+.hero {
+  padding: 22px;
+}
+.eyebrow {
+  margin: 0 0 14px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a5a2b;
+}
+h1 {
+  margin: 0 0 16px;
+  font-size: 40px;
+  line-height: 1.1;
+}
+.lede {
+  margin: 0 0 20px;
+  font-size: 18px;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 6px;
+  background: #2b2118;
+  color: #fbf6ee;
+  text-decoration: none;
+}
+
+.menu,
+.visit {
+  padding: 22px;
+}
+h2 {
+  margin: 0 0 18px;
+  font-size: 28px;
+}
+.menu-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  margin-bottom: 14px;
+}
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+.item h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.item p {
+  margin: 0;
+}
+
+.hours {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+.day h3 {
+  margin: 0 0 15px;
+  font-size: 18px;
+}
+.day p {
+  margin: 0;
+}
+
+.footer {
+  padding: 18px 22px;
+  border-top: 1px solid #e6d9c6;
+  font-size: 14px;
+}
+.footer p {
+  margin: 0;
+}
