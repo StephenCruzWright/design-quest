@@ -16,6 +16,7 @@ import { titleScreen } from "./screens/title";
 import { trialScreen } from "./screens/trial";
 import { type SaveData, store } from "./state/save";
 import { mountHud } from "./ui/hud";
+import { $ } from "./util/dom";
 
 function applySettings(s: SaveData) {
   const root = document.documentElement;
@@ -37,7 +38,7 @@ route("/level/:id/boss/:boss", bossScreen);
 route("/guide", guideScreen);
 route("/profile", profileScreen);
 
-const app = document.getElementById("app")!;
+const app = $(document, "#app");
 mountHud(app);
 const main = document.createElement("main");
 main.id = "screen";

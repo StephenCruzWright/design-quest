@@ -1,4 +1,4 @@
-import { el, esc } from "../util/dom";
+import { $, el, esc } from "../util/dom";
 
 let uid = 0;
 
@@ -19,8 +19,8 @@ export function slider(opts: {
       <label for="${id}">${esc(opts.label)} <output>${fmt(opts.value)}</output></label>
       <input id="${id}" type="range" min="${opts.min}" max="${opts.max}" step="${opts.step ?? 1}" value="${opts.value}">
     </div>`);
-  const input = node.querySelector("input")!;
-  const out = node.querySelector("output")!;
+  const input = $<HTMLInputElement>(node, "input");
+  const out = $(node, "output");
   input.addEventListener("input", () => {
     const v = Number(input.value);
     out.textContent = fmt(v);
@@ -50,13 +50,13 @@ export function toggleGroup(opts: {
     opts.onChange(value);
   };
   buttons.forEach((b, i) => {
-    b.addEventListener("click", () => select(b.dataset.value!));
+    b.addEventListener("click", () => select(b.dataset.value ?? ""));
     b.addEventListener("keydown", (e) => {
       const dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
       if (!dir) return;
       const next = buttons[(i + dir + buttons.length) % buttons.length];
       next.focus();
-      select(next.dataset.value!);
+      select(next.dataset.value ?? "");
     });
   });
   return node;

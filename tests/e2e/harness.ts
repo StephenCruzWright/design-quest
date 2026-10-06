@@ -19,8 +19,9 @@ declare global {
 window.dq = {
   bosses: () => LEVELS.flatMap((l) => l.bosses.map((b) => ({ level: l.id, boss: b.id }))),
   async run(levelId, bossId, css, hard = false) {
-    const level = LEVELS.find((l) => l.id === levelId)!;
-    const boss = level.bosses.find((b) => b.id === bossId)!;
+    const level = LEVELS.find((l) => l.id === levelId);
+    const boss = level?.bosses.find((b) => b.id === bossId);
+    if (!level || !boss) throw new Error(`No challenge ${levelId}/${bossId}`);
     const sandbox = new Sandbox(document.body);
     const sheet = css ?? boss.css;
     await sandbox.load(boss.html, sheet);

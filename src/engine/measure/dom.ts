@@ -28,7 +28,9 @@ const NON_VISUAL = new Set([
 ]);
 
 export function styleOf(el: Element): CSSStyleDeclaration {
-  return el.ownerDocument.defaultView!.getComputedStyle(el);
+  const view = el.ownerDocument.defaultView;
+  if (!view) throw new Error("Cannot read styles: the element is not in a rendered document.");
+  return view.getComputedStyle(el);
 }
 
 export function toRect(r: DOMRect): Rect {
@@ -73,7 +75,7 @@ function isBlockLevel(el: Element): boolean {
 
 function hasOwnText(el: Element): boolean {
   return Array.from(el.childNodes).some(
-    (n) => n.nodeType === Node.TEXT_NODE && n.textContent!.trim() !== "",
+    (n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim() !== "",
   );
 }
 

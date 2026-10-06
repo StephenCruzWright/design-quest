@@ -1,4 +1,4 @@
-import { el, esc } from "../util/dom";
+import { $, el, esc } from "../util/dom";
 
 /** Native <dialog> with focus trapping and Esc handling built in. */
 export function openModal(opts: {
@@ -13,14 +13,14 @@ export function openModal(opts: {
       <div class="modal-body"></div>
       <div class="modal-actions"></div>
     </dialog>`);
-  const body = dialog.querySelector(".modal-body")!;
+  const body = $(dialog, ".modal-body");
   if (typeof opts.body === "string") body.innerHTML = opts.body;
   else body.append(opts.body);
   const close = () => {
     dialog.close();
     dialog.remove();
   };
-  const actions = dialog.querySelector(".modal-actions")!;
+  const actions = $(dialog, ".modal-actions");
   for (const a of opts.actions ?? []) {
     const b = el<HTMLButtonElement>(
       `<button type="button" class="btn ${a.kind === "ghost" ? "btn-ghost" : "btn-primary"}">${esc(a.label)}</button>`,

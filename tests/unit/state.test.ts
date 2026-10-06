@@ -10,7 +10,7 @@ describe("save codes", () => {
   it("round-trips, including non-ASCII text", () => {
     const s = freshSave();
     s.xp = 420;
-    s.drafts["spacing/bakery"] = "/* Crème brûlée — “quotes” */ .a { gap: 8px }";
+    s.drafts["spacing/bakery"] = "/* Crème brûlée, “quotes”, naïve café */ .a { gap: 8px }";
     const back = decodeSave(encodeSave(s));
     expect(back.xp).toBe(420);
     expect(back.drafts["spacing/bakery"]).toBe(s.drafts["spacing/bakery"]);
@@ -81,7 +81,8 @@ describe("quiz", () => {
     expect(drawn).toHaveLength(5);
     expect(new Set(drawn.map((q) => q.id)).size).toBe(5);
     for (const q of drawn) {
-      const original = spacingLevel.quiz.find((o) => o.id === q.id)!;
+      const original = spacingLevel.quiz.find((o) => o.id === q.id);
+      if (!original) throw new Error(`Drawn question ${q.id} is not in the pool`);
       expect(q.options[q.answer]).toBe(original.options[original.answer]);
     }
   });

@@ -42,7 +42,8 @@
       },
       "style": {
         "useImportType": "error",
-        "useNodejsImportProtocol": "error"
+        "useNodejsImportProtocol": "error",
+        "noDescendingSpecificity": "off"
       },
       "correctness": {
         "noUnusedImports": "error",

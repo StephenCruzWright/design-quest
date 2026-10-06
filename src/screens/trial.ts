@@ -4,7 +4,7 @@ import type { Screen } from "../router";
 import { improvement, quizXp } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
-import { el, esc } from "../util/dom";
+import { $, el, esc } from "../util/dom";
 import { notFound } from "./not-found";
 
 const QUESTIONS = 5;
@@ -42,13 +42,13 @@ export const trialScreen: Screen = (root, { id }) => {
     </div>`);
   root.append(shell);
 
-  const meter = shell.querySelector<HTMLElement>(".trial-meter")!;
-  const countEl = shell.querySelector<HTMLElement>(".trial-count")!;
-  const prompt = shell.querySelector<HTMLElement>(".trial-prompt")!;
-  const visual = shell.querySelector<HTMLElement>(".trial-visual")!;
-  const options = shell.querySelector<HTMLElement>(".trial-options")!;
-  const feedback = shell.querySelector<HTMLElement>(".trial-feedback")!;
-  const nextBtn = shell.querySelector<HTMLButtonElement>('[data-act="next"]')!;
+  const meter = $<HTMLElement>(shell, ".trial-meter");
+  const countEl = $<HTMLElement>(shell, ".trial-count");
+  const prompt = $<HTMLElement>(shell, ".trial-prompt");
+  const visual = $<HTMLElement>(shell, ".trial-visual");
+  const options = $<HTMLElement>(shell, ".trial-options");
+  const feedback = $<HTMLElement>(shell, ".trial-feedback");
+  const nextBtn = $<HTMLButtonElement>(shell, '[data-act="next"]');
 
   const renderMeter = (results: boolean[]) => {
     meter.innerHTML = questions
@@ -134,12 +134,12 @@ export const trialScreen: Screen = (root, { id }) => {
       </div>`),
     );
     // Same hash, so force a re-render for a fresh draw.
-    shell.querySelector('[data-act="retry"]')!.addEventListener("click", (e) => {
+    $(shell, '[data-act="retry"]').addEventListener("click", (e) => {
       e.preventDefault();
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     });
-    shell.querySelector<HTMLElement>("h1")!.setAttribute("tabindex", "-1");
-    shell.querySelector<HTMLElement>("h1")!.focus();
+    $<HTMLElement>(shell, "h1").setAttribute("tabindex", "-1");
+    $<HTMLElement>(shell, "h1").focus();
   };
 
   options.addEventListener("click", (e) => {

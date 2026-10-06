@@ -33,7 +33,9 @@ export class Sandbox {
   }
 
   get doc(): Document {
-    return this.frame.contentDocument!;
+    const doc = this.frame.contentDocument;
+    if (!doc) throw new Error("Sandbox has no document yet. Await load() first.");
+    return doc;
   }
 
   async load(html: string, css: string): Promise<void> {

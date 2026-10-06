@@ -1,6 +1,6 @@
 import { rankFor } from "../state/progress";
 import { store } from "../state/save";
-import { el } from "../util/dom";
+import { $, el } from "../util/dom";
 
 export function mountHud(host: HTMLElement): void {
   const node = el(`
@@ -20,10 +20,10 @@ export function mountHud(host: HTMLElement): void {
       </div>
     </header>`);
   host.append(node);
-  const title = node.querySelector<HTMLElement>(".hud-rank-title")!;
-  const bar = node.querySelector<HTMLElement>(".xpbar")!;
-  const fill = bar.querySelector<HTMLElement>("span")!;
-  const xp = node.querySelector<HTMLElement>(".hud-xp")!;
+  const title = $<HTMLElement>(node, ".hud-rank-title");
+  const bar = $<HTMLElement>(node, ".xpbar");
+  const fill = $<HTMLElement>(bar, "span");
+  const xp = $<HTMLElement>(node, ".hud-xp");
   const render = () => {
     const s = store.get();
     const { rank, next, progress } = rankFor(s.xp);
@@ -39,7 +39,7 @@ export function mountHud(host: HTMLElement): void {
   const markActive = () => {
     const path = location.hash.replace(/^#/, "");
     node.querySelectorAll<HTMLAnchorElement>(".hud-nav a").forEach((a) => {
-      const target = a.getAttribute("href")!.slice(1);
+      const target = (a.getAttribute("href") ?? "").slice(1);
       if (path.startsWith(target)) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });

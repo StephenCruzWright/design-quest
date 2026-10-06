@@ -5,7 +5,7 @@ import { XP } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
 import { ruleCardHtml } from "../ui/rule-card";
-import { el, esc } from "../util/dom";
+import { $, el, esc } from "../util/dom";
 import { notFound } from "./not-found";
 
 function finishLesson(level: LevelDef, root: HTMLElement) {
@@ -64,13 +64,13 @@ export const lessonScreen: Screen = (root, { id }) => {
     </div>`);
   root.append(shell);
 
-  const progress = shell.querySelector<HTMLElement>(".lesson-progress")!;
-  const count = shell.querySelector<HTMLElement>(".lesson-count")!;
-  const title = shell.querySelector<HTMLElement>(".lesson-title")!;
-  const body = shell.querySelector<HTMLElement>(".lesson-body")!;
-  const demo = shell.querySelector<HTMLElement>(".demo")!;
-  const prev = shell.querySelector<HTMLButtonElement>('[data-act="prev"]')!;
-  const next = shell.querySelector<HTMLButtonElement>('[data-act="next"]')!;
+  const progress = $<HTMLElement>(shell, ".lesson-progress");
+  const count = $<HTMLElement>(shell, ".lesson-count");
+  const title = $<HTMLElement>(shell, ".lesson-title");
+  const body = $<HTMLElement>(shell, ".lesson-body");
+  const demo = $<HTMLElement>(shell, ".demo");
+  const prev = $<HTMLButtonElement>(shell, '[data-act="prev"]');
+  const next = $<HTMLButtonElement>(shell, '[data-act="next"]');
 
   const show = (i: number) => {
     if (cleanupDemo) cleanupDemo();

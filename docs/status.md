@@ -15,7 +15,6 @@ Unfinished work only. Delete an entry when it ships.
 
 - The production bundle is about 580 KB of JavaScript (about 200 KB gzipped), mostly CodeMirror. Lazy-load the editor on the challenge screen.
 - `culori` is installed for the colour level and not used yet.
-- Biome reports `noNonNullAssertion` warnings on `querySelector(...)!` calls. Replace them with the `$()` helper in `src/util/dom.ts`, which throws a named error.
 - The Spacing tiers bonus passes on the original bakery and blog pages. Harmless, since stars need every core check, but the detail text reads as praise on a broken page.
 - No sound yet.
 - No `docs/post-mortem.md` until the project ends.
