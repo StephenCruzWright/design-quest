@@ -14,20 +14,24 @@ export const levelScreen: Screen = (root, { id }) => {
   const clientsOpen = p.quizTotal > 0;
 
   const clients = level.bosses
-    .map((b) => {
+    .map((b, i) => {
       const rec = p.bosses[hard ? `${b.id}+` : b.id];
       return `
-      <li class="client-card${clientsOpen ? "" : " is-locked"}">
-        <div class="client-head">
+      <li class="ticket${clientsOpen ? "" : " is-locked"}">
+        <p class="ticket-no">Job ${level.num}.${i + 1}</p>
+        <div class="ticket-head">
           <h3>${esc(b.client)}</h3>
           ${starsHtml(rec?.stars ?? 0)}
         </div>
-        <p class="client-tagline">${esc(b.tagline)}</p>
-        <blockquote>${esc(b.brief)}</blockquote>
+        <p class="ticket-tagline">${esc(b.tagline)}</p>
+        <figure class="ticket-brief">
+          <blockquote>${esc(b.brief)}</blockquote>
+          <figcaption>${esc(b.from)}</figcaption>
+        </figure>
         ${
           clientsOpen
-            ? `<a class="btn ${rec ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/boss/${b.id}">${rec ? "Replay job" : "Take the job"}</a>`
-            : '<p class="locked-note">Finish the trial to meet this client.</p>'
+            ? `<a class="btn ${rec ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/boss/${b.id}">${rec ? "Open the job again" : "Take the job"}</a>`
+            : '<p class="locked-note">Pass the trial to take this job.</p>'
         }
       </li>`;
     })
@@ -36,7 +40,7 @@ export const levelScreen: Screen = (root, { id }) => {
   root.append(
     el(`
     <div class="page level">
-      <a class="back" href="#/map">← Studio map</a>
+      <a class="back" href="#/map">← All desks</a>
       <header class="page-head">
         <p class="eyebrow">Desk ${level.num}${hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
         <h1>${esc(level.title)}</h1>
@@ -45,21 +49,22 @@ export const levelScreen: Screen = (root, { id }) => {
       <figure class="ada">
         <span class="ada-avatar" aria-hidden="true">AK</span>
         <blockquote>${esc(level.intro)}</blockquote>
+        <figcaption>Ada Kern, studio lead</figcaption>
       </figure>
       <ol class="steps">
         <li class="step" data-done="${p.lessonDone}">
-          <span class="step-num" aria-hidden="true">1</span>
+          <span class="step-num"><span aria-hidden="true">1</span>${p.lessonDone ? '<span class="visually-hidden">Done:</span>' : ""}</span>
           <div>
             <h2>Lesson</h2>
-            <p>${level.lesson.length} short pages with live demos. You collect ${level.rules.length} rule cards for your Field Guide.</p>
+            <p>${level.lesson.length} short pages, most with a demo you can drag around. Finishing adds ${level.rules.length} rule cards to your Field Guide.</p>
           </div>
           <a class="btn ${p.lessonDone ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/lesson">${p.lessonDone ? "Review" : "Start lesson"}</a>
         </li>
         <li class="step" data-done="${p.quizTotal > 0}">
-          <span class="step-num" aria-hidden="true">2</span>
+          <span class="step-num"><span aria-hidden="true">2</span>${p.quizTotal > 0 ? '<span class="visually-hidden">Done:</span>' : ""}</span>
           <div>
             <h2>Trial</h2>
-            <p>Five judgment calls drawn from a pool of ${level.quiz.length}. ${p.quizTotal ? `Best: ${p.quizBest}/${p.quizTotal}.` : ""}</p>
+            <p>Five questions from a pool of ${level.quiz.length}, different each time. ${p.quizTotal ? `Your best: ${p.quizBest}/${p.quizTotal}.` : ""}</p>
           </div>
           ${
             trialOpen
@@ -71,11 +76,11 @@ export const levelScreen: Screen = (root, { id }) => {
           <span class="step-num" aria-hidden="true">3</span>
           <div>
             <h2>Clients</h2>
-            <p>Fix their stylesheet until every core check passes. Bonus checks earn extra stars.</p>
+            <p>Each job ships once every must-pass check is green. Bonus checks add stars.</p>
           </div>
         </li>
       </ol>
-      <ul class="clients">${clients}</ul>
+      <ul class="tickets">${clients}</ul>
     </div>`),
   );
 };

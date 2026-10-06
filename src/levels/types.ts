@@ -36,6 +36,8 @@ export interface BossDef {
   tagline: string;
   /** What the client says is wrong, in their own (non-designer) words. */
   brief: string;
+  /** Who said it, e.g. "Rosa, owner". */
+  from: string;
   html: string;
   css: string;
   /** Progressive hints, gentlest first. */

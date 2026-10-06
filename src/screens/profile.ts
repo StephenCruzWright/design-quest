@@ -3,9 +3,10 @@ import { BADGES } from "../state/badges";
 import { RANKS, rankFor } from "../state/progress";
 import { decodeSave, encodeSave, freshSave, store } from "../state/save";
 import { toggleGroup } from "../ui/controls";
+import { mark } from "../ui/marks";
 import { confirmModal } from "../ui/modal";
 import { toast } from "../ui/toast";
-import { el, esc, formatTime } from "../util/dom";
+import { $, el, esc, formatTime } from "../util/dom";
 
 export const profileScreen: Screen = (root) => {
   const render = () => {
@@ -44,7 +45,7 @@ export const profileScreen: Screen = (root) => {
             ${BADGES.map((b) => {
               const got = Boolean(s.badges[b.id]);
               return `<li class="badge" data-earned="${got}">
-                <span class="badge-glyph" aria-hidden="true">${got ? esc(b.glyph) : "?"}</span>
+                <span class="badge-mark">${mark(got ? b.mark : "lock")}</span>
                 <div><h3>${esc(b.name)}${got ? "" : ' <span class="visually-hidden">(locked)</span>'}</h3><p>${esc(b.description)}</p></div>
               </li>`;
             }).join("")}
@@ -76,8 +77,8 @@ export const profileScreen: Screen = (root) => {
         </section>
       </div>`);
 
-    page.querySelector<HTMLTextAreaElement>(".save-code")!.value = encodeSave(s);
-    page.querySelector('[data-setting="theme"]')!.append(
+    $<HTMLTextAreaElement>(page, ".save-code").value = encodeSave(s);
+    $(page, '[data-setting="theme"]').append(
       toggleGroup({
         label: "Theme",
         options: [
@@ -92,7 +93,7 @@ export const profileScreen: Screen = (root) => {
           }),
       }),
     );
-    page.querySelector('[data-setting="motion"]')!.append(
+    $(page, '[data-setting="motion"]').append(
       toggleGroup({
         label: "Motion",
         options: [
@@ -106,7 +107,7 @@ export const profileScreen: Screen = (root) => {
           }),
       }),
     );
-    page.querySelector('[data-setting="hard"]')!.append(
+    $(page, '[data-setting="hard"]').append(
       toggleGroup({
         label: "New Game+",
         options: [
@@ -127,17 +128,17 @@ export const profileScreen: Screen = (root) => {
       }),
     );
 
-    page.querySelector('[data-act="copy"]')!.addEventListener("click", async () => {
+    $(page, '[data-act="copy"]').addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(encodeSave(store.get()));
         toast({ title: "Save code copied" });
       } catch {
-        page.querySelector<HTMLTextAreaElement>(".save-code")!.select();
+        $<HTMLTextAreaElement>(page, ".save-code").select();
         toast({ title: "Select the code and copy it manually" });
       }
     });
-    page.querySelector('[data-act="import"]')!.addEventListener("click", async () => {
-      const code = page.querySelector<HTMLTextAreaElement>("#import-code")!.value;
+    $(page, '[data-act="import"]').addEventListener("click", async () => {
+      const code = $<HTMLTextAreaElement>(page, "#import-code").value;
       try {
         const data = decodeSave(code);
         if (
@@ -155,7 +156,7 @@ export const profileScreen: Screen = (root) => {
         toast({ title: "Could not load that code", body: (e as Error).message });
       }
     });
-    page.querySelector('[data-act="reset"]')!.addEventListener("click", async () => {
+    $(page, '[data-act="reset"]').addEventListener("click", async () => {
       if (
         await confirmModal(
           "Erase everything?",

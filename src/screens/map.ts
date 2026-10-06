@@ -4,27 +4,35 @@ import type { Screen } from "../router";
 import { BADGES } from "../state/badges";
 import { rankFor } from "../state/progress";
 import { store } from "../state/save";
-import { starsHtml } from "../ui/stars";
+import { mark } from "../ui/marks";
 import { el, esc } from "../util/dom";
 
-function levelCard(level: LevelDef): string {
+const pad = (n: number) => String(n).padStart(2, "0");
+
+function deskRow(level: LevelDef): string {
   const p = store.level(level.id);
   const hard = store.get().settings.hard;
   const bossStars = level.bosses.map((b) => p.bosses[hard ? `${b.id}+` : b.id]?.stars ?? 0);
   const totalStars = bossStars.reduce((a, b) => a + b, 0);
-  const status = !p.lessonDone ? "New" : bossStars.every((s) => s > 0) ? "Complete" : "In progress";
+  const status = !p.lessonDone
+    ? "Not started"
+    : bossStars.every((s) => s > 0)
+      ? "All clients shipped"
+      : p.quizTotal
+        ? `Trial ${p.quizBest}/${p.quizTotal}`
+        : "Lesson read";
   return `
-    <li class="map-node" data-status="${status.toLowerCase().replace(" ", "-")}">
-      <span class="map-num" aria-hidden="true">${level.num}</span>
-      <a class="map-card" href="#/level/${level.id}">
-        <span class="map-tag">${status}</span>
-        <h2>${esc(level.title)}</h2>
-        <p>${esc(level.subtitle)}</p>
-        <dl class="map-stats">
-          <div><dt>Lesson</dt><dd>${p.lessonDone ? "Done" : "Not started"}</dd></div>
-          <div><dt>Trial</dt><dd>${p.quizTotal ? `${p.quizBest}/${p.quizTotal}` : "–"}</dd></div>
-          <div><dt>Clients</dt><dd>${starsHtml(totalStars, level.bosses.length * 3)}</dd></div>
-        </dl>
+    <li class="desk" data-done="${bossStars.every((s) => s > 0)}">
+      <a class="desk-link" href="#/level/${level.id}">
+        <span class="desk-num" aria-hidden="true">${pad(level.num)}</span>
+        <span class="desk-text">
+          <span class="desk-title">${esc(level.title)}</span>
+          <span class="desk-sub">${esc(level.subtitle)}</span>
+        </span>
+        <span class="desk-meta">
+          <span>${status}</span>
+          <span class="desk-stars">${mark("star")}${totalStars} of ${level.bosses.length * 3} stars</span>
+        </span>
       </a>
     </li>`;
 }
@@ -37,26 +45,28 @@ export const mapScreen: Screen = (root) => {
     el(`
     <div class="page map">
       <header class="page-head">
-        <p class="eyebrow">The studio floor${s.settings.hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
-        <h1>Your desk at Kerning &amp; Co.</h1>
-        <p class="lede">Each desk is one principle: a lesson, a trial, then three clients who need your help. Work through them in order, or replay any client for more stars.</p>
+        <p class="eyebrow">Studio floor${s.settings.hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
+        <h1>Desks</h1>
+        <p class="lede">One principle per desk. Read the notes, pass the trial, then take the clients. Any client can be replayed for more stars.</p>
       </header>
-      <section class="map-summary" aria-label="Your progress">
-        <div><span class="big">${esc(rank.title)}</span><span>${next ? `${next.min - s.xp} XP to ${esc(next.title)}` : "Top of the masthead"}</span></div>
-        <div><span class="big">${s.xp}</span><span>XP earned</span></div>
-        <div><span class="big">${earned}/${BADGES.length}</span><span>badges</span></div>
-        <div><span class="big">${s.rules.length}</span><span>rule cards</span></div>
-      </section>
-      <ol class="map-path">
-        ${LEVELS.map(levelCard).join("")}
+      <dl class="ledger" aria-label="Your progress">
+        <div><dt>Rank</dt><dd>${esc(rank.title)}</dd><dd class="ledger-note">${next ? `${next.min - s.xp} XP to ${esc(next.title)}` : "Top of the masthead"}</dd></div>
+        <div><dt>XP</dt><dd>${s.xp}</dd></div>
+        <div><dt>Badges</dt><dd>${earned} of ${BADGES.length}</dd></div>
+        <div><dt>Rule cards</dt><dd>${s.rules.length}</dd></div>
+      </dl>
+      <ol class="desk-list">
+        ${LEVELS.map(deskRow).join("")}
         ${UPCOMING.map(
           (l) => `
-          <li class="map-node is-locked">
-            <span class="map-num" aria-hidden="true">${l.num}</span>
-            <div class="map-card">
-              <span class="map-tag">In production</span>
-              <h2>${esc(l.title)}</h2>
-              <p>${esc(l.subtitle)}</p>
+          <li class="desk is-locked">
+            <div class="desk-link">
+              <span class="desk-num" aria-hidden="true">${pad(l.num)}</span>
+              <span class="desk-text">
+                <span class="desk-title">${esc(l.title)}</span>
+                <span class="desk-sub">${esc(l.subtitle)}</span>
+              </span>
+              <span class="desk-meta">${mark("lock")}<span>Being built</span></span>
             </div>
           </li>`,
         ).join("")}

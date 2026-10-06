@@ -22,19 +22,19 @@ export function commit(mutate: (s: SaveData) => void, xp: number, reason: string
       queueMicrotask(() =>
         toast({
           tone: "badge",
-          glyph: b.glyph,
+          mark: b.mark,
           title: `Badge: ${b.name}`,
           body: `${b.description} +${BADGE_XP} XP`,
         }),
       );
     }
   });
-  if (xp > 0) toast({ tone: "xp", glyph: "+", title: `+${xp} XP`, body: reason });
+  if (xp > 0) toast({ tone: "xp", mark: "star", title: `+${xp} XP`, body: reason });
   const after = rankFor(store.get().xp).rank;
   if (after.title !== before.title) {
     toast({
       tone: "badge",
-      glyph: "▲",
+      mark: "up",
       title: `Promoted: ${after.title}`,
       body: "Ada nods approvingly at your desk.",
     });

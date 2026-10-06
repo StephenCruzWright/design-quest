@@ -1,4 +1,5 @@
 import { slider, toggleGroup } from "../../ui/controls";
+import { $ } from "../../util/dom";
 import type { LessonSection } from "../types";
 
 const DISHES = [
@@ -19,9 +20,9 @@ function proximityDial(host: HTMLElement) {
       <div class="demo-controls"></div>
     </div>
     <p class="demo-readout"></p>`;
-  const list = host.querySelector<HTMLElement>(".prox-list")!;
-  const readout = host.querySelector<HTMLElement>(".demo-readout")!;
-  const controls = host.querySelector<HTMLElement>(".demo-controls")!;
+  const list = $<HTMLElement>(host, ".prox-list");
+  const readout = $<HTMLElement>(host, ".demo-readout");
+  const controls = $<HTMLElement>(host, ".demo-controls");
   const state = { inside: 16, between: 16 };
   const update = () => {
     list.style.setProperty("--inside", `${state.inside}px`);
@@ -73,8 +74,8 @@ function headingHug(host: HTMLElement) {
       <p class="hug-text">Weekdays 7–15. Saturdays 7–13. Sundays we sleep.</p>
     </div>
     <div class="demo-controls-row"></div>`;
-  const stage = host.querySelector<HTMLElement>(".hug-stage")!;
-  host.querySelector(".demo-controls-row")!.append(
+  const stage = $<HTMLElement>(host, ".hug-stage");
+  $(host, ".demo-controls-row").append(
     toggleGroup({
       label: "Heading margins",
       options: [
@@ -100,10 +101,10 @@ function scaleLab(host: HTMLElement) {
     </div>
     <div class="demo-controls-row"></div>
     <pre class="code-block"><code class="tokens-out"></code></pre>`;
-  const linear = host.querySelector<HTMLElement>('[data-kind="linear"]')!;
-  const ratioBars = host.querySelector<HTMLElement>('[data-kind="ratio"]')!;
-  const label = host.querySelector<HTMLElement>(".ratio-label")!;
-  const out = host.querySelector<HTMLElement>(".tokens-out")!;
+  const linear = $<HTMLElement>(host, '[data-kind="linear"]');
+  const ratioBars = $<HTMLElement>(host, '[data-kind="ratio"]');
+  const label = $<HTMLElement>(host, ".ratio-label");
+  const out = $<HTMLElement>(host, ".tokens-out");
   const names = ["3xs", "2xs", "xs", "s", "m", "l", "xl"];
   const bars = (vals: number[]) =>
     vals
@@ -122,7 +123,7 @@ function scaleLab(host: HTMLElement) {
     ratioBars.innerHTML = bars(vals);
     out.textContent = `:root {\n${vals.map((v, i) => `  --space-${names[i]}: ${v / 16}rem; /* ${v}px */`).join("\n")}\n}`;
   };
-  host.querySelector(".demo-controls-row")!.append(
+  $(host, ".demo-controls-row").append(
     slider({
       label: "Ratio",
       min: 1.2,
@@ -179,8 +180,8 @@ function tierHighlighter(host: HTMLElement) {
       <li><span class="sw t2"></span> Tier 2 · between groups (16–24px)</li>
       <li><span class="sw t3"></span> Tier 3 · between sections (40–64px)</li>
     </ul>`;
-  const page = host.querySelector<HTMLElement>(".tier-page")!;
-  host.querySelector(".demo-controls-row")!.append(
+  const page = $<HTMLElement>(host, ".tier-page");
+  $(host, ".demo-controls-row").append(
     toggleGroup({
       label: "Show tiers",
       options: [
@@ -199,7 +200,7 @@ export const lesson: LessonSection[] = [
     title: "Space is a signal",
     body: `
       <p>Before anyone reads a word on your page, their visual system has already sorted it into groups. Elements that sit close together are seen as belonging together. This is the Gestalt principle of <strong>proximity</strong>, and it is <em>pre-attentive</em>: it happens in the first fraction of a second, without effort or conscious thought.</p>
-      <p>So spacing isn't decoration. It's the first layer of information on the page. When the gaps are uniform, readers lose that free layer and have to <em>read</em> to work out the structure. That's slower, more tiring, and easy to get wrong.</p>
+      <p>That makes spacing information, and it is the first information anyone gets. On a page with even gaps the reader gets no grouping for free. They have to <em>read</em> to find the structure, which is slower and easier to get wrong.</p>
       <p class="try">Drag the sliders. Set both gaps equal, then make “between” twice “inside”. Watch the moment the six lines snap into three dishes.</p>`,
     demo: proximityDial,
   },
@@ -207,7 +208,7 @@ export const lesson: LessonSection[] = [
     id: "between-within",
     title: "Between > within",
     body: `
-      <p>The whole level hangs on one relationship: <strong>the space between groups must be clearly larger than the space inside them.</strong> “Clearly” means about <strong>2×</strong>. Below that, the difference sits close to the limit of what people notice at a glance.</p>
+      <p>Everything in this level comes back to one relationship: <strong>the space between groups must be clearly larger than the space inside them.</strong> “Clearly” means about <strong>2×</strong>. Below that, the difference sits close to the limit of what people notice at a glance.</p>
       <p>The most common violation is the floating heading. With <code>margin: 24px 0</code> a heading sits exactly halfway between the previous section and its own content, so it belongs to neither. A heading should <em>hug</em> what it introduces: lots of space above, very little below.</p>`,
     demo: headingHug,
   },
@@ -245,7 +246,7 @@ export const lesson: LessonSection[] = [
     id: "system",
     title: "Make it a system",
     body: `
-      <p>You turn this into code by deciding once and naming the decision. Declare a handful of tokens, then use only them:</p>
+      <p>In code, that means deciding once and giving the decision a name. Declare a handful of tokens as custom properties, then use nothing else:</p>
       <pre class="code-block"><code>:root {
   --space-3xs: 0.25rem;  /*  4 */
   --space-2xs: 0.5rem;   /*  8 */
@@ -261,6 +262,6 @@ export const lesson: LessonSection[] = [
 /* Headings hug what they introduce */
 h2 { margin: var(--space-xl) 0 var(--space-2xs); }</code></pre>
       <p>Note the <code>clamp()</code> on the section tier. Plain <code>vw</code> spacing gets absurd at both extremes. <code>clamp()</code> lets space grow with the screen between a floor and a ceiling.</p>
-      <p>In the boss fight, the judges don't read your intentions. They <strong>measure the rendered page</strong>: the real gaps between groups, every distinct margin, padding and gap value, and whether those values come from tokens.</p>`,
+      <p>When you work on a client page, the judges ignore your intentions and <strong>measure the rendered page</strong>. They read the real gaps between groups, every distinct computed margin, padding and gap value, and whether your declarations use tokens.</p>`,
   },
 ];

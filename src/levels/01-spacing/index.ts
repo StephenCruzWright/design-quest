@@ -16,7 +16,7 @@ export const spacingLevel: LevelDef = {
   title: "Spacing & Whitespace",
   subtitle: "Space as a system: ratios, tokens, and between > within",
   intro:
-    "Welcome to Kerning & Co. First lesson, and the one that pays off on every project: space. Most pages that feel like a template have nothing wrong with their colours or fonts. They're spaced evenly, so nothing on them says what belongs together. Let's fix that. — Ada Kern, studio lead",
+    "First lesson, and the one you'll use on every job: space. When a page feels like a template, the colours and fonts are usually fine. Everything is spaced evenly, so nothing tells the reader what belongs together. Start there.",
   lesson,
   rules,
   quiz,

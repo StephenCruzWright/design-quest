@@ -13,7 +13,7 @@ import { cssEditor, htmlViewer, setEditorText } from "../ui/editor";
 import { renderJudgePanel } from "../ui/judge-panel";
 import { confirmModal, openModal } from "../ui/modal";
 import { starsHtml } from "../ui/stars";
-import { debounce, el, esc, formatTime } from "../util/dom";
+import { $, debounce, el, esc, formatTime } from "../util/dom";
 import { notFound } from "./not-found";
 
 const MIN_RATIONALE = 30;
@@ -28,8 +28,8 @@ function askRationale(previous: string): Promise<string | null> {
         <p class="rationale-words">Words to reach for: <em>proximity</em>, <em>between &gt; within</em>, <em>ratio scale</em>, <em>tiers</em>, <em>tokens</em>.</p>
         <p class="rationale-count" aria-live="polite"></p>
       </div>`);
-    const ta = body.querySelector("textarea")!;
-    const count = body.querySelector<HTMLElement>(".rationale-count")!;
+    const ta = $<HTMLTextAreaElement>(body, "textarea");
+    const count = $<HTMLElement>(body, ".rationale-count");
     ta.value = previous;
     const modal = openModal({
       title: "Explain your fix",
@@ -54,7 +54,7 @@ function askRationale(previous: string): Promise<string | null> {
         },
       ],
     });
-    const submit = modal.root.querySelector<HTMLButtonElement>(".btn-primary")!;
+    const submit = $<HTMLButtonElement>(modal.root, ".btn-primary");
     const sync = () => {
       const n = ta.value.trim().length;
       submit.disabled = n < MIN_RATIONALE;
@@ -164,7 +164,7 @@ export const bossScreen: Screen = (root, params) => {
       </header>
       <div class="boss-grid">
         <section class="boss-brief" aria-label="Client brief">
-          <blockquote>${esc(boss.brief)}</blockquote>
+          <figure class="ticket-brief"><blockquote>${esc(boss.brief)}</blockquote><figcaption>${esc(boss.from)}</figcaption></figure>
           <ol class="hints" aria-live="polite"></ol>
           <button class="btn btn-ghost btn-s" data-act="hint">Hint (${boss.hints.length} left)</button>
         </section>
@@ -192,7 +192,7 @@ export const bossScreen: Screen = (root, params) => {
     </div>`);
   root.append(shell);
 
-  const q = <T extends HTMLElement>(sel: string) => shell.querySelector<T>(sel)!;
+  const q = <T extends HTMLElement>(sel: string) => $<T>(shell, sel);
   const submitBtn = q<HTMLButtonElement>('[data-act="submit"]');
   const starsEl = q(".boss-stars");
   const panel = q(".judge-panel");
@@ -234,7 +234,7 @@ export const bossScreen: Screen = (root, params) => {
   // Tabs
   for (const tab of shell.querySelectorAll<HTMLButtonElement>('[role="tab"]')) {
     tab.addEventListener("click", () => {
-      const name = tab.dataset.tab!;
+      const name = tab.dataset.tab ?? "css";
       shell.querySelectorAll<HTMLButtonElement>('[role="tab"]').forEach((t) => {
         t.setAttribute("aria-selected", String(t === tab));
       });

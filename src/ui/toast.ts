@@ -1,4 +1,5 @@
 import { el, esc } from "../util/dom";
+import { type MarkName, mark } from "./marks";
 
 let region: HTMLElement | null = null;
 
@@ -21,12 +22,12 @@ function ensureRegion(): HTMLElement {
 export function toast(opts: {
   title: string;
   body?: string;
-  glyph?: string;
+  mark?: MarkName;
   tone?: "xp" | "badge" | "info";
 }): void {
   const node = el(`
     <div class="toast" data-tone="${opts.tone ?? "info"}">
-      ${opts.glyph ? `<span class="toast-glyph" aria-hidden="true">${esc(opts.glyph)}</span>` : ""}
+      ${opts.mark ? `<span class="toast-mark">${mark(opts.mark)}</span>` : ""}
       <div><strong>${esc(opts.title)}</strong>${opts.body ? `<p>${esc(opts.body)}</p>` : ""}</div>
     </div>`);
   ensureRegion().append(node);

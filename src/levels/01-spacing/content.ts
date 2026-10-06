@@ -249,7 +249,8 @@ export const bosses: BossDef[] = [
     client: "Crumb & Co.",
     tagline: "Neighbourhood sourdough bakery",
     brief:
-      "People keep reading the description under one loaf as if it belongs to the next one. And the page feels… cramped but also loose? I don't know. My nephew built it. — Rosa, owner",
+      "Customers keep pointing at the wrong loaf. They read the description under one bread and think it belongs to the next. The page feels cramped and loose at the same time, if that makes sense. My nephew built it.",
+    from: "Rosa, owner",
     html: bakeryHtml,
     css: bakeryCss,
     hints: [
@@ -263,7 +264,8 @@ export const bosses: BossDef[] = [
     client: "Pipeline",
     tagline: "Developer tooling startup, pricing page",
     brief:
-      "Our pricing cards look like one big blob. People can't tell which features belong to which plan, and our designer left. — Dev, founder",
+      "Our pricing cards read as one big blob. People email us asking which features come with which plan, and our designer just left.",
+    from: "Dev, founder",
     html: saasHtml,
     css: saasCss,
     hints: [
@@ -277,7 +279,8 @@ export const bosses: BossDef[] = [
     client: "Field Notes",
     tagline: "A woodworker's essay blog",
     brief:
-      "Readers say the archive is hard to scan. Every title seems to float halfway between two posts. — June, writer",
+      "Readers tell me the archive is hard to scan. Each title looks like it's floating between two posts and I can't work out why.",
+    from: "June, writer",
     html: blogHtml,
     css: blogCss,
     hints: [
