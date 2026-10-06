@@ -19,8 +19,12 @@ const allBossRecords = (s: SaveData) =>
     })),
   );
 
-const spacingWins = (s: SaveData) =>
-  allBossRecords(s).filter((r) => r.levelId === "spacing" && r.stars > 0);
+const winsIn = (s: SaveData, levelId: string) =>
+  allBossRecords(s).filter((r) => r.levelId === levelId && r.stars > 0);
+const spacingWins = (s: SaveData) => winsIn(s, "spacing");
+/** Distinct clients of a level shipped in either mode. */
+const shippedIn = (s: SaveData, levelId: string) =>
+  new Set(winsIn(s, levelId).map((r) => r.bossKey.replace("+", ""))).size;
 
 export const BADGES: BadgeDef[] = [
   {
@@ -64,7 +68,28 @@ export const BADGES: BadgeDef[] = [
     name: "Full House",
     description: "Ship work for all three spacing clients.",
     mark: "door",
-    earned: (s) => new Set(spacingWins(s).map((r) => r.bossKey.replace("+", ""))).size >= 3,
+    earned: (s) => shippedIn(s, "spacing") >= 3,
+  },
+  {
+    id: "one-voice",
+    name: "One Voice",
+    description: "Ship a hierarchy fix where one element clearly leads.",
+    mark: "focus",
+    earned: (s) => winsIn(s, "hierarchy").length > 0,
+  },
+  {
+    id: "fluent",
+    name: "Fluent",
+    description: "Ship a fix whose headings scale with clamp().",
+    mark: "wave",
+    earned: (s) => allBossRecords(s).some((r) => r.bonuses.includes("fluid")),
+  },
+  {
+    id: "house-style",
+    name: "House Style",
+    description: "Ship work for all three hierarchy clients.",
+    mark: "scale",
+    earned: (s) => shippedIn(s, "hierarchy") >= 3,
   },
   {
     id: "unassisted",

@@ -1,3 +1,4 @@
+import { judgeIntact } from "../../engine/judges/integrity";
 import {
   judgeEconomy,
   judgeProximity,
@@ -5,9 +6,10 @@ import {
   judgeTiers,
   judgeTokens,
 } from "../../engine/judges/spacing";
+import { measureIntegrity } from "../../engine/measure/integrity";
 import { measureSpacing } from "../../engine/measure/spacing";
 import type { LevelDef } from "../types";
-import { bosses, quiz, rules } from "./content";
+import { bosses, clue, quiz, rules } from "./content";
 import { lesson } from "./lesson";
 
 export const spacingLevel: LevelDef = {
@@ -16,14 +18,16 @@ export const spacingLevel: LevelDef = {
   title: "Spacing & Whitespace",
   subtitle: "Space as a system: ratios, tokens, and between > within",
   intro:
-    "First lesson, and the one you'll use on every job: space. When a page feels like a template, the colours and fonts are usually fine. Everything is spaced evenly, so nothing tells the reader what belongs together. Start there.",
+    "A bakery menu, a pricing page and a woodworker's blog. Three Lorem & Ipsum sites with one fault between them: everything is spaced evenly, so nothing tells the reader what belongs together. Start with space.",
   lesson,
   rules,
   quiz,
   bosses,
+  clue,
   judge(doc, css, { hard }) {
     const snap = measureSpacing(doc);
     return [
+      judgeIntact(measureIntegrity(doc)),
       judgeProximity(snap.stacks, hard ? 2.5 : 2),
       judgeScale(snap.values, hard ? 1.4 : 1.25),
       judgeEconomy(snap.values, hard ? 5 : 6),

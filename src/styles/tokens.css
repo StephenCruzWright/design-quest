@@ -59,6 +59,17 @@
   --tape: oklch(88% 0.03 85 / 0.7);
   --index-rule: oklch(68% 0.14 25);
 
+  /* Characters are stickers: one palette in both themes, dark line on light fills. */
+  --sprite-line: oklch(24% 0.03 265);
+  --sprite-skin: oklch(94% 0.025 70);
+  --sprite-hair: oklch(34% 0.05 45);
+  --sprite-drop: oklch(78% 0.09 230);
+  --look-0: oklch(62% 0.15 264);
+  --look-1: oklch(70% 0.13 150);
+  --look-2: oklch(66% 0.15 25);
+  --look-3: oklch(84% 0.15 85);
+  --ada-coat: oklch(38% 0.04 265);
+
   color-scheme: light dark;
 }
 

@@ -1,17 +1,11 @@
 import { spacingLevel } from "./01-spacing";
+import { hierarchyLevel } from "./02-hierarchy";
 import type { LevelDef, LockedLevel } from "./types";
 
-export const LEVELS: LevelDef[] = [spacingLevel];
+export const LEVELS: LevelDef[] = [spacingLevel, hierarchyLevel];
 
 /** Levels still in production, shown on the map so players see the road ahead. */
 export const UPCOMING: LockedLevel[] = [
-  {
-    id: "hierarchy",
-    num: 2,
-    title: "Visual Hierarchy",
-    subtitle: "Size, weight and colour as three independent dials",
-    locked: true,
-  },
   {
     id: "color",
     num: 3,

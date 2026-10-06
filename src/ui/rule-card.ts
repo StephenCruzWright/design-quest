@@ -9,5 +9,6 @@ export function ruleCardHtml(r: RuleCard, levelTitle?: string): string {
       <p class="rule-text">${esc(r.rule)}</p>
       ${r.code ? `<code class="rule-code">${esc(r.code)}</code>` : ""}
       <p class="rule-why"><span>Why:</span> ${esc(r.why)}</p>
+      <p class="rule-source"><span>Source:</span> ${esc(r.source)}</p>
     </article>`;
 }

@@ -582,18 +582,6 @@ a.desk-link:hover .desk-title {
   row-gap: var(--space-2xs);
   max-inline-size: 46rem;
 }
-.ada-avatar {
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  inline-size: 3rem;
-  block-size: 3rem;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-display);
-  font-weight: 700;
-}
 .ada blockquote {
   font-family: var(--font-display);
   font-size: var(--step-1);
@@ -1721,4 +1709,846 @@ a.desk-link:hover .desk-title {
 }
 .save label {
   margin-block-start: var(--space-s);
+}
+
+/* ── Characters ────────────────────────────────────────────────────────── */
+
+.sprite {
+  display: inline-block;
+  flex: none;
+  inline-size: var(--sprite-size, 4.5rem);
+  color: var(--sprite-line);
+}
+.sprite-s {
+  --sprite-size: 3rem;
+}
+.sprite-l {
+  --sprite-size: 7rem;
+}
+.sprite svg {
+  overflow: visible;
+}
+.sprite .sp-shadow {
+  fill: var(--sprite-line);
+  stroke: none;
+  opacity: 0.14;
+}
+.sprite .sp-skin {
+  fill: var(--sprite-skin);
+}
+.sprite .sp-hair {
+  fill: var(--sprite-hair);
+}
+.sprite .sp-shirt,
+.sprite .sp-hat {
+  fill: var(--look-0);
+}
+.sprite[data-look="1"] .sp-shirt {
+  fill: var(--look-1);
+}
+.sprite[data-look="2"] .sp-shirt,
+.sprite[data-look="2"] .sp-hat {
+  fill: var(--look-2);
+}
+.sprite[data-look="3"] .sp-shirt {
+  fill: var(--look-3);
+}
+.sprite .sp-face circle,
+.sprite .sp-face path:not([fill="none"]) {
+  fill: currentColor;
+}
+.sprite .sp-face .sp-drop {
+  fill: var(--sprite-drop);
+}
+.sprite .sp-pencil {
+  stroke: var(--look-3);
+  stroke-width: 2.5;
+}
+.sprite .sp-fig {
+  transform-box: view-box;
+  transform-origin: 32px 86px;
+}
+.sprite .sp-arm,
+.sprite .sp-leg {
+  transform-box: view-box;
+  transition: rotate 260ms var(--ease-out);
+}
+.sprite .sp-arm-l {
+  transform-origin: 23px 56px;
+}
+.sprite .sp-arm-r {
+  transform-origin: 41px 56px;
+}
+.sprite .sp-leg-l {
+  transform-origin: 28px 68px;
+}
+.sprite .sp-leg-r {
+  transform-origin: 36px 68px;
+}
+.sprite .sp-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sp-blink 4.6s infinite;
+}
+.sprite .sp-face,
+.sprite .sp-bubble {
+  display: none;
+}
+.sprite[data-state="idle"] .sp-face[data-for~="idle"],
+.sprite[data-state="walk"] .sp-face[data-for~="walk"],
+.sprite[data-state="think"] .sp-face[data-for="think"],
+.sprite[data-state="cheer"] .sp-face[data-for="cheer"],
+.sprite[data-state="wince"] .sp-face[data-for="wince"],
+.sprite[data-state="sweat"] .sp-face[data-for="sweat"],
+.sprite[data-state="think"] .sp-bubble {
+  display: inline;
+}
+.sprite[data-state="idle"] .sp-fig {
+  animation: sp-breathe 2.8s ease-in-out infinite;
+}
+.sprite[data-state="walk"] .sp-fig {
+  animation: sp-bob 260ms ease-in-out infinite alternate;
+}
+.sprite[data-state="walk"] .sp-leg-l {
+  animation: sp-step 260ms ease-in-out infinite alternate;
+}
+.sprite[data-state="walk"] .sp-leg-r {
+  animation: sp-step 260ms ease-in-out infinite alternate-reverse;
+}
+.sprite[data-state="think"] .sp-arm-r {
+  rotate: 175deg;
+}
+.sprite[data-state="think"] .sp-bubble circle {
+  fill: currentColor;
+  animation: sp-dots 1.2s ease-in-out infinite;
+}
+.sprite[data-state="think"] .sp-bubble circle:nth-child(2) {
+  animation-delay: 150ms;
+}
+.sprite[data-state="think"] .sp-bubble circle:nth-child(3) {
+  animation-delay: 300ms;
+}
+.sprite[data-state="cheer"] .sp-fig {
+  animation: sp-jump 700ms var(--ease-out);
+}
+.sprite[data-state="cheer"] .sp-arm-l {
+  rotate: 115deg;
+}
+.sprite[data-state="cheer"] .sp-arm-r {
+  rotate: -115deg;
+}
+.sprite[data-state="wince"] .sp-fig {
+  animation: sp-flinch 420ms ease-out;
+}
+.sprite[data-state="wince"] .sp-arm-l {
+  rotate: -25deg;
+}
+.sprite[data-state="wince"] .sp-arm-r {
+  rotate: 25deg;
+}
+.sprite[data-state="sweat"] .sp-drop {
+  animation: sp-drip 1.3s ease-in infinite;
+}
+@keyframes sp-blink {
+  0%,
+  95%,
+  100% {
+    transform: none;
+  }
+  97% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes sp-breathe {
+  50% {
+    transform: translateY(-0.6px) scaleY(1.015);
+  }
+}
+@keyframes sp-bob {
+  to {
+    transform: translateY(-2px);
+  }
+}
+@keyframes sp-step {
+  from {
+    rotate: -16deg;
+  }
+  to {
+    rotate: 16deg;
+  }
+}
+@keyframes sp-dots {
+  50% {
+    opacity: 0.3;
+  }
+}
+/* Squash, stretch, land: the jump reads as effort, then release. */
+@keyframes sp-jump {
+  0% {
+    transform: scale(1.08, 0.88);
+  }
+  35% {
+    transform: translateY(-16px) scale(0.95, 1.08);
+  }
+  70% {
+    transform: scale(1.06, 0.92);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes sp-flinch {
+  20%,
+  60% {
+    transform: translateX(-2px) rotate(-2deg);
+  }
+  40%,
+  80% {
+    transform: translateX(2px) rotate(2deg);
+  }
+}
+@keyframes sp-drip {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+
+.ada-portrait {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  border-radius: 50%;
+  background: var(--note);
+  color: var(--sprite-line);
+  overflow: hidden;
+}
+.ada-l {
+  inline-size: 6rem;
+  block-size: 6rem;
+}
+.ada-portrait svg {
+  inline-size: 100%;
+  block-size: 100%;
+  translate: 0 8%;
+}
+.ada-portrait .sp-skin {
+  fill: var(--sprite-skin);
+}
+.ada-portrait .ada-hair {
+  fill: var(--sprite-hair);
+}
+.ada-portrait .ada-eye {
+  fill: var(--sprite-line);
+  stroke: none;
+}
+.ada-portrait .ada-coat {
+  fill: var(--ada-coat);
+}
+.ada-portrait .ada-collar {
+  stroke: var(--sprite-skin);
+}
+.ada-portrait .ada-pencil {
+  stroke: var(--look-3);
+  stroke-width: 2.5;
+}
+.ada-portrait .ada-head,
+.ada-portrait .ada-brow-r {
+  transform-box: view-box;
+  transform-origin: 32px 44px;
+  transition:
+    translate 240ms var(--ease-out),
+    rotate 240ms var(--ease-out);
+}
+.ada-portrait .ada-mouth-smile {
+  display: none;
+}
+.ada-portrait[data-expr="eyebrow"] .ada-brow-r {
+  translate: 0 -2.5px;
+  rotate: -6deg;
+}
+.ada-portrait[data-expr="nod"] .ada-mouth-smile {
+  display: inline;
+}
+.ada-portrait[data-expr="nod"] .ada-mouth-flat {
+  display: none;
+}
+.ada-portrait[data-expr="nod"] .ada-head {
+  animation: ada-nod 900ms ease-in-out;
+}
+@keyframes ada-nod {
+  25%,
+  75% {
+    transform: translateY(2px) rotate(2deg);
+  }
+  50% {
+    transform: none;
+  }
+}
+
+/* ── Effects ───────────────────────────────────────────────────────────── */
+
+.has-stamp {
+  position: relative;
+}
+.stamp {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--space-s);
+  translate: 0 -50%;
+  rotate: -12deg;
+  padding: var(--space-3xs) var(--space-2xs);
+  border: 3px solid currentColor;
+  border-radius: var(--radius-s);
+  font-family: var(--font-code);
+  font-size: var(--step-0);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: stamp-in 380ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.stamp[data-tone="good"] {
+  color: var(--good);
+}
+.stamp[data-tone="bad"] {
+  color: var(--bad);
+}
+.stamp[data-tone="ship"] {
+  color: var(--bad);
+  background: var(--card);
+}
+@keyframes stamp-in {
+  from {
+    scale: 2.4;
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+}
+.is-shaking {
+  animation: shake 360ms ease-out;
+}
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  pointer-events: none;
+  overflow: hidden;
+}
+.confetti span {
+  position: absolute;
+  inset-block-start: var(--y);
+  inset-inline-start: var(--x);
+  inline-size: 0.5rem;
+  block-size: 0.9rem;
+  border-radius: 1px;
+  animation: confetti 1.6s cubic-bezier(0.2, 0.7, 0.4, 1) var(--delay) both;
+}
+@keyframes confetti {
+  to {
+    transform: translate(var(--dx), calc(var(--dy) + 70vh)) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+
+/* ── Lesson checkpoints ────────────────────────────────────────────────── */
+
+.dot[data-state="passed"] {
+  background: var(--good);
+}
+.dot[aria-current="step"] {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.dot:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.goal {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: baseline;
+  padding: var(--space-xs) var(--space-s);
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+.goal-label {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-code);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.goal[data-done="true"] {
+  border-color: var(--good);
+  background: var(--good-bg);
+}
+.goal[data-done="true"] .goal-label::after {
+  content: " ✓";
+}
+.gate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-m);
+  align-items: start;
+  padding: var(--space-m);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-m);
+  background: var(--card);
+}
+.gate[data-state="passed"] {
+  border-style: solid;
+  border-color: var(--good);
+}
+.gate-body {
+  display: grid;
+  gap: var(--space-s);
+}
+.gate-prompt {
+  font-size: var(--step-2);
+  line-height: 1.25;
+}
+.gate-options {
+  display: grid;
+  gap: var(--space-2xs);
+}
+.gate-why:empty {
+  display: none;
+}
+.gate-why {
+  padding: var(--space-xs) var(--space-s);
+  border-inline-start: 3px solid var(--bad);
+  background: var(--bad-bg);
+}
+.gate-note {
+  padding: var(--space-xs) var(--space-s);
+  border-inline-start: 3px solid var(--good);
+  background: var(--good-bg);
+}
+.gate .stamp {
+  inset-block-start: var(--space-m);
+  translate: 0;
+}
+.lesson-sources {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.lesson-sources:empty {
+  display: none;
+}
+.lesson-sources span,
+.rule-source span {
+  font-weight: 700;
+}
+.lesson-nav {
+  align-items: center;
+}
+.lesson-lock {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  text-align: center;
+}
+.lesson-done-head {
+  display: flex;
+  gap: var(--space-m);
+  align-items: end;
+}
+@media (max-width: 640px) {
+  .gate {
+    grid-template-columns: 1fr;
+  }
+  .gate-sprite {
+    display: none;
+  }
+}
+
+.rule-source {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+/* ── Title: staff pass ─────────────────────────────────────────────────── */
+
+.title-screen {
+  grid-template-areas:
+    "head note"
+    "pass note"
+    "actions note";
+}
+.staff-pass {
+  grid-area: pass;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-m);
+  align-items: end;
+  padding: var(--space-s) var(--space-m);
+  border: 1px solid var(--line);
+  border-inline-start: 6px solid var(--accent);
+  border-radius: var(--radius-m);
+  background: var(--card);
+}
+.staff-pass .eyebrow {
+  flex-basis: 100%;
+}
+.pass-name {
+  display: grid;
+  gap: var(--space-3xs);
+  font-weight: 600;
+}
+.pass-name input {
+  inline-size: 14rem;
+  padding: var(--space-2xs) var(--space-xs);
+  border: 1px solid var(--ink-2);
+  border-radius: var(--radius-s);
+  background: var(--paper);
+}
+.looks {
+  display: grid;
+  gap: var(--space-3xs);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.looks legend {
+  padding: 0;
+  font-weight: 600;
+}
+.looks-row {
+  display: flex;
+  gap: var(--space-2xs);
+}
+.look {
+  display: grid;
+  place-items: center;
+  padding: var(--space-3xs);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--paper);
+  cursor: pointer;
+}
+.look[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.title-buddy {
+  min-inline-size: 7rem;
+}
+@media (max-width: 860px) {
+  .title-screen {
+    grid-template-areas: "head" "note" "pass" "actions";
+  }
+}
+
+/* ── Map: the floor the sprite walks on ────────────────────────────────── */
+
+.floor {
+  position: relative;
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+}
+.floor .desk-list {
+  grid-column: 2;
+}
+.walker {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 4.5rem;
+  transition: translate 700ms ease-in-out;
+}
+@media (max-width: 640px) {
+  .floor {
+    grid-template-columns: 1fr;
+  }
+  .floor .desk-list {
+    grid-column: 1;
+  }
+  .walker {
+    display: none;
+  }
+}
+
+/* ── Desk: Ada and her clue ────────────────────────────────────────────── */
+
+.ada .ada-portrait {
+  grid-row: span 2;
+}
+.clue-note {
+  max-inline-size: 36rem;
+  justify-self: start;
+}
+.clue-note h2 {
+  font-size: var(--step-2);
+}
+.clue {
+  display: flex;
+  gap: var(--space-s);
+  align-items: start;
+  padding: var(--space-s);
+  background: var(--note);
+  text-align: start;
+}
+.clue h3 {
+  font-size: var(--step-1);
+}
+.promotion {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-s);
+  text-align: center;
+}
+.promotion blockquote {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  max-inline-size: 28em;
+}
+.promotion figcaption {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+
+/* ── Trial: streak ─────────────────────────────────────────────────────── */
+
+.trial-head {
+  display: flex;
+  gap: var(--space-s);
+  align-items: end;
+}
+.trial-buddy {
+  margin-inline-start: auto;
+}
+.streak {
+  font-family: var(--font-code);
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.streak[data-hot="true"] {
+  color: var(--accent-ink);
+  animation: flip 600ms var(--ease-out);
+}
+
+/* ── Challenge: client problems bar ────────────────────────────────────── */
+
+.problems {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: var(--space-2xs);
+  align-items: center;
+  margin-inline-start: auto;
+  padding-inline-end: var(--space-m);
+}
+.problems ~ .boss-timer {
+  margin-inline-start: 0;
+}
+.problems-label {
+  grid-column: 1 / -1;
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.problems-bar {
+  display: flex;
+  gap: var(--space-3xs);
+}
+.problems-bar span {
+  inline-size: 1.75rem;
+  block-size: 0.6rem;
+  border: 1px solid var(--bad);
+  border-radius: var(--radius-s);
+  background: var(--bad);
+  transition:
+    background var(--dur),
+    scale var(--dur) var(--ease-out);
+}
+.problems-bar span[data-fixed="true"] {
+  background: transparent;
+  border-color: var(--line);
+  scale: 0.85;
+}
+.problems-count {
+  font-family: var(--font-code);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+}
+.problems .stamp {
+  inset-inline-end: auto;
+  inset-inline-start: 0;
+  font-size: var(--step--1);
+}
+.boss-buddy {
+  display: flex;
+  justify-content: center;
+  padding-block-start: var(--space-s);
+}
+.check[data-locked="true"] {
+  border-color: var(--line);
+  background: var(--sunk);
+}
+.check[data-locked="true"] .check-icon {
+  background: var(--line);
+  color: var(--ink-2);
+}
+.check-icon .mark {
+  inline-size: 0.9rem;
+  block-size: 0.9rem;
+}
+
+/* ── Level 2 demos ─────────────────────────────────────────────────────── */
+
+.squint-stage {
+  font-family: system-ui, sans-serif;
+}
+.sq-page {
+  display: grid;
+  gap: var(--space-2xs);
+  max-inline-size: 22rem;
+  transition: filter var(--dur);
+}
+.sq-logo {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(50% 0.02 265);
+}
+.sq-offer {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: oklch(30% 0.08 240);
+}
+.sq-body {
+  font-size: 0.9rem;
+}
+.sq-btn {
+  justify-self: start;
+  padding: var(--space-2xs) var(--space-s);
+  border-radius: var(--radius-s);
+  background: oklch(45% 0.12 240);
+  color: oklch(99% 0 0);
+  font-size: 0.9rem;
+}
+.dial-stage,
+.scale-stage,
+.bold-stage,
+.stepback-stage {
+  display: grid;
+  gap: var(--space-3xs);
+  font-family: system-ui, sans-serif;
+}
+.dial-date {
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.dial-name {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.dial-body {
+  font-size: 15px;
+}
+.ms-h {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.ms-h small,
+.ms-body small {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: oklch(45% 0.02 265);
+}
+.ms-body {
+  font-family: Georgia, serif;
+  font-size: 16px;
+}
+.bs-head {
+  font-size: 1.4rem;
+}
+.bold-controls {
+  gap: var(--space-2xs);
+}
+.bold-controls .segmented {
+  justify-self: start;
+}
+.stepback-stage .sb-title {
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.15;
+  transition:
+    font-size var(--dur),
+    color var(--dur);
+}
+.stepback-stage .sb-meta {
+  font-size: 1rem;
+  font-weight: 700;
+  color: oklch(45% 0.17 27);
+  transition:
+    font-size var(--dur),
+    color var(--dur);
+}
+.stepback-stage[data-mode="loud"] .sb-title {
+  font-size: 2rem;
+  color: oklch(45% 0.17 27);
+  text-decoration: underline;
+}
+.stepback-stage[data-mode="quiet"] .sb-meta {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: oklch(45% 0.02 265);
+}
+.fluid-rows {
+  display: grid;
+  gap: var(--space-s);
+  overflow: hidden;
+}
+.fluid-row {
+  display: grid;
+  gap: var(--space-3xs);
+}
+.fluid-row figcaption {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.fluid-row figcaption strong {
+  font-family: var(--font-code);
+  color: var(--ink);
+}
+.fluid-row p {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+/* Beside lesson text the sprite stands still until the player answers:
+   decoration next to reading material lowers learning (research/learning-science.md). */
+.gate .sprite[data-state="idle"] .sp-fig,
+.gate .sprite .sp-eyes {
+  animation: none;
 }

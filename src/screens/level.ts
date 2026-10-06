@@ -1,6 +1,7 @@
 import { levelById } from "../levels";
 import type { Screen } from "../router";
 import { store } from "../state/save";
+import { adaHtml } from "../ui/ada";
 import { starsHtml } from "../ui/stars";
 import { el, esc } from "../util/dom";
 import { notFound } from "./not-found";
@@ -12,6 +13,7 @@ export const levelScreen: Screen = (root, { id }) => {
   const hard = store.get().settings.hard;
   const trialOpen = p.lessonDone;
   const clientsOpen = p.quizTotal > 0;
+  const cleared = level.bosses.every((b) => (p.bosses[b.id]?.stars ?? 0) > 0);
 
   const clients = level.bosses
     .map((b, i) => {
@@ -47,7 +49,7 @@ export const levelScreen: Screen = (root, { id }) => {
         <p class="lede">${esc(level.subtitle)}</p>
       </header>
       <figure class="ada">
-        <span class="ada-avatar" aria-hidden="true">AK</span>
+        ${adaHtml(cleared ? "nod" : "neutral")}
         <blockquote>${esc(level.intro)}</blockquote>
         <figcaption>Ada Kern, studio lead</figcaption>
       </figure>
@@ -56,7 +58,7 @@ export const levelScreen: Screen = (root, { id }) => {
           <span class="step-num"><span aria-hidden="true">1</span>${p.lessonDone ? '<span class="visually-hidden">Done:</span>' : ""}</span>
           <div>
             <h2>Lesson</h2>
-            <p>${level.lesson.length} short pages, most with a demo you can drag around. Finishing adds ${level.rules.length} rule cards to your Field Guide.</p>
+            <p>${level.lesson.length} pages, each ending in a checkpoint you must pass to turn the page. Finishing adds ${level.rules.length} rule cards to your Field Guide.</p>
           </div>
           <a class="btn ${p.lessonDone ? "btn-ghost" : "btn-primary"}" href="#/level/${level.id}/lesson">${p.lessonDone ? "Review" : "Start lesson"}</a>
         </li>
@@ -81,6 +83,11 @@ export const levelScreen: Screen = (root, { id }) => {
         </li>
       </ol>
       <ul class="tickets">${clients}</ul>
+      ${
+        cleared
+          ? `<aside class="pinned-note clue-note" aria-label="Note from Ada Kern"><p class="eyebrow">Desk cleared</p><h2>${esc(level.clue.title)}</h2><p>${esc(level.clue.body)}</p><p class="note-sign">Ada Kern, studio lead</p></aside>`
+          : ""
+      }
     </div>`),
   );
 };

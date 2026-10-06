@@ -1,4 +1,4 @@
-import type { BossDef, QuizQuestion, RuleCard } from "../types";
+import type { BossDef, Clue, QuizQuestion, RuleCard } from "../types";
 import bakeryCss from "./bosses/bakery.css?raw";
 import bakeryHtml from "./bosses/bakery.html?raw";
 import blogCss from "./bosses/blog.css?raw";
@@ -11,20 +11,24 @@ export const rules: RuleCard[] = [
     id: "between-within",
     title: "Between > within",
     rule: "The gap between groups should be at least 2× the largest gap inside them.",
-    why: "Proximity is read pre-attentively. Equal gaps force people to read before they can see the structure.",
+    why: "Grouping follows the ratio between gaps. In lab dot patterns it is reliable from about 1.5×; 2× leaves a margin for real pages.",
+    source:
+      "Kubovy, Holcombe & Wagemans 1998; Wagemans et al. 2012. The 2× threshold is Ada's rule",
   },
   {
     id: "ratio-scale",
     title: "Scale by ratio",
     rule: "Make each spacing step ~1.5× the last. If two values are within 25% of each other, merge them.",
-    why: "Weber's law: we notice relative differences, not absolute ones. 28 vs 32px looks the same.",
+    why: "Weber's law: we detect differences as a fraction of size. A 4px step doubles 4px but adds 14% to 28px, too little to read as a deliberate step across a page.",
     code: "4 · 8 · 16 · 24 · 40 · 64",
+    source: "Lubashevsky 2018 (Weber fractions). The 1.5× ratio and the 25% merge are Ada's rules",
   },
   {
     id: "three-tiers",
     title: "Three tiers",
     rule: "Inside a group < between groups < between sections. Each tier clearly bigger than the last.",
     why: "Proximity nests. Each tier answers a different question: what goes together, what is a unit, where a topic ends.",
+    source: "Wagemans et al. 2012. The tier ratios are Ada's rules",
   },
   {
     id: "headings-hug",
@@ -32,12 +36,14 @@ export const rules: RuleCard[] = [
     rule: "Give headings much more space above than below.",
     why: "Symmetric margins leave a heading floating equally between two sections, so it belongs to neither.",
     code: "h2 { margin: var(--space-xl) 0 var(--space-2xs); }",
+    source: "Wertheimer 1923 (proximity). Ada's rule",
   },
   {
     id: "inner-outer",
     title: "Inner ≤ outer",
     rule: "A container's padding should be no larger than the gap around it.",
     why: "Otherwise a card's content sits nearer its neighbour's edge than its own, and the grid reads as one slab.",
+    source: "Follows from proximity (Wertheimer 1923). Ada's rule",
   },
   {
     id: "name-space",
@@ -45,6 +51,7 @@ export const rules: RuleCard[] = [
     rule: "Use a few named tokens, never raw numbers. Decide once, reuse everywhere.",
     why: "Every one-off value is an unexplained decision. Tokens turn spacing into a vocabulary.",
     code: "gap: var(--space-m);",
+    source: "Pickering & Bell, Every Layout; IBM Carbon (practice)",
   },
 ];
 
@@ -122,12 +129,12 @@ export const quiz: QuizQuestion[] = [
     prompt: "Your spacing tokens are 4, 8, 12, 16, 20, 24, 28, 32. What is the problem?",
     options: [
       "There are too few steps",
-      "The upper steps are too close to perceive (28 vs 32 looks the same), which invites arbitrary choices",
+      "The upper steps are only 14 to 17% apart, too close to read as deliberate steps across a page",
       "They should be in rem",
       "The scale should start at 0",
     ],
     answer: 1,
-    note: "Weber's law: +4px is a big jump at 4px and invisible at 28px. Use ratios.",
+    note: "+4px doubles 4px but adds only 14% to 28px. A ratio keeps every step the same proportion larger than the last.",
   },
   {
     id: "which-scale",
@@ -139,7 +146,7 @@ export const quiz: QuizQuestion[] = [
       "16 · 17 · 18 · 19 · 20",
     ],
     answer: 1,
-    note: "Each step is roughly 1.5–2× the last, so each step looks as different as every other.",
+    note: "Each step is 1.5 to 2× the last. We judge size by proportion, so equal ratios give steps that look evenly spaced.",
   },
   {
     id: "slab",
@@ -179,7 +186,7 @@ export const quiz: QuizQuestion[] = [
       "The font is too small",
     ],
     answer: 1,
-    note: "Bind label to input (4px) and separate fields (24px). Placeholders-as-labels create new problems.",
+    note: "Bind label to input (4px) and separate fields (24px). A placeholder used as a label disappears as soon as the user types.",
   },
   {
     id: "twox",
@@ -187,7 +194,7 @@ export const quiz: QuizQuestion[] = [
       "Inside a group your gap is 12px. What is the smallest between-group gap that reliably reads as separate?",
     options: ["14px", "16px", "24px", "12px"],
     answer: 2,
-    note: "About 2× is a safe floor. 14 or 16px is within perceptual noise of 12px.",
+    note: "14px or 16px next to 12px is a visible difference, but too small to read as a separate group. Ada's rule asks for 2×.",
   },
   {
     id: "gap-vs-margin",
@@ -239,7 +246,7 @@ export const quiz: QuizQuestion[] = [
       "15px for compact components",
     ],
     answer: 2,
-    note: "If a difference cannot be seen, it should not exist in the system.",
+    note: "If nobody can tell two values apart on a page, keeping both is a decision with no visible result.",
   },
 ];
 
@@ -290,3 +297,8 @@ export const bosses: BossDef[] = [
     ],
   },
 ];
+
+export const clue: Clue = {
+  title: "Same footer, three times",
+  body: "Rosa, Dev and June have never met. Their sites carry the same footer credit: Lorem & Ipsum. So does the invoice Rosa showed me. Line two bills her for 'premium spacing'.",
+};

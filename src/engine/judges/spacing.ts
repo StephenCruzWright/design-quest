@@ -1,5 +1,6 @@
 import { clusterValues, type Sample } from "../measure/geometry";
 import type { CheckResult } from "../types";
+import { declarations } from "./css";
 
 export interface StackMeasure {
   label: string;
@@ -112,16 +113,11 @@ function isTokenValue(value: string): boolean {
 
 /** Tokens: spacing declared through custom properties, not magic numbers. */
 export function judgeTokens(cssText: string, minShare = 0.9): CheckResult {
-  const css = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
-  let total = 0;
-  let tokenised = 0;
-  for (const m of css.matchAll(/([a-z-]+)\s*:\s*([^;{}]+)/gi)) {
-    const prop = m[1].toLowerCase();
-    if (!SPACING_PROP.test(prop)) continue;
-    total++;
-    if (isTokenValue(m[2].trim())) tokenised++;
-  }
-  const defines = /--[\w-]+\s*:/.test(css);
+  const decls = declarations(cssText);
+  const spacing = decls.filter((d) => SPACING_PROP.test(d.prop));
+  const total = spacing.length;
+  const tokenised = spacing.filter((d) => isTokenValue(d.value)).length;
+  const defines = decls.some((d) => d.prop.startsWith("--"));
   const share = total === 0 ? 0 : tokenised / total;
   const pass = defines && total > 0 && share >= minShare;
   return {

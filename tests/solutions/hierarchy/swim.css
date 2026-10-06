@@ -1,0 +1,105 @@
+/* Tidewater Swim School: reference fix. Bold marks headings and the booking button only. */
+:root {
+  --ink: #10324a;
+  --ink-quiet: #4e6170;
+  --sea: #0b5d8c;
+  --step-0: 17px;
+  --step-1: 20px;
+  --step-2: clamp(1.4rem, 1.1rem + 1vw, 1.75rem);
+  --step-4: clamp(2.25rem, 1.5rem + 2.5vw, 3rem);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #e6f3fa;
+}
+.logo {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 700;
+}
+.nav {
+  display: flex;
+  gap: 24px;
+}
+.nav a {
+  color: var(--ink);
+}
+
+.hero {
+  padding: 48px 32px;
+  background: #e6f3fa;
+}
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: var(--step-4);
+  line-height: 1.1;
+  font-weight: 800;
+}
+.hero-sub {
+  margin: 0 0 24px;
+  max-width: 34em;
+}
+.book {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  background: var(--sea);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.classes,
+.faq {
+  padding: 40px 32px 0;
+}
+h2 {
+  margin: 0 0 16px;
+  font-size: var(--step-2);
+  font-weight: 700;
+}
+h3 {
+  margin: 0 0 4px;
+  font-size: var(--step-1);
+  font-weight: 700;
+}
+.class-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.class p {
+  margin: 0;
+}
+.ages {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--ink-quiet);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.faq p {
+  margin: 0 0 16px;
+}
+
+.credit {
+  margin-top: 48px;
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #5b6b78;
+  border-top: 1px solid #d5e3ec;
+}
