@@ -23,6 +23,7 @@ Open the doc for the task. Read the code for everything else.
 | Sandbox, measuring the DOM, judge functions, data attributes, save format, adding a level or challenge | `docs/architecture.md` |
 | Game UI tokens, layout, motion, copy voice, the "does this look AI-made?" check | `docs/design-system.md` |
 | Whether something unfinished is intentional; picking the next piece of work | `docs/status.md` |
+| Why a mechanic, lesson claim or threshold works; a source for a player-facing fact | `research/` (game design, learning science, design theory) |
 
 Source owners: `src/engine/` (sandbox, measurement, judges, quiz draw), `src/levels/` (lesson content, quiz pools, rule cards, client pages), `src/state/` (save data, XP, ranks, badges), `src/screens/` (one module per route), `src/ui/` (shared components), `src/styles/tokens.css` (design tokens).
 
@@ -42,7 +43,7 @@ Source owners: `src/engine/` (sandbox, measurement, judges, quiz draw), `src/lev
 These apply to code comments, docs, commit messages, pull requests and every string a player reads.
 
 - No em dashes. Use a full stop, comma, colon or brackets.
-- Be specific. No hype ("powerful", "seamless", "cutting-edge"), no hedging ("may help", "can potentially"), no stacked groups of three for rhythm.
+- Be specific. Every player-facing sentence is story or a sourced fact, and a studio rule of thumb is labelled as a rule. No filler, no hype ("powerful", "seamless", "cutting-edge"), no hedging ("may help", "can potentially"), no stacked groups of three for rhythm.
 - Read it aloud. If the owner would not say it, rewrite it.
 - Commit subjects are short imperative sentences ("Add the typography judges"). The body says why.
 - No AI attribution lines (`Co-Authored-By`, "Generated with") in commits or pull requests.
