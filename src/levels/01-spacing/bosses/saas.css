@@ -1,0 +1,109 @@
+/* Pipeline — pricing page */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: #1d2433;
+  background: #f5f7fb;
+  line-height: 1.5;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background: #ffffff;
+  border-bottom: 1px solid #dde3ee;
+}
+.brand {
+  margin: 0;
+  font-weight: 700;
+}
+.login {
+  color: #3451b2;
+}
+
+.intro {
+  padding: 30px 28px 10px;
+  text-align: center;
+}
+.intro h1 {
+  margin: 0 0 10px;
+  font-size: 34px;
+  line-height: 1.15;
+}
+.intro p {
+  margin: 0;
+  color: #4a5468;
+}
+
+.plans {
+  padding: 20px 28px;
+}
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.plan {
+  padding: 36px 22px;
+  background: #ffffff;
+  border: 1px solid #dde3ee;
+  border-radius: 10px;
+}
+.plan-featured {
+  border-color: #3451b2;
+}
+.plan h2 {
+  margin: 0 0 22px;
+  font-size: 20px;
+}
+.price {
+  margin: 0 0 22px;
+  color: #4a5468;
+}
+.price strong {
+  font-size: 30px;
+  color: #1d2433;
+}
+.desc {
+  margin: 0 0 22px;
+  font-size: 15px;
+}
+.features {
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+}
+.features li {
+  padding: 5px 0;
+}
+.cta {
+  display: block;
+  padding: 10px;
+  border-radius: 6px;
+  background: #3451b2;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.faq {
+  padding: 20px 28px 40px;
+}
+.faq h2 {
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+.qa {
+  margin-bottom: 22px;
+}
+.qa h3 {
+  margin: 0 0 20px;
+  font-size: 17px;
+}
+.qa p {
+  margin: 0;
+  color: #4a5468;
+}

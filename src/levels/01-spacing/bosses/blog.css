@@ -1,0 +1,97 @@
+/* Field Notes — blog theme */
+body {
+  margin: 0;
+  font-family: Charter, 'Iowan Old Style', Georgia, serif;
+  color: #222;
+  background: #fffefa;
+  line-height: 1.55;
+}
+
+.masthead {
+  padding: 26px 30px;
+  border-bottom: 2px solid #222;
+}
+.site-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+.tagline {
+  margin: 6px 0 0;
+  font-style: italic;
+  color: #555;
+}
+
+.featured {
+  padding: 30px;
+}
+.label {
+  margin: 0 0 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9a3412;
+}
+.featured h1 {
+  margin: 0 0 14px;
+  font-size: 36px;
+  line-height: 1.15;
+}
+.meta {
+  margin: 12px 0;
+  font-size: 14px;
+  color: #555;
+}
+.excerpt {
+  margin: 16px 0;
+}
+.more {
+  color: #9a3412;
+}
+
+.archive {
+  padding: 10px 30px;
+}
+.archive h2 {
+  margin: 24px 0;
+  font-size: 24px;
+}
+.post h3 {
+  margin: 24px 0;
+  font-size: 20px;
+}
+
+.newsletter {
+  padding: 30px;
+}
+.signup {
+  padding: 26px;
+  background: #f3efe4;
+  border-radius: 8px;
+}
+.signup h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+.signup p {
+  margin: 0 0 14px;
+}
+.form {
+  display: flex;
+  gap: 10px;
+}
+.form input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+}
+.form button {
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: #222;
+  color: #fffefa;
+  font: inherit;
+}
