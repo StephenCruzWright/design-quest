@@ -1,6 +1,7 @@
 {
   "name": "design-quest",
   "private": true,
+  "license": "UNLICENSED",
   "version": "0.1.0",
   "description": "A browser game that teaches web design theory. Players fix broken client pages with real CSS while layout checks measure the result.",
   "type": "module",
