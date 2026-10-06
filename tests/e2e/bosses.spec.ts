@@ -28,11 +28,14 @@ test("every boss ships with a reference solution", async ({ page }) => {
 });
 
 for (const { level, boss } of solved) {
-  test(`${level}/${boss}: the original is broken`, async ({ page }) => {
+  test(`${level}/${boss}: the original is broken but intact`, async ({ page }) => {
     await openHarness(page);
     const results = await page.evaluate(([l, b]) => window.dq.run(l, b), [level, boss]);
     const failingCore = results.filter((r) => r.kind === "core" && !r.pass);
     expect(failingCore.length, JSON.stringify(results, null, 2)).toBeGreaterThan(0);
+    // The client's own page never fails for missing text; its faults are the level's.
+    const intact = results.find((r) => r.id === "intact");
+    expect(intact?.pass, intact?.detail).toBe(true);
   });
 
   test(`${level}/${boss}: the reference solution earns 3 stars`, async ({ page }) => {

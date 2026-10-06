@@ -1,0 +1,94 @@
+/* Tidewater Swim School */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #10324a;
+  background: #ffffff;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #e6f3fa;
+}
+.logo {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.nav {
+  display: flex;
+  gap: 24px;
+}
+.nav a {
+  color: #10324a;
+}
+
+.hero {
+  padding: 48px 32px;
+  background: #e6f3fa;
+}
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+.hero-sub {
+  margin: 0 0 24px;
+  font-size: 18px;
+}
+.book {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  background: #0b5d8c;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.classes,
+.faq {
+  padding: 40px 32px 0;
+}
+h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 800;
+}
+h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+}
+.class-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.class p {
+  margin: 0;
+}
+.ages {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.faq p {
+  margin: 0 0 16px;
+}
+
+.credit {
+  margin-top: 48px;
+  padding: 16px 32px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #5b6b78;
+  border-top: 1px solid #d5e3ec;
+}

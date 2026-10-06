@@ -73,7 +73,7 @@ function isBlockLevel(el: Element): boolean {
   return !styleOf(el).display.startsWith("inline") && styleOf(el).display !== "contents";
 }
 
-function hasOwnText(el: Element): boolean {
+export function hasOwnText(el: Element): boolean {
   return Array.from(el.childNodes).some(
     (n) => n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim() !== "",
   );

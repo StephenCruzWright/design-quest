@@ -49,6 +49,7 @@ describe("badges", () => {
     const s = freshSave();
     s.levels.spacing = {
       lessonDone: true,
+      lessonPage: 6,
       quizBest: 3,
       quizTotal: 5,
       bosses: {

@@ -1,0 +1,99 @@
+/* The Lantern: reference fix. The show title leads; dates step back but stay readable. */
+:root {
+  --ink: #f3eee6;
+  --ink-quiet: #c9c0d3;
+  --night: #1f1a24;
+  --lamp: #ffb36b;
+  --step-0: 16px;
+  --step-1: 20px;
+  --step-3: clamp(1.5rem, 1.25rem + 0.8vw, 1.75rem);
+  --step-5: clamp(2.5rem, 1.8rem + 2.5vw, 3.25rem);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--night);
+}
+
+.top {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 32px;
+  border-bottom: 1px solid #3a3342;
+}
+.logo {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 700;
+}
+.tag {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-quiet);
+}
+
+.now {
+  padding: 40px 32px;
+}
+.label {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--ink-quiet);
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: var(--step-5);
+  line-height: 1.05;
+}
+.when,
+.date {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--lamp);
+  letter-spacing: 0.03em;
+}
+.blurb {
+  margin: 0 0 24px;
+  max-width: 36em;
+}
+.tickets {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 4px;
+  background: var(--lamp);
+  color: var(--night);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.next {
+  padding: 0 32px 40px;
+}
+h2 {
+  margin: 0 0 16px;
+  font-size: var(--step-3);
+}
+.shows {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+h3 {
+  margin: 0 0 4px;
+  font-size: var(--step-1);
+}
+.show p {
+  margin-top: 0;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #a69db0;
+  border-top: 1px solid #3a3342;
+}

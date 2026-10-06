@@ -11,15 +11,37 @@ export const XP = {
 export interface Rank {
   title: string;
   min: number;
+  /** What Ada says on the promotion card. */
+  note: string;
 }
 
 export const RANKS: Rank[] = [
-  { title: "Intern", min: 0 },
-  { title: "Junior Designer", min: 300 },
-  { title: "Designer", min: 900 },
-  { title: "Senior Designer", min: 1800 },
-  { title: "Art Director", min: 3000 },
-  { title: "Creative Director", min: 4500 },
+  { title: "Intern", min: 0, note: "" },
+  {
+    title: "Junior Designer",
+    min: 300,
+    note: "Your name goes on the door, under mine. In pencil, for now.",
+  },
+  {
+    title: "Designer",
+    min: 900,
+    note: "A client cancelled their Lorem & Ipsum contract today and asked for you by name. That has never happened before.",
+  },
+  {
+    title: "Senior Designer",
+    min: 1800,
+    note: "You take the difficult clients from now on. Lorem & Ipsum sent one of theirs to spy on us last week. I'll tell you which one.",
+  },
+  {
+    title: "Art Director",
+    min: 3000,
+    note: "Here is the key to the plan chest. The top drawer holds everything I know about Lorem & Ipsum. Read it before the final client calls.",
+  },
+  {
+    title: "Creative Director",
+    min: 4500,
+    note: "The studio runs on your rules now. Lorem & Ipsum knows your name, and they are not happy about it.",
+  },
 ];
 
 export function rankFor(xp: number): { rank: Rank; next: Rank | null; progress: number } {
@@ -43,4 +65,12 @@ export function bossXp(stars: number, hard: boolean): number {
 /** XP gained by improving from a previous best to a new result. Never negative. */
 export function improvement(previous: number, next: number): number {
   return Math.max(0, next - previous);
+}
+
+/**
+ * Lesson pages whose gate is passed. The page after them is open and the rest
+ * are locked. A finished lesson opens every page, including in older saves.
+ */
+export function reachedPages(pages: number, lessonDone: boolean, lessonPage: number): number {
+  return lessonDone ? pages : Math.min(Math.max(0, lessonPage), pages);
 }

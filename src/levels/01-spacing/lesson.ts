@@ -1,6 +1,6 @@
 import { slider, toggleGroup } from "../../ui/controls";
 import { $ } from "../../util/dom";
-import type { LessonSection } from "../types";
+import type { DemoContext, LessonSection } from "../types";
 
 const DISHES = [
   ["Country loaf", "Wheat, rye and 36 hours of patience."],
@@ -9,7 +9,7 @@ const DISHES = [
 ];
 
 /** Demo: two sliders control the gap inside a pair and the gap between pairs. */
-function proximityDial(host: HTMLElement) {
+function proximityDial(host: HTMLElement, ctx: DemoContext) {
   host.innerHTML = `
     <div class="demo-split">
       <div class="demo-stage" aria-live="polite">
@@ -30,13 +30,14 @@ function proximityDial(host: HTMLElement) {
     const r = state.between / Math.max(1, state.inside);
     const verdict =
       r >= 2
-        ? "Clear groups: you see three dishes before you read a word."
-        : r >= 1.25
-          ? "Weak grouping: you can tell, but you have to look for it."
+        ? "Ada's rule met: three dishes."
+        : r >= 1.5
+          ? "In lab dot patterns this ratio is enough to group. On a page of uneven text lines it is borderline."
           : r > 0.8
-            ? "Ambiguous: six equal lines. Which description belongs to which name?"
-            : "Inverted: each description now groups with the next dish.";
+            ? "Near equal: six evenly spaced lines. Which description belongs to which name?"
+            : "Inverted: each description now sits closer to the next dish.";
     readout.innerHTML = `<strong>${r.toFixed(1)}×</strong> between ÷ within. ${verdict}`;
+    if (r >= 2) ctx.complete();
   };
   controls.append(
     slider({
@@ -93,7 +94,7 @@ function scaleSteps(base: number, ratio: number, count: number): number[] {
 }
 
 /** Demo: linear vs geometric scale, with live tokens you can copy. */
-function scaleLab(host: HTMLElement) {
+function scaleLab(host: HTMLElement, ctx: DemoContext) {
   host.innerHTML = `
     <div class="scale-compare">
       <figure><figcaption>Linear: +4px each step</figcaption><div class="bars" data-kind="linear"></div></figure>
@@ -112,7 +113,7 @@ function scaleLab(host: HTMLElement) {
         const prev = vals[i - 1];
         const step = prev ? Math.round((v / prev - 1) * 100) : null;
         const weak = step !== null && step < 25;
-        return `<div class="bar-row${weak ? " is-weak" : ""}"><span class="bar" style="inline-size:${v}px"></span><span class="bar-val">${v}px${step !== null ? ` <small>+${step}%${weak ? " · hard to see" : ""}</small>` : ""}</span></div>`;
+        return `<div class="bar-row${weak ? " is-weak" : ""}"><span class="bar" style="inline-size:${v}px"></span><span class="bar-val">${v}px${step !== null ? ` <small>+${step}%${weak ? " · under Ada's 25%" : ""}</small>` : ""}</span></div>`;
       })
       .join("");
   let ratio = 1.5;
@@ -122,6 +123,7 @@ function scaleLab(host: HTMLElement) {
     const vals = scaleSteps(4, ratio, 7);
     ratioBars.innerHTML = bars(vals);
     out.textContent = `:root {\n${vals.map((v, i) => `  --space-${names[i]}: ${v / 16}rem; /* ${v}px */`).join("\n")}\n}`;
+    if (ratio >= 1.25) ctx.complete();
   };
   $(host, ".demo-controls-row").append(
     slider({
@@ -199,54 +201,139 @@ export const lesson: LessonSection[] = [
     id: "signal",
     title: "Space is a signal",
     body: `
-      <p>Before anyone reads a word on your page, their visual system has already sorted it into groups. Elements that sit close together are seen as belonging together. This is the Gestalt principle of <strong>proximity</strong>, and it is <em>pre-attentive</em>: it happens in the first fraction of a second, without effort or conscious thought.</p>
-      <p>That makes spacing information, and it is the first information anyone gets. On a page with even gaps the reader gets no grouping for free. They have to <em>read</em> to find the structure, which is slower and easier to get wrong.</p>
-      <p class="try">Drag the sliders. Set both gaps equal, then make “between” twice “inside”. Watch the moment the six lines snap into three dishes.</p>`,
+      <p>In 1923 Max Wertheimer drew a row of dots with gaps that alternated between 3mm and 12mm. It is normally seen as pairs, grouped across the small gaps. He called the effect <strong>proximity</strong>: elements that sit close together are seen as belonging together.</p>
+      <p>Grouping by proximity is fast. In lab tests it shows up within about a tenth of a second, sooner than grouping by shape, and some experiments find it shapes what people do even when their attention is elsewhere.</p>
+      <p>On a page with even gaps, proximity has nothing to work with. The reader has to read the words to find the structure.</p>
+      <p class="try">Set both gaps equal, then pull the dishes apart. Watch the six lines become three dishes.</p>`,
     demo: proximityDial,
+    gate: {
+      kind: "goal",
+      goal: "Make the gap between dishes at least 2× the gap inside a dish.",
+      note: "Each name now sits closer to its own description than to the next dish, so the eye pairs them before reading.",
+    },
+    sources: [
+      "Wertheimer 1923, Laws of organization in perceptual forms (Ellis 1938 translation)",
+      "Han, Song, Ding, Yund & Woods 2001, Neural substrates for visual perceptual grouping",
+      "Rashal, Yeshurun & Kimchi 2017, Attentional requirements in perceptual grouping",
+    ],
   },
   {
     id: "between-within",
     title: "Between > within",
     body: `
-      <p>Everything in this level comes back to one relationship: <strong>the space between groups must be clearly larger than the space inside them.</strong> “Clearly” means about <strong>2×</strong>. Below that, the difference sits close to the limit of what people notice at a glance.</p>
-      <p>The most common violation is the floating heading. With <code>margin: 24px 0</code> a heading sits exactly halfway between the previous section and its own content, so it belongs to neither. A heading should <em>hug</em> what it introduces: lots of space above, very little below.</p>`,
+      <p>Proximity can be measured. In dot-pattern experiments by Kubovy, Holcombe and Wagemans, what decides the grouping is the ratio between gaps, not their size in pixels. Once one gap is about 1.5 times the other, people almost never group across the larger one.</p>
+      <p>Pages are messier than dot patterns: lines of text have different lengths, and colour and borders compete with spacing. So the studio works with a safety margin. <strong>Ada's rule: the gap between groups is at least 2× the largest gap inside them.</strong></p>
+      <p>The common way to break it is the floating heading. With <code>margin: 24px 0</code> a heading sits exactly halfway between the previous section and its own content.</p>`,
     demo: headingHug,
+    gate: {
+      kind: "choice",
+      prompt:
+        "A heading has margin: 24px 0, with text above and below it. Which text does it group with?",
+      options: [
+        "Neither: it sits halfway between both",
+        "The text below it, because headings introduce what follows",
+        "The text above it, because it is read after that text",
+        "Both, which is what balanced margins are for",
+      ],
+      answer: 0,
+      note: "Equal gaps give proximity nothing to work with. Give the heading far more space above than below, such as margin: 40px 0 4px.",
+      why: [
+        "",
+        "That is what the heading is for, but the spacing doesn't say so. With equal gaps the eye has no reason to pair it with either side.",
+        "Reading order doesn't create grouping. The gaps are equal, so the heading is as close to the text above as to the text below.",
+        "Grouping with both sides at once is grouping with neither. The heading should hug what it introduces.",
+      ],
+    },
+    sources: [
+      "Kubovy, Holcombe & Wagemans 1998, On the lawfulness of grouping by proximity",
+      "Wagemans et al. 2012, A century of Gestalt psychology in visual perception I",
+    ],
   },
   {
     id: "ratios",
     title: "Scales are ratios, not steps",
     body: `
-      <p>Perception works in proportions. <strong>Weber's law</strong>: the smallest change we can notice is a roughly constant <em>fraction</em> of what's already there. Going from 4px to 8px is a huge jump (+100%). Going from 28px to 32px adds the same 4px but is nearly invisible (+14%).</p>
-      <p>A linear scale (4, 8, 12, 16, 20…) is therefore crowded at the top with steps nobody can tell apart. Each indistinguishable pair invites an arbitrary choice, and arbitrary choices are what make a page feel unconsidered. A <strong>ratio scale</strong> multiplies each step by about 1.5×, so every step looks as different from the last as every other step does.</p>
-      <p class="try">Compare the two columns. Then move the ratio slider: below about 1.25× the steps start blurring together again. Copy the tokens if you like the result.</p>`,
+      <p>We judge size by proportion. <strong>Weber's law</strong>: the smallest difference people can detect is a fixed fraction of the size being compared. For the length of a line that fraction is about 3 to 4%.</p>
+      <p>So 28px and 32px, 14% apart, can be told apart when you compare them side by side. Across a busy page, with the two gaps far apart, a 4px difference does not read as a deliberate step. A 4px step from 4px to 8px is a doubling.</p>
+      <p>A <strong>ratio scale</strong> multiplies each step by the same number, so every step is the same proportion larger than the last. Ada's rule: each step at least 25% above the one before, about 1.5× for spacing. Published design systems use ratios between about 1.25 and 2.</p>
+      <p class="try">Compare the two columns, then move the ratio. Copy the tokens if you like the result.</p>`,
     demo: scaleLab,
+    gate: {
+      kind: "goal",
+      goal: "Set a ratio where every step is at least 25% larger than the one before.",
+      note: "From 1.25 up, no two steps are close enough to be mistaken for each other on a page.",
+    },
+    sources: [
+      "Lubashevsky 2018, Psychophysical laws as reflection of mental space properties (Weber fractions)",
+      "Pickering & Bell, Every Layout: modular scale (practice)",
+      "IBM Carbon design system, spacing tokens (practice)",
+    ],
   },
   {
     id: "flat",
     title: "A grid is not a hierarchy",
     body: `
-      <p>An 8px grid keeps your numbers consistent, and that's useful. But consistency is not hierarchy. A page where everything is 24px apart is perfectly “on grid” and perfectly flat: every element is equally related to every other.</p>
-      <p>Hierarchy comes from <strong>contrast between spaces</strong>. Pull related things together and push unrelated things apart, and the layout starts telling the reader what goes with what.</p>`,
+      <p>An 8px grid keeps your numbers consistent. Material Design aligns components to one, and many teams use it. Consistency is not hierarchy, though. A page where everything is 24px apart is on the grid and flat: every element is as close to every other.</p>
+      <p>Hierarchy comes from <strong>differences between spaces</strong>. Pull related things together, push unrelated things apart, and the layout tells the reader what goes with what.</p>`,
     demo: flatVsTiered,
+    gate: {
+      kind: "choice",
+      prompt:
+        "Everything on a landing page is exactly 24px apart, on an 8px grid. The client says it looks like a template. What is missing?",
+      options: [
+        "Different gaps for different relationships: tight inside groups, wide between them",
+        "A stricter grid, such as 4px",
+        "More colour",
+        "A larger base font size",
+      ],
+      answer: 0,
+      note: "Equal gaps say every element is equally related. Varying the gaps is what creates groups.",
+      why: [
+        "",
+        "A finer grid makes the numbers more consistent. The gaps would still all be equal.",
+        "Colour can group things too, but the spacing would still say every element is equally related.",
+        "Type size changes the elements, not the relationships between them.",
+      ],
+    },
+    sources: ["Material Design, the 8dp grid (practice)"],
   },
   {
     id: "tiers",
     title: "Three tiers of space",
     body: `
-      <p>Proximity nests. A real page needs at least three distinct tiers:</p>
+      <p>Proximity nests. A real page needs at least three tiers:</p>
       <ol>
-        <li><strong>Inside a group</strong>: a title and its meta line. Tight: 4–8px.</li>
-        <li><strong>Between groups</strong>: one dish and the next. Medium: 16–24px.</li>
-        <li><strong>Between sections</strong>: Breads and Pastries. Generous: 40–64px or more.</li>
+        <li><strong>Inside a group</strong>: a title and its meta line. Tight: 4 to 8px.</li>
+        <li><strong>Between groups</strong>: one dish and the next. Medium: 16 to 24px.</li>
+        <li><strong>Between sections</strong>: Breads and Pastries. 40 to 64px or more.</li>
       </ol>
-      <p>Each tier should be clearly bigger than the one below it: aim for 1.5–2×. A corollary: <strong>inner ≤ outer</strong>. A card's padding shouldn't exceed the gap between cards, or each card's content ends up nearer its neighbour's edge than its own.</p>`,
+      <p>Ada's rule: each tier at least 1.5× the one below it. It follows that <strong>inner ≤ outer</strong>: a card's padding shouldn't exceed the gap between cards, or each card's content sits nearer its neighbour's edge than its own.</p>`,
     demo: tierHighlighter,
+    gate: {
+      kind: "choice",
+      prompt: "Pricing cards have 22px of padding and sit 6px apart. What happens?",
+      options: [
+        "The cards blur into one slab, because content is closer to the next card than to its own edge",
+        "Nothing: padding and gaps are unrelated",
+        "The cards look more spacious",
+        "Only the text size matters here",
+      ],
+      answer: 0,
+      note: "Inner ≤ outer. Widen the gap between cards to at least the padding inside them.",
+      why: [
+        "",
+        "Both are distances the eye compares. Padding is space inside a group, and the gap is space between groups.",
+        "Spacious inside, cramped between: the cards read as one block with lines through it.",
+        "Spacing decides the grouping here, whatever the text size.",
+      ],
+    },
+    sources: ["Wagemans et al. 2012", "IBM Carbon design system, spacing tokens (practice)"],
   },
   {
     id: "system",
     title: "Make it a system",
     body: `
-      <p>In code, that means deciding once and giving the decision a name. Declare a handful of tokens as custom properties, then use nothing else:</p>
+      <p>In code, decide once and give the decision a name. Declare a handful of tokens as custom properties, then use nothing else:</p>
       <pre class="code-block"><code>:root {
   --space-3xs: 0.25rem;  /*  4 */
   --space-2xs: 0.5rem;   /*  8 */
@@ -256,12 +343,32 @@ export const lesson: LessonSection[] = [
   --space-xl:  clamp(2.5rem, 1.5rem + 4vw, 4rem); /* fluid section space */
 }
 
-/* Groups: gap applies only BETWEEN items. No collapsing, no :last-child hacks. */
+/* Groups: gap applies only BETWEEN items. No collapsing, no :last-child fixes. */
 .menu-list { display: grid; gap: var(--space-m); }
 
 /* Headings hug what they introduce */
 h2 { margin: var(--space-xl) 0 var(--space-2xs); }</code></pre>
-      <p>Note the <code>clamp()</code> on the section tier. Plain <code>vw</code> spacing gets absurd at both extremes. <code>clamp()</code> lets space grow with the screen between a floor and a ceiling.</p>
-      <p>When you work on a client page, the judges ignore your intentions and <strong>measure the rendered page</strong>. They read the real gaps between groups, every distinct computed margin, padding and gap value, and whether your declarations use tokens.</p>`,
+      <p><code>gap</code> on a flex or grid container puts space between items only, and it never collapses the way vertical margins do. <code>clamp()</code> lets section space grow with the screen between a floor and a ceiling.</p>
+      <p>On a client page the judges measure the rendered page: the real gaps between groups, every distinct computed margin, padding and gap value, and whether your declarations use tokens.</p>`,
+    gate: {
+      kind: "choice",
+      prompt:
+        "Why is gap on a grid container usually better than margins on its children for spacing groups?",
+      options: [
+        "It applies only between items, so there are no :last-child fixes and no margin collapse",
+        "It renders faster",
+        "It accepts negative values",
+        "Margins are deprecated",
+      ],
+      answer: 0,
+      note: "gap describes a relationship between siblings, which is what proximity is about.",
+      why: [
+        "",
+        "Speed is not the reason. The difference is where the space goes: gap puts it only between items.",
+        "gap does not accept negative values. Margins do.",
+        "Margins are not deprecated. They are still the right tool for space outside a single element.",
+      ],
+    },
+    sources: ["W3C, CSS Box Alignment Module Level 3 (gap)", "W3C, CSS 2.2, collapsing margins"],
   },
 ];

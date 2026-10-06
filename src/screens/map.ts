@@ -5,7 +5,8 @@ import { BADGES } from "../state/badges";
 import { rankFor } from "../state/progress";
 import { store } from "../state/save";
 import { mark } from "../ui/marks";
-import { el, esc } from "../util/dom";
+import { sprite } from "../ui/sprite";
+import { $, el, esc } from "../util/dom";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -22,7 +23,7 @@ function deskRow(level: LevelDef): string {
         ? `Trial ${p.quizBest}/${p.quizTotal}`
         : "Lesson read";
   return `
-    <li class="desk" data-done="${bossStars.every((s) => s > 0)}">
+    <li class="desk" data-level="${level.id}" data-done="${bossStars.every((s) => s > 0)}">
       <a class="desk-link" href="#/level/${level.id}">
         <span class="desk-num" aria-hidden="true">${pad(level.num)}</span>
         <span class="desk-text">
@@ -47,7 +48,7 @@ export const mapScreen: Screen = (root) => {
       <header class="page-head">
         <p class="eyebrow">Studio floor${s.settings.hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
         <h1>Desks</h1>
-        <p class="lede">One principle per desk. Read the notes, pass the trial, then take the clients. Any client can be replayed for more stars.</p>
+        <p class="lede">One principle per desk: a lesson with checkpoints, a five-question trial, then three clients. Any client can be replayed for more stars.</p>
       </header>
       <dl class="ledger" aria-label="Your progress">
         <div><dt>Rank</dt><dd>${esc(rank.title)}</dd><dd class="ledger-note">${next ? `${next.min - s.xp} XP to ${esc(next.title)}` : "Top of the masthead"}</dd></div>
@@ -55,6 +56,8 @@ export const mapScreen: Screen = (root) => {
         <div><dt>Badges</dt><dd>${earned} of ${BADGES.length}</dd></div>
         <div><dt>Rule cards</dt><dd>${s.rules.length}</dd></div>
       </dl>
+      <div class="floor">
+      <div class="walker" aria-hidden="true"></div>
       <ol class="desk-list">
         ${LEVELS.map(deskRow).join("")}
         ${UPCOMING.map(
@@ -71,6 +74,31 @@ export const mapScreen: Screen = (root) => {
           </li>`,
         ).join("")}
       </ol>
+      </div>
     </div>`),
   );
+
+  // The sprite walks along the desks to whichever one is hovered or focused.
+  const floor = $(root, ".floor");
+  const walker = $(root, ".walker");
+  const buddy = sprite();
+  walker.append(buddy.el);
+  const desks = Array.from(floor.querySelectorAll<HTMLElement>(".desk"));
+  const current = desks.find((d) => d.dataset.level && d.dataset.done === "false") ?? desks[0];
+  const moveTo = (desk: HTMLElement, animate: boolean) => {
+    const y = desk.offsetTop + desk.offsetHeight / 2 - walker.offsetHeight / 2;
+    const from = Number(walker.dataset.y ?? y);
+    walker.dataset.y = String(y);
+    walker.style.translate = `0 ${y}px`;
+    if (animate && Math.abs(from - y) > 1) {
+      buddy.set("walk");
+      walker.dataset.facing = y < from ? "up" : "down";
+    }
+  };
+  walker.addEventListener("transitionend", () => buddy.set("idle"));
+  for (const d of desks) {
+    d.addEventListener("pointerenter", () => moveTo(d, true));
+    d.addEventListener("focusin", () => moveTo(d, true));
+  }
+  requestAnimationFrame(() => moveTo(current, false));
 };

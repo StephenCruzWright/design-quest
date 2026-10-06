@@ -15,6 +15,8 @@ export interface BossRecord {
 
 export interface LevelProgress {
   lessonDone: boolean;
+  /** Lesson pages whose gate has been passed, counted from the first. */
+  lessonPage: number;
   quizBest: number;
   quizTotal: number;
   /** Keyed by boss id; New Game+ runs use `${bossId}+`. */
@@ -32,6 +34,8 @@ export interface SaveData {
   /** In-progress CSS per boss, so a reload never loses work. */
   drafts: Record<string, string>;
   settings: { theme: "auto" | "light" | "dark"; hard: boolean; reducedMotion: boolean };
+  /** The player's sprite. An empty name means the picker hasn't run yet. */
+  player: { name: string; look: number };
   createdAt: string;
 }
 
@@ -47,12 +51,19 @@ export function freshSave(): SaveData {
     rules: [],
     drafts: {},
     settings: { theme: "auto", hard: false, reducedMotion: false },
+    player: { name: "", look: 0 },
     createdAt: new Date().toISOString(),
   };
 }
 
 export function emptyLevel(): LevelProgress {
-  return { lessonDone: false, quizBest: 0, quizTotal: 0, bosses: {} };
+  return { lessonDone: false, lessonPage: 0, quizBest: 0, quizTotal: 0, bosses: {} };
+}
+
+function normaliseLevel(raw: Partial<LevelProgress>): LevelProgress {
+  const lp = { ...emptyLevel(), ...raw };
+  lp.lessonPage = Number.isFinite(lp.lessonPage) ? Math.max(0, Math.floor(lp.lessonPage)) : 0;
+  return lp;
 }
 
 /** Fill in any fields missing from an older or hand-edited save. */
@@ -65,11 +76,14 @@ export function normalise(raw: unknown): SaveData {
     ...r,
     v: 1,
     xp: Number.isFinite(r.xp) ? Number(r.xp) : 0,
-    levels: { ...(r.levels ?? {}) },
+    levels: Object.fromEntries(
+      Object.entries(r.levels ?? {}).map(([id, lp]) => [id, normaliseLevel(lp)]),
+    ),
     badges: { ...(r.badges ?? {}) },
     rules: Array.isArray(r.rules) ? r.rules : [],
     drafts: { ...(r.drafts ?? {}) },
     settings: { ...base.settings, ...(r.settings ?? {}) },
+    player: { ...base.player, ...(r.player ?? {}) },
   };
 }
 

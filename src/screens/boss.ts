@@ -8,10 +8,13 @@ import { go } from "../router";
 import { bossXp, improvement } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
+import { adaHtml } from "../ui/ada";
 import { toggleGroup } from "../ui/controls";
 import { cssEditor, htmlViewer, setEditorText } from "../ui/editor";
+import { beat, centreOf, confetti, countUp, stamp } from "../ui/fx";
 import { renderJudgePanel } from "../ui/judge-panel";
 import { confirmModal, openModal } from "../ui/modal";
+import { type Sprite, sprite } from "../ui/sprite";
 import { starsHtml } from "../ui/stars";
 import { $, debounce, el, esc, formatTime } from "../util/dom";
 import { notFound } from "./not-found";
@@ -76,8 +79,10 @@ function showResults(opts: {
   seconds: number;
   hints: number;
   results: CheckResult[];
+  /** True when this submit shipped the desk's last unshipped client. */
+  deskCleared: boolean;
 }) {
-  const { level, boss, stars, prevStars, xp, seconds, hints, results } = opts;
+  const { level, boss, stars, prevStars, xp, seconds, hints, results, deskCleared } = opts;
   const idx = level.bosses.indexOf(boss);
   const next = level.bosses[(idx + 1) % level.bosses.length];
   const passed = results.filter((r) => r.pass).length;
@@ -86,20 +91,25 @@ function showResults(opts: {
       ? "Three stars. The client wants to frame your stylesheet."
       : stars === 2
         ? "Client is happy. One bonus check left on the table."
-        : "Shipped! The core problem is fixed. Bonus checks would earn more stars.",
+        : "Shipped. Every must-pass check is green. Each bonus check adds a star.",
   ];
   const body = el(`
     <div class="results">
       <div class="results-stars">${starsHtml(stars, 3, "l")}</div>
       <p class="results-line">${esc(lines[0])}</p>
       <dl class="results-stats">
-        <div><dt>XP</dt><dd>${xp > 0 ? `+${xp}` : stars <= prevStars ? `No new XP (best was ${prevStars}★)` : "+0"}</dd></div>
+        <div><dt>XP</dt><dd class="results-xp">${xp > 0 ? `+${xp}` : stars <= prevStars ? `No new XP (best was ${prevStars}★)` : "+0"}</dd></div>
         <div><dt>Time</dt><dd>${formatTime(seconds)}</dd></div>
         <div><dt>Hints</dt><dd>${hints}</dd></div>
         <div><dt>Checks</dt><dd>${passed}/${results.length}</dd></div>
       </dl>
+      ${
+        deskCleared
+          ? `<figure class="clue">${adaHtml("eyebrow")}<div><p class="eyebrow">All three clients shipped</p><h3>${esc(level.clue.title)}</h3><p>${esc(level.clue.body)}</p></div></figure>`
+          : ""
+      }
     </div>`);
-  openModal({
+  const modal = openModal({
     title: `${boss.client}: job done`,
     body,
     actions: [
@@ -120,6 +130,13 @@ function showResults(opts: {
         },
       },
     ],
+  });
+  const xpEl = body.querySelector<HTMLElement>(".results-xp");
+  if (xpEl && xp > 0) countUp(xpEl, xp, { format: (n) => `+${n}` });
+  // Confetti once the last star has landed (the stars stamp in 180ms apart).
+  beat(200 + stars * 180).then(() => {
+    if (stars > 0 && modal.root.open)
+      confetti(centreOf(body.querySelector(".results-stars") ?? body));
   });
 }
 
@@ -158,6 +175,11 @@ export const bossScreen: Screen = (root, params) => {
           <h1>${esc(boss.client)}</h1>
           <p>${esc(boss.tagline)}${hard ? ' · <span class="ngplus">New Game+</span>' : ""}</p>
         </div>
+        <div class="problems" aria-live="polite">
+          <span class="problems-label">Client problems</span>
+          <span class="problems-bar" aria-hidden="true"></span>
+          <span class="problems-count"></span>
+        </div>
         <span class="boss-timer" aria-label="Time on this job">0:00</span>
         <span class="boss-stars"></span>
         <button class="btn btn-primary" data-act="submit" disabled title="Ctrl+Enter">Submit fix</button>
@@ -186,6 +208,7 @@ export const bossScreen: Screen = (root, params) => {
         </section>
         <section class="boss-judges" aria-label="Judges">
           <h2 class="visually-hidden">Judges</h2>
+          <div class="boss-buddy"></div>
           <div class="judge-panel" aria-live="polite"><p class="loading">Loading the client's site…</p></div>
         </section>
       </div>
@@ -198,6 +221,11 @@ export const bossScreen: Screen = (root, params) => {
   const panel = q(".judge-panel");
   const afterHost = q('[data-view="after"]');
   const beforeHost = q('[data-view="before"]');
+  const problemsBar = q(".problems-bar");
+  const problemsCount = q(".problems-count");
+  const buddy: Sprite = sprite();
+  q(".boss-buddy").append(buddy.el);
+  let lastFailing = -1;
 
   q(".preview-bar").prepend(
     toggleGroup({
@@ -222,6 +250,23 @@ export const bossScreen: Screen = (root, params) => {
     const stars = starsFor(results);
     starsEl.innerHTML = starsHtml(stars);
     submitBtn.disabled = stars === 0;
+    renderProblems();
+  };
+  const renderProblems = () => {
+    const core = results.filter((r) => r.kind === "core");
+    const failing = core.filter((r) => !r.pass).length;
+    problemsBar.innerHTML = core.map((r) => `<span data-fixed="${r.pass}"></span>`).join("");
+    problemsCount.textContent = failing === 0 ? "None left" : `${failing} of ${core.length} left`;
+    if (lastFailing >= 0 && failing !== lastFailing) {
+      if (failing === 0) {
+        stamp(q(".problems"), "Ship it", "ship");
+        buddy.set("cheer", 1400);
+      } else if (failing < lastFailing) buddy.set("cheer", 1000);
+      else buddy.set("wince", 900);
+    }
+    if (failing > 0) q(".problems").querySelector(":scope > .stamp")?.remove();
+    else buddy.rest("idle");
+    lastFailing = failing;
   };
   const judgeSoon = debounce(judge, 250);
   const saveDraft = debounce(() => {
@@ -279,6 +324,11 @@ export const bossScreen: Screen = (root, params) => {
     const prevStars = prev?.stars ?? 0;
     const xp = improvement(bossXp(prevStars, hard), bossXp(stars, hard));
     const bonuses = results.filter((r) => r.kind === "bonus" && r.pass).map((r) => r.id);
+    const shippedAll = () =>
+      level.bosses.every(
+        (b) => (store.level(level.id).bosses[hard ? `${b.id}+` : b.id]?.stars ?? 0) > 0,
+      );
+    const wasCleared = shippedAll();
     commit(
       (s) => {
         s.levels[level.id] ??= emptyLevel();
@@ -298,7 +348,17 @@ export const bossScreen: Screen = (root, params) => {
       xp,
       `${boss.client}: ${stars}★`,
     );
-    showResults({ level, boss, stars, prevStars, xp, seconds, hints: hintsUsed, results });
+    showResults({
+      level,
+      boss,
+      stars,
+      prevStars,
+      xp,
+      seconds,
+      hints: hintsUsed,
+      results,
+      deskCleared: !hard && !wasCleared && shippedAll(),
+    });
   };
   submitBtn.addEventListener("click", submit);
   const onKey = (e: KeyboardEvent) => {
@@ -313,6 +373,8 @@ export const bossScreen: Screen = (root, params) => {
     if (document.visibilityState !== "visible" || document.querySelector("dialog[open]")) return;
     seconds++;
     q(".boss-timer").textContent = formatTime(seconds);
+    // Past four minutes with problems left, the new hire starts to sweat.
+    if (seconds === 240 && lastFailing > 0) buddy.rest("sweat");
   }, 1000);
 
   (async () => {
@@ -323,6 +385,7 @@ export const bossScreen: Screen = (root, params) => {
     if (disposed) return;
     editor = cssEditor(q('[data-pane="css"]'), startCss, (text) => {
       css = text;
+      buddy.set("think", 1200);
       judgeSoon();
       saveDraft();
     });

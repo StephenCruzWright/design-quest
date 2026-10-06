@@ -4,6 +4,8 @@ import type { Screen } from "../router";
 import { improvement, quizXp } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
+import { centreOf, confetti, shake, stamp } from "../ui/fx";
+import { type Sprite, sprite } from "../ui/sprite";
 import { $, el, esc } from "../util/dom";
 import { notFound } from "./not-found";
 
@@ -32,7 +34,11 @@ export const trialScreen: Screen = (root, { id }) => {
       <a class="back" href="#/level/${level.id}">← ${esc(level.title)}</a>
       <div class="trial-meter" aria-hidden="true"></div>
       <article class="trial-card">
-        <p class="eyebrow trial-count"></p>
+        <div class="trial-head">
+          <p class="eyebrow trial-count"></p>
+          <p class="streak" aria-live="polite"></p>
+          <div class="trial-buddy"></div>
+        </div>
         <h1 class="trial-prompt"></h1>
         <div class="trial-visual"></div>
         <div class="trial-options" role="group" aria-label="Answers"></div>
@@ -49,6 +55,14 @@ export const trialScreen: Screen = (root, { id }) => {
   const options = $<HTMLElement>(shell, ".trial-options");
   const feedback = $<HTMLElement>(shell, ".trial-feedback");
   const nextBtn = $<HTMLButtonElement>(shell, '[data-act="next"]');
+  const streakEl = $<HTMLElement>(shell, ".streak");
+  const buddy: Sprite = sprite({ size: "s" });
+  $(shell, ".trial-buddy").append(buddy.el);
+  let streak = 0;
+  const renderStreak = () => {
+    streakEl.textContent = streak >= 2 ? `Streak ${streak}` : "";
+    streakEl.dataset.hot = String(streak >= 3);
+  };
 
   const renderMeter = (results: boolean[]) => {
     meter.innerHTML = questions
@@ -88,11 +102,22 @@ export const trialScreen: Screen = (root, { id }) => {
     if (right) correct++;
     results.push(right);
     renderMeter(results);
-    options.querySelectorAll<HTMLButtonElement>(".option").forEach((b, j) => {
+    const buttons = options.querySelectorAll<HTMLButtonElement>(".option");
+    buttons.forEach((b, j) => {
       b.disabled = true;
       if (j === q.answer) b.dataset.state = "right";
       else if (j === i) b.dataset.state = "wrong";
     });
+    if (right) {
+      streak++;
+      stamp(buttons[i], "✓", "good");
+      buddy.set("cheer", 1000);
+    } else {
+      streak = 0;
+      shake(buttons[i]);
+      buddy.set("wince", 900);
+    }
+    renderStreak();
     feedback.innerHTML = `<p class="verdict" data-right="${right}"><strong>${right ? "✓ Correct." : `✗ Not quite. The answer is ${LETTERS[q.answer]}.`}</strong> ${esc(q.note)}</p>`;
     nextBtn.hidden = false;
     nextBtn.textContent = index === questions.length - 1 ? "See results →" : "Next →";
@@ -119,8 +144,8 @@ export const trialScreen: Screen = (root, { id }) => {
     const verdict = perfect
       ? "Flawless. Ada raises an eyebrow, which from her is a standing ovation."
       : correct >= 3
-        ? "Solid. You are ready for clients."
-        : "Clients are waiting anyway. Rereading the rule cards first might help.";
+        ? "The clients are waiting at your desk."
+        : "The clients open at any score. Every question in this pool is covered by a rule card in your Field Guide.";
     shell.replaceChildren(
       el(`
       <div class="trial-done">
@@ -140,6 +165,7 @@ export const trialScreen: Screen = (root, { id }) => {
     });
     $<HTMLElement>(shell, "h1").setAttribute("tabindex", "-1");
     $<HTMLElement>(shell, "h1").focus();
+    if (perfect) confetti(centreOf($(shell, "h1")));
   };
 
   options.addEventListener("click", (e) => {

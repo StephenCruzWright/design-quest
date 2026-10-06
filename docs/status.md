@@ -4,7 +4,6 @@ Unfinished work only. Delete an entry when it ships.
 
 ## Next milestones
 
-- **2a**: lesson gates (`LessonSection.gate`, saved `lessonPage`), the `intact` check on every level, bonus checks locked while a core check fails, the player sprite with a name and look picker, Ada's portrait, the client problems bar, stamps, confetti, XP ticker, trial streak, promotion card. Level 1 rewritten to the copy standard with gates, sources and Lorem & Ipsum footers. Level 2, Visual hierarchy, with `measure/type.ts`, `measure/color.ts` and `judges/hierarchy.ts`.
 - **2b**: level 3, Colour and OKLCH.
 - **2c**: level 4, Typography.
 - **Levels 5 to 7 and the final client**: puzzle clients (`BossDef.kind: "puzzle"`), alignment and grid checks, Lorem & Ipsum's site.
@@ -15,12 +14,10 @@ Unfinished work only. Delete an entry when it ships.
 
 ## Known gaps
 
-- The production bundle is about 580 KB of JavaScript (about 200 KB gzipped), mostly CodeMirror. Lazy-load the editor on the challenge screen.
-- `culori` is installed for the colour checks and not used yet.
-- The Spacing tiers bonus passes on the original bakery and blog pages, and its detail reads as praise on a broken page.
-- Badges are all tied to the spacing level.
+- The production bundle is about 670 KB of JavaScript (about 230 KB gzipped), mostly CodeMirror. Lazy-load the editor on the challenge screen.
 - Rank thresholds (Creative Director at 4500 XP) are sized for about five levels, not eight.
-- Level 1 lesson copy states contested claims as fact: proximity grouping as pre-attentive, and "28px vs 32px looks the same".
 - The Unassisted (no hints) and Quick Study (under five minutes) badges reward avoiding help and rushing. `research/game-design.md` argues both work against productive struggle. The owner decides whether to replace them.
+- Hint 3 on most clients spells out the fix. `research/learning-science.md` finds hints that end in the answer teach least; consider a last hint that names the property and leaves the value to the player.
+- Choice gates are multiple choice. The learning-science review finds that answers the player produces (typing a value, dragging a demo) roughly double the benefit; more goal gates would follow it.
 - No sound yet.
 - No `docs/post-mortem.md` until the project ends.

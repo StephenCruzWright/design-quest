@@ -1,6 +1,10 @@
+import { adaHtml } from "../ui/ada";
+import { centreOf, confetti } from "../ui/fx";
+import { openModal } from "../ui/modal";
 import { toast } from "../ui/toast";
+import { esc } from "../util/dom";
 import { newlyEarned } from "./badges";
-import { rankFor } from "./progress";
+import { type Rank, rankFor } from "./progress";
 import { type SaveData, store } from "./save";
 
 export const BADGE_XP = 50;
@@ -31,13 +35,24 @@ export function commit(mutate: (s: SaveData) => void, xp: number, reason: string
   });
   if (xp > 0) toast({ tone: "xp", mark: "star", title: `+${xp} XP`, body: reason });
   const after = rankFor(store.get().xp).rank;
-  if (after.title !== before.title) {
-    toast({
-      tone: "badge",
-      mark: "up",
-      title: `Promoted: ${after.title}`,
-      body: "Ada nods approvingly at your desk.",
-    });
-  }
+  if (after.title !== before.title) whenNoDialog(() => promotionCard(after));
   return gained;
+}
+
+/** Run `fn` once no dialog is open, so a promotion never hides a result. */
+function whenNoDialog(fn: () => void): void {
+  const attempt = () => {
+    if (document.querySelector("dialog[open]")) window.setTimeout(attempt, 300);
+    else fn();
+  };
+  window.setTimeout(attempt, 0);
+}
+
+function promotionCard(rank: Rank): void {
+  const { root } = openModal({
+    title: `Promoted: ${rank.title}`,
+    body: `<figure class="promotion">${adaHtml("nod", "l")}<blockquote>${esc(rank.note)}</blockquote><figcaption>Ada Kern, studio lead</figcaption></figure>`,
+    actions: [{ label: "Back to work", onClick: (close) => close() }],
+  });
+  confetti(centreOf(root));
 }
