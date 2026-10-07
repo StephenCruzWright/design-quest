@@ -2546,6 +2546,120 @@ a.desk-link:hover .desk-title {
   white-space: nowrap;
 }
 
+/* ── Level 3 demos ─────────────────────────────────────────────────────── */
+
+.floor-stage,
+.accent-stage,
+.cue-stage,
+.link-stage {
+  display: grid;
+  gap: var(--space-2xs);
+  font-family: system-ui, sans-serif;
+}
+.floor-head {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: oklch(25% 0.02 185);
+}
+.floor-hint {
+  font-size: 0.9rem;
+}
+.overlay-stage {
+  padding: var(--space-l) var(--space-m);
+}
+.overlay-card {
+  max-inline-size: 18rem;
+  padding: var(--space-s);
+  border-radius: var(--radius-m);
+  font-family: system-ui, sans-serif;
+}
+.hue-stage {
+  display: grid;
+  gap: var(--space-m);
+  font-family: system-ui, sans-serif;
+}
+.hue-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2xs) var(--space-s);
+  align-items: center;
+}
+.hue-row figcaption {
+  grid-column: 1 / -1;
+  font-size: var(--step--1);
+}
+.hue-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  block-size: 2rem;
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+.hue-chip,
+.accent-btn {
+  justify-self: start;
+  padding: var(--space-2xs) var(--space-s);
+  border-radius: var(--radius-s);
+  font-weight: 600;
+  color: oklch(100% 0 0);
+}
+.accent-code {
+  font-family: var(--font-code);
+  font-size: var(--step--1);
+}
+.cue-stage {
+  gap: var(--space-s);
+}
+.cue-stage[data-grey="true"],
+.link-stage[data-grey="true"] {
+  filter: grayscale(1);
+}
+.cue-field {
+  display: grid;
+  gap: var(--space-3xs);
+  max-inline-size: 18rem;
+  font-size: 0.9rem;
+}
+.cue-box {
+  min-block-size: 2.25rem;
+  padding: var(--space-2xs);
+  border: 2px solid oklch(58% 0.015 200);
+  border-radius: var(--radius-s);
+  background: oklch(100% 0 0);
+}
+.cue-field[data-error] .cue-box {
+  border-color: oklch(56% 0.17 27);
+}
+.cue-stage[data-border="true"] .cue-field[data-error] .cue-box {
+  border-width: 4px;
+}
+.cue-msg {
+  font-size: 0.85rem;
+  color: oklch(45% 0.015 200);
+}
+.cue-field[data-error] .cue-msg {
+  color: oklch(48% 0.18 27);
+}
+.cue-stage[data-word="true"] .cue-field[data-error] .cue-msg::before {
+  content: "Missing: ";
+  font-weight: 700;
+}
+.link-stage p {
+  max-inline-size: 30rem;
+  font-family: Georgia, serif;
+  line-height: 1.6;
+  color: oklch(26% 0.012 60);
+}
+.link-stage a {
+  color: oklch(45% 0.09 150);
+  text-decoration: none;
+}
+.link-stage[data-style="underline"] a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 /* Beside lesson text the sprite stands still until the player answers:
    decoration next to reading material lowers learning (research/learning-science.md). */
 .gate .sprite[data-state="idle"] .sp-fig,

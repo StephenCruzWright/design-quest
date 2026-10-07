@@ -1,0 +1,95 @@
+/* Saltmarsh Pottery: class schedule */
+body {
+  margin: 0;
+  font-family: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #5c5047;
+  background: #fbf6ee;
+}
+
+.top {
+  padding: 24px 32px 8px;
+  text-align: center;
+}
+.logo {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #d9a184;
+}
+.tag {
+  margin: 4px 0 0;
+  color: #b5aa9c;
+}
+
+.schedule {
+  padding: 24px 32px 40px;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  line-height: 1.2;
+  color: #3f352e;
+}
+.intro {
+  max-width: 34em;
+  margin: 0 0 24px;
+}
+.intro a {
+  color: #c98a6b;
+}
+
+.classes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.class {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+.class h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  line-height: 1.25;
+  color: #3f352e;
+}
+.class p {
+  margin: 0 0 16px;
+}
+.class .when {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #b5aa9c;
+}
+.book {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+}
+.wheel .book {
+  background: #e8836b;
+}
+.glaze .book {
+  background: #6bbf8a;
+}
+.hand .book {
+  background: #8f86d9;
+}
+.sold-out .book {
+  background: #d7c9bd;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #8a7f75;
+  text-align: center;
+}

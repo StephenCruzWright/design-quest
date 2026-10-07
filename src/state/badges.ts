@@ -92,6 +92,27 @@ export const BADGES: BadgeDef[] = [
     earned: (s) => shippedIn(s, "hierarchy") >= 3,
   },
   {
+    id: "clear-signal",
+    name: "Clear Signal",
+    description: "Ship a colour fix that reads without relying on colour.",
+    mark: "contrast",
+    earned: (s) => winsIn(s, "color").length > 0,
+  },
+  {
+    id: "perceptual",
+    name: "Perceptual",
+    description: "Ship a fix whose colours come from oklch() custom properties.",
+    mark: "swatch",
+    earned: (s) => allBossRecords(s).some((r) => r.bonuses.includes("oklch")),
+  },
+  {
+    id: "full-spectrum",
+    name: "Full Spectrum",
+    description: "Ship work for all three colour clients.",
+    mark: "drop",
+    earned: (s) => shippedIn(s, "color") >= 3,
+  },
+  {
     id: "unassisted",
     name: "Unassisted",
     description: "Beat a client without opening a single hint.",

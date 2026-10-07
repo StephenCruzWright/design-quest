@@ -1,0 +1,97 @@
+/* Fenwick Library: reference fix. Links underlined, the current page marked in shape. */
+:root {
+  --paper: oklch(97% 0.008 85);
+  --card: oklch(100% 0 0);
+  --ink: oklch(26% 0.012 60);
+  --muted: oklch(47% 0.015 60);
+  --rule: oklch(87% 0.015 85);
+  --green: oklch(45% 0.09 150);
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+}
+a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--rule);
+}
+.logo {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+}
+.tab {
+  padding: 6px 12px;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.tab.current {
+  color: var(--green);
+  font-weight: 700;
+  border-bottom-color: var(--green);
+}
+
+.page {
+  padding: 40px 32px;
+}
+h1 {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+.intro {
+  max-width: 36em;
+  margin: 0 0 32px;
+}
+
+.events {
+  display: grid;
+  gap: 24px;
+}
+.event {
+  padding: 20px 24px;
+  background: var(--card);
+  border-left: 4px solid var(--green);
+}
+.when {
+  margin: 0 0 4px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+}
+h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+.event p:last-child {
+  margin: 0;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+}

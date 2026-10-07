@@ -1,0 +1,83 @@
+/* Fenwick Library: events page */
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #2b2622;
+  background: #f7f4ee;
+}
+a {
+  color: #2f6b45;
+  text-decoration: none;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  border-bottom: 1px solid #d8d1c4;
+}
+.logo {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+}
+.tab {
+  padding: 6px 12px;
+  color: #5b5249;
+}
+.tab.current {
+  color: #2f6b45;
+}
+
+.page {
+  padding: 40px 32px;
+}
+h1 {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+.intro {
+  max-width: 36em;
+  margin: 0 0 32px;
+}
+
+.events {
+  display: grid;
+  gap: 24px;
+}
+.event {
+  padding: 20px 24px;
+  background: #ffffff;
+  border-left: 4px solid #2f6b45;
+}
+.when {
+  margin: 0 0 4px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: #6b6157;
+}
+h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+.event p:last-child {
+  margin: 0;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #6b6157;
+  border-top: 1px solid #d8d1c4;
+}
