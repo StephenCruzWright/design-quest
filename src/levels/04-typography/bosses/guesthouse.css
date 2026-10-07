@@ -1,0 +1,85 @@
+/* The Gull's Rest: home page */
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #23313a;
+  background: #f4f7f8;
+}
+
+.top {
+  padding: 24px 32px 16px;
+  text-align: center;
+  background: #ffffff;
+  border-bottom: 1px solid #d5dee2;
+}
+.logo {
+  margin: 0;
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 40px;
+  line-height: 1.1;
+  color: #1d5c7a;
+}
+.tag {
+  margin: 4px 0 0;
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 20px;
+  color: #4a5a63;
+}
+
+.page {
+  padding: 32px;
+}
+h1 {
+  margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  line-height: 1.2;
+}
+.about {
+  max-width: 520px;
+}
+.about p {
+  margin: 0 0 16px;
+}
+
+.rooms {
+  margin-top: 32px;
+}
+h2 {
+  margin: 0 0 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.room-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.room {
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #d5dee2;
+}
+h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+.price {
+  margin: 0 0 8px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 15px;
+  color: #1d5c7a;
+}
+.room p {
+  margin-top: 0;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #4a5a63;
+}

@@ -22,6 +22,7 @@ Shared modules:
 - `measure/type.ts` collects every element with its own text: computed font-size, weight, heading level, character count and contrast. Levels 2 and 4 use it.
 - `measure/color.ts` parses computed colours with culori (`culori/fn`, only the modes a computed value can arrive in) and computes the WCAG 2.x contrast ratio against the effective background: every ancestor's background colour composited over white. Background images are ignored. Its `measureColor` feeds level 3: each `data-dq-state` element compared with its peer element by element (non-colour cues such as border width and style, weight, size, decoration, box-shadow geometry and `::before`/`::after` content, with small differences ignored), links inside running text and whether they are underlined, and every painted colour in OKLCH. The level's contrast check reuses `measure/type.ts`.
 - `judges/css.ts` reads the player's stylesheet as text: declarations, custom properties, `var()` resolution and the colours written in a value (`colourValues`). Checks about how CSS is written (tokens, `clamp()`, `oklch()` palettes) use it.
+- `measure/typography.ts` reads level 4: the paragraphs inside `data-dq-prose` with their rendered line boxes (merged by row from a DOM `Range`, the last short line counted as a fraction), the used line height (measured from the lines when it computes to `normal`) and the gap to the next paragraph; every heading's leading; and the first family in each text element's `font-family` stack, with `code` and `pre` exempt. The lesson demos reuse `lineBoxes` and `fullLines`, so a demo counts characters per line the same way the check does.
 - `judges/integrity.ts` with `measure/integrity.ts` is the `intact` core check every level runs first. Every element outside `data-dq-ignore` that carries its own text must have rendered line boxes (read with a DOM `Range`, so off-screen text indents fail), be at least 12px, sit inside the 760px page, and keep an opacity chain and text colour alpha of at least 0.6.
 
 ## Data attributes on client pages
@@ -37,6 +38,7 @@ Client HTML marks its structure so measurement knows what the designer meant:
 | `data-dq-quiet` | secondary text | Level 2: dates, captions and categories that should step back |
 | `data-dq-state="Label"` | one element | Level 3: an element in a state (an error, the current page, sold out) |
 | `data-dq-peer="Label"` | one element | Level 3: an element of the same kind and structure, not in that state. The labels pair them |
+| `data-dq-prose` | a block of running text | Level 4: its paragraphs are the body text the measure, leading and rhythm checks read |
 | `data-dq-ignore` | any element | Excluded from measurement. Every client footer carries the Lorem & Ipsum credit with it |
 
 Inside a group, children that sit side by side (vertical overlap) are skipped, because a name and a price on one line is a layout choice, not a grouping signal. Between groups, the gap is vertical if the boxes are stacked and horizontal if they sit side by side.
@@ -78,6 +80,7 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 - `src/ui/sprite.ts`: the player sprite. `sprite()` returns `{ el, set(state, holdMs?), rest(state) }`; a pose is a `data-state` attribute and the CSS in `app.css` animates transforms only. `LOOKS` holds the four looks.
 - `src/ui/ada.ts`: Ada's portrait, with `data-expr` of neutral, eyebrow or nod.
 - `src/ui/fx.ts`: `stamp`, `shake`, `countUp`, `confetti` and `beat`. Each checks `prefersReducedMotion()` or relies on the global reduced-motion override in `base.css`.
+- That override sets `transition-duration: 1ms` on every element, and the default `transition-property` is `all`, so under reduced motion any style change becomes a 1ms transition. A demo that reads layout straight after changing a style sets `transition-property: none` on what it measures, as the level 4 demos do.
 - Promotions open a card from `src/state/rewards.ts` once no other dialog is open.
 
 ## Tests
