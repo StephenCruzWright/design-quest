@@ -1,0 +1,106 @@
+/* Saltmarsh Pottery: reference fix. One clay accent, darker text, sold out said in words. */
+:root {
+  --paper: oklch(97.5% 0.012 75);
+  --card: oklch(100% 0 0);
+  --ink: oklch(30% 0.02 50);
+  --body: oklch(40% 0.02 50);
+  --muted: oklch(48% 0.02 60);
+  --clay: oklch(50% 0.13 40);
+  --clay-ink: oklch(99% 0.005 75);
+  --stone: oklch(88% 0.01 60);
+}
+
+body {
+  margin: 0;
+  font-family: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--body);
+  background: var(--paper);
+}
+
+.top {
+  padding: 24px 32px 8px;
+  text-align: center;
+}
+.logo {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--clay);
+}
+.tag {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.schedule {
+  padding: 24px 32px 40px;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.intro {
+  max-width: 34em;
+  margin: 0 0 24px;
+}
+.intro a {
+  color: var(--clay);
+}
+
+.classes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.class {
+  padding: 20px;
+  background: var(--card);
+  border-radius: 12px;
+}
+.class h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.class p {
+  margin: 0 0 16px;
+}
+.class .when {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.book {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--clay-ink);
+  background: var(--clay);
+  text-decoration: none;
+}
+
+/* Sold out reads in words and shape, not only in a paler button. */
+.sold-out .book {
+  color: var(--ink);
+  background: var(--stone);
+  text-decoration: line-through;
+}
+.sold-out h2::after {
+  content: " (full)";
+  font-weight: 400;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}

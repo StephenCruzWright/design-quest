@@ -20,8 +20,8 @@ Keep that split. A new principle gets a `measure/<topic>.ts` and a `judges/<topi
 Shared modules:
 
 - `measure/type.ts` collects every element with its own text: computed font-size, weight, heading level, character count and contrast. Levels 2 and 4 use it.
-- `measure/color.ts` parses computed colours with culori (`culori/fn`, only the modes a computed value can arrive in) and computes the WCAG 2.x contrast ratio against the effective background: every ancestor's background colour composited over white. Background images are ignored.
-- `judges/css.ts` reads the player's stylesheet as text: declarations, custom properties and `var()` resolution. Checks about how CSS is written (tokens, `clamp()`) use it.
+- `measure/color.ts` parses computed colours with culori (`culori/fn`, only the modes a computed value can arrive in) and computes the WCAG 2.x contrast ratio against the effective background: every ancestor's background colour composited over white. Background images are ignored. Its `measureColor` feeds level 3: each `data-dq-state` element compared with its peer element by element (non-colour cues such as border width and style, weight, size, decoration, box-shadow geometry and `::before`/`::after` content, with small differences ignored), links inside running text and whether they are underlined, and every painted colour in OKLCH. The level's contrast check reuses `measure/type.ts`.
+- `judges/css.ts` reads the player's stylesheet as text: declarations, custom properties, `var()` resolution and the colours written in a value (`colourValues`). Checks about how CSS is written (tokens, `clamp()`, `oklch()` palettes) use it.
 - `judges/integrity.ts` with `measure/integrity.ts` is the `intact` core check every level runs first. Every element outside `data-dq-ignore` that carries its own text must have rendered line boxes (read with a DOM `Range`, so off-screen text indents fail), be at least 12px, sit inside the 760px page, and keep an opacity chain and text colour alpha of at least 0.6.
 
 ## Data attributes on client pages
@@ -35,6 +35,8 @@ Client HTML marks its structure so measurement knows what the designer meant:
 | `data-dq-group` | children of a stack | One group. Gaps between its stacked children are "within" gaps |
 | `data-dq-focus="Label"` | one element | Level 2: the thing the client needs seen first |
 | `data-dq-quiet` | secondary text | Level 2: dates, captions and categories that should step back |
+| `data-dq-state="Label"` | one element | Level 3: an element in a state (an error, the current page, sold out) |
+| `data-dq-peer="Label"` | one element | Level 3: an element of the same kind and structure, not in that state. The labels pair them |
 | `data-dq-ignore` | any element | Excluded from measurement. Every client footer carries the Lorem & Ipsum credit with it |
 
 Inside a group, children that sit side by side (vertical overlap) are skipped, because a name and a price on one line is a layout choice, not a grouping signal. Between groups, the gap is vertical if the boxes are stacked and horizontal if they sit side by side.

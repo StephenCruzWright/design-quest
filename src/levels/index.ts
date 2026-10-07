@@ -1,18 +1,12 @@
 import { spacingLevel } from "./01-spacing";
 import { hierarchyLevel } from "./02-hierarchy";
+import { colorLevel } from "./03-color";
 import type { LevelDef, LockedLevel } from "./types";
 
-export const LEVELS: LevelDef[] = [spacingLevel, hierarchyLevel];
+export const LEVELS: LevelDef[] = [spacingLevel, hierarchyLevel, colorLevel];
 
 /** Levels still in production, shown on the map so players see the road ahead. */
 export const UPCOMING: LockedLevel[] = [
-  {
-    id: "color",
-    num: 3,
-    title: "Colour & OKLCH",
-    subtitle: "Lightness, chroma, hue: palettes that pass contrast",
-    locked: true,
-  },
   {
     id: "typography",
     num: 4,

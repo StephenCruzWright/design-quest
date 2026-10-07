@@ -1,0 +1,110 @@
+/* Alder Street Dental: reference fix. One teal for the brand, one red for errors. */
+:root {
+  --paper: oklch(100% 0 0);
+  --ink: oklch(25% 0.02 185);
+  --muted: oklch(46% 0.015 185);
+  --line: oklch(58% 0.015 185);
+  --rule: oklch(90% 0.01 185);
+  --brand: oklch(42% 0.08 185);
+  --brand-pale: oklch(94% 0.03 185);
+  --error: oklch(48% 0.18 27);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 32px;
+  background: var(--brand);
+}
+.logo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--paper);
+}
+.phone {
+  margin: 0;
+  font-size: 15px;
+  color: var(--brand-pale);
+}
+
+.booking {
+  max-width: 34em;
+  padding: 40px 32px;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--brand);
+}
+.intro {
+  margin: 0 0 32px;
+}
+.intro a {
+  color: var(--brand);
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+}
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.field input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+}
+.field .hint {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* The error shows in shape as well as colour: a heavier border and a word. */
+.field.is-error input {
+  border-width: 4px;
+  border-color: var(--error);
+}
+.field.is-error .hint {
+  color: var(--error);
+}
+.field.is-error .hint::before {
+  content: "Missing: ";
+  font-weight: 700;
+}
+
+.send {
+  justify-self: start;
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--brand);
+  border: 0;
+  border-radius: 4px;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+}

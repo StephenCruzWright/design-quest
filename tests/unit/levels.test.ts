@@ -84,3 +84,26 @@ describe("hierarchy badges", () => {
     expect(ids).toContain("fluent");
   });
 });
+
+describe("colour badges", () => {
+  const win = (stars: number, bonuses: string[] = []) => ({
+    stars,
+    css: "",
+    rationale: "",
+    seconds: 400,
+    hintsUsed: 1,
+    bonuses,
+    at: "",
+  });
+  it("awards Clear Signal for a colour win and Full Spectrum for all three", () => {
+    const s = freshSave();
+    s.levels.color = { ...emptyLevel(), bosses: { dental: win(1) } };
+    expect(newlyEarned(s).map((b) => b.id)).toContain("clear-signal");
+    expect(newlyEarned(s).map((b) => b.id)).not.toContain("full-spectrum");
+    s.levels.color.bosses.library = win(1);
+    s.levels.color.bosses["pottery+"] = win(2, ["oklch"]);
+    const ids = newlyEarned(s).map((b) => b.id);
+    expect(ids).toContain("full-spectrum");
+    expect(ids).toContain("perceptual");
+  });
+});

@@ -1,0 +1,91 @@
+/* Alder Street Dental: booking form */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1d2b2a;
+  background: #ffffff;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 32px;
+  background: #0f766e;
+}
+.logo {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.phone {
+  margin: 0;
+  font-size: 15px;
+  color: #7fc4ba;
+}
+
+.booking {
+  max-width: 34em;
+  padding: 40px 32px;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.2;
+  color: #0f766e;
+}
+.intro {
+  margin: 0 0 32px;
+}
+.intro a {
+  color: #2563eb;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+}
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.field input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  border: 2px solid #8a9a98;
+  border-radius: 4px;
+}
+.field .hint {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #a0a0a0;
+}
+.field.is-error input {
+  border-color: #d14343;
+}
+.field.is-error .hint {
+  color: #e07070;
+}
+.send {
+  justify-self: start;
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  background: #14b8a6;
+  border: 0;
+  border-radius: 4px;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #6b7a78;
+  border-top: 1px solid #d5dddc;
+}

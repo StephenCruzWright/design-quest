@@ -21,6 +21,11 @@ const PATHS = {
     '<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/>',
   scale: '<path d="M4 6h16"/><path d="M4 12h11"/><path d="M4 17h7"/><path d="M4 21h4"/>',
   wave: '<path d="M3 15c3 0 3-6 6-6s3 6 6 6 3-6 6-6"/><path d="M3 20h18"/>',
+  contrast:
+    '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor"/>',
+  swatch:
+    '<rect x="4" y="3.5" width="9" height="17" rx="1.5"/><path d="M13 7.5 18.5 9l-3.6 11.2M4 15.5h9"/>',
+  drop: '<path d="M12 3.5s6.5 7 6.5 11a6.5 6.5 0 0 1-13 0c0-4 6.5-11 6.5-11z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
 } as const;
 
 export type MarkName = keyof typeof PATHS;

@@ -1,5 +1,7 @@
 /** Reading the player's stylesheet as text, for checks about how CSS is written. */
 
+import { colorsNamed } from "culori/fn";
+
 export interface Declaration {
   prop: string;
   value: string;
@@ -38,4 +40,37 @@ export function resolveVars(value: string, props: Map<string, string>): string {
     );
   }
   return out;
+}
+
+const COLOUR_FN = /^(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/i;
+const HEX = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+
+/** Split a value at top-level spaces, commas and slashes, keeping functions whole. */
+function topLevelTokens(value: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let token = "";
+  for (const ch of value) {
+    if (ch === "(") depth++;
+    if (ch === ")") depth = Math.max(0, depth - 1);
+    if (depth === 0 && /[\s,/]/.test(ch)) {
+      if (token) out.push(token);
+      token = "";
+    } else token += ch;
+  }
+  if (token) out.push(token);
+  return out;
+}
+
+/**
+ * The colours written in a declaration value: hex codes, colour functions and
+ * named colours. Keywords that carry no colour of their own (transparent,
+ * currentColor, inherit) are left out.
+ */
+export function colourValues(value: string): string[] {
+  return topLevelTokens(value).filter((t) => {
+    const lower = t.toLowerCase();
+    if (lower === "transparent") return false;
+    return HEX.test(t) || COLOUR_FN.test(t) || Object.hasOwn(colorsNamed, lower);
+  });
 }

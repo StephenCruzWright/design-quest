@@ -98,12 +98,16 @@ Data attributes: `data-dq-state` with `data-dq-peer` (an element in a state, suc
 | Check | Kind | Threshold |
 | --- | --- | --- |
 | Contrast | core | every text element ≥ 4.5:1 / 7:1 against its effective background (large text 3:1 / 4.5:1), WCAG 2.x |
-| Not colour alone | core | each `[data-dq-state]` differs from its peer in text or a non-colour property (underline, border width, weight, icon), WCAG 1.4.1 |
+| Not colour alone | core | each `[data-dq-state]` differs from its peer in a non-colour property (border width or style, weight, size, decoration, generated text or icon), WCAG 1.4.1 |
 | Links | core | links inside body text are underlined |
 | OKLCH palette | bonus | ≥ 90% of colour declarations use `oklch()` custom properties |
 | Restrained accents | bonus | at most two hues with OKLCH chroma above 0.1 |
 
-The effective background composites every ancestor background with its alpha, down to white.
+The effective background composites every ancestor background with its alpha, down to white. Large text is at least 24px, or 18.66px at weight 700. Hues within 30° count as one (studio rule).
+
+Lesson: what 4.5:1 means and where it comes from; the background you actually see; why HSL lightness misleads (OKLCH, with APCA named as a proposal); lightness, chroma, hue and a two-accent palette; never by colour alone; links in running text.
+
+Clients: a dental booking form (a missing field marked only by a red border, pale hints), a library events page (links and the current tab marked only by colour), a pottery class schedule (pale times, white labels on pastels, a sold-out class shown only by a paler button).
 
 ### 4. Typography
 
