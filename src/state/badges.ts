@@ -113,6 +113,27 @@ export const BADGES: BadgeDef[] = [
     earned: (s) => shippedIn(s, "color") >= 3,
   },
   {
+    id: "good-measure",
+    name: "Good Measure",
+    description: "Ship a typography fix that reads comfortably.",
+    mark: "ruler",
+    earned: (s) => winsIn(s, "typography").length > 0,
+  },
+  {
+    id: "in-character",
+    name: "In Character",
+    description: "Ship a fix whose text column is set in ch.",
+    mark: "glyph",
+    earned: (s) => allBossRecords(s).some((r) => r.bonuses.includes("measure-ch")),
+  },
+  {
+    id: "typesetter",
+    name: "Typesetter",
+    description: "Ship work for all three typography clients.",
+    mark: "lines",
+    earned: (s) => shippedIn(s, "typography") >= 3,
+  },
+  {
     id: "unassisted",
     name: "Unassisted",
     description: "Beat a client without opening a single hint.",

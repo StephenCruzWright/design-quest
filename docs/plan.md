@@ -117,7 +117,13 @@ Clients: a dental booking form (a missing field marked only by a red border, pal
 | Leading | core | body `line-height` 1.4 to 1.7 × `font-size`; headings ≤ 1.3 |
 | Families | core | ≤ 2 font families on rendered text; monospace in `code` and `pre` is exempt |
 | Measure in ch | bonus | body `max-width` set in `ch` |
-| Paragraph rhythm | bonus | space between paragraphs ≥ one line of leading |
+| Paragraph rhythm | bonus | space between paragraphs ≥ one line-height |
+
+Data attributes: `data-dq-prose` on each block of running text. Characters per line come from the rendered line boxes of its paragraphs that run to two lines or more, with the last line counted as the share of a full line it fills. A family is the first name in an element's `font-family` stack.
+
+Lesson: the measure; measure in ch (and how far a face's 0 sets the count off); leading; tighter leading for headings; two families, two jobs (labelled as a studio rule, with the evidence that family matters little to performance); a line between paragraphs.
+
+Clients: a community newspaper article (full-width lines, a loose headline), a recipe blog (line-height 1.1 and no space between steps), a guesthouse home page (four families).
 
 ### 5. Gestalt
 

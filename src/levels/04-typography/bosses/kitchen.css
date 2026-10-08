@@ -1,0 +1,64 @@
+/* Morrow's Kitchen: recipe page */
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.1;
+  color: #2a2420;
+  background: #fffaf3;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 32px;
+  border-bottom: 1px solid #e6dccd;
+}
+.logo {
+  margin: 0;
+  font-size: 22px;
+  font-style: italic;
+}
+.nav {
+  display: flex;
+  gap: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+}
+.nav a {
+  color: #2a2420;
+}
+
+.recipe {
+  max-width: 540px;
+  padding: 32px;
+}
+h1 {
+  margin: 0 0 4px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+.meta {
+  margin: 0 0 24px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: #6b5f55;
+}
+h2 {
+  margin: 32px 0 8px;
+  font-size: 24px;
+  line-height: 2;
+}
+.intro p,
+.method p {
+  margin: 0;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px;
+  color: #6b5f55;
+  border-top: 1px solid #e6dccd;
+}

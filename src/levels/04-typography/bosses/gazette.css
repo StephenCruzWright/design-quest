@@ -1,0 +1,63 @@
+/* The Wrenfield Gazette: article page */
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #222222;
+  background: #ffffff;
+}
+
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 32px;
+  border-bottom: 3px double #222222;
+}
+.name {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+.issue {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: #555555;
+}
+
+.story {
+  padding: 32px;
+}
+.kicker {
+  margin: 0 0 8px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a33a2e;
+}
+h1 {
+  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1.5;
+}
+.byline {
+  margin: 0 0 24px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: #555555;
+}
+.body p {
+  margin: 0 0 12px;
+}
+
+.credit {
+  padding: 16px 32px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 12px;
+  color: #555555;
+  border-top: 1px solid #dddddd;
+}

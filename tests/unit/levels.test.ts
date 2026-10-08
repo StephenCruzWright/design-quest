@@ -107,3 +107,26 @@ describe("colour badges", () => {
     expect(ids).toContain("perceptual");
   });
 });
+
+describe("typography badges", () => {
+  const win = (stars: number, bonuses: string[] = []) => ({
+    stars,
+    css: "",
+    rationale: "",
+    seconds: 400,
+    hintsUsed: 1,
+    bonuses,
+    at: "",
+  });
+  it("awards Good Measure for a typography win and Typesetter for all three", () => {
+    const s = freshSave();
+    s.levels.typography = { ...emptyLevel(), bosses: { gazette: win(1) } };
+    expect(newlyEarned(s).map((b) => b.id)).toContain("good-measure");
+    expect(newlyEarned(s).map((b) => b.id)).not.toContain("typesetter");
+    s.levels.typography.bosses.kitchen = win(1);
+    s.levels.typography.bosses["guesthouse+"] = win(2, ["measure-ch"]);
+    const ids = newlyEarned(s).map((b) => b.id);
+    expect(ids).toContain("typesetter");
+    expect(ids).toContain("in-character");
+  });
+});

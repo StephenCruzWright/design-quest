@@ -25,6 +25,10 @@ const PATHS = {
     '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor"/>',
   swatch:
     '<rect x="4" y="3.5" width="9" height="17" rx="1.5"/><path d="M13 7.5 18.5 9l-3.6 11.2M4 15.5h9"/>',
+  ruler:
+    '<rect x="2.5" y="8" width="19" height="8" rx="1"/><path d="M6.5 8v3M10 8v4.5M13.5 8v3M17 8v4.5"/>',
+  glyph: '<path d="M5 20 11 4h2l6 16M7.5 14h9"/>',
+  lines: '<path d="M4 5h16M4 9h12M4 15h16M4 19h10"/>',
   drop: '<path d="M12 3.5s6.5 7 6.5 11a6.5 6.5 0 0 1-13 0c0-4 6.5-11 6.5-11z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
 } as const;
 

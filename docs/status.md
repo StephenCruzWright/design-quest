@@ -4,7 +4,6 @@ Unfinished work only. Delete an entry when it ships.
 
 ## Next milestones
 
-- **2c**: level 4, Typography.
 - **Levels 5 to 7 and the final client**: puzzle clients (`BossDef.kind: "puzzle"`), alignment and grid checks, Lorem & Ipsum's site.
 - **Placement test and map ordering.**
 - **Arcade mode "Spot the Flaw"**: layout generator, flaw injection, lives and streak scoring.

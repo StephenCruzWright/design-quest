@@ -2660,6 +2660,91 @@ a.desk-link:hover .desk-title {
   text-underline-offset: 0.15em;
 }
 
+/* ── Level 4 demos ─────────────────────────────────────────────────────── */
+
+.type-stage {
+  display: grid;
+  gap: var(--space-s);
+}
+/* These demos read the layout straight after a style change. The reduced-motion
+   override turns every change into a 1ms transition, so switch transitions off here. */
+.type-stage,
+.type-stage * {
+  transition-property: none;
+}
+.type-para {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+/* The column width is the lesson, so a narrow screen scrolls instead of squeezing it. */
+.measure-stage {
+  overflow-x: auto;
+}
+.measure-stage .type-para {
+  flex: none;
+}
+.ch-stage figure {
+  display: grid;
+  gap: var(--space-2xs);
+}
+.ch-stage figcaption {
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+}
+.ch-stage [data-col="px"] {
+  max-inline-size: 420px;
+}
+.ch-stage [data-col="ch"] {
+  max-inline-size: 50ch;
+}
+.leading-para {
+  max-inline-size: 34rem;
+  font-size: 17px;
+}
+.heading-demo {
+  max-inline-size: 20rem;
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+}
+.families-stage {
+  display: grid;
+  gap: var(--space-3xs);
+  font-family: "Trebuchet MS", sans-serif;
+}
+.families-stage p {
+  margin: 0;
+}
+.fam-logo {
+  font-size: 1.75rem;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+.fam-head {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: Georgia, serif;
+}
+.families-stage[data-set="four"] .fam-logo {
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-style: normal;
+}
+.families-stage[data-set="four"] .fam-price {
+  font-family: "Courier New", monospace;
+}
+.families-stage[data-set="two"] .fam-price {
+  font-variant-numeric: tabular-nums;
+}
+.rhythm-stage {
+  gap: var(--gap, 0);
+}
+.rhythm-stage .type-para {
+  max-inline-size: 34rem;
+  font-size: 17px;
+  line-height: 27px;
+}
+
 /* Beside lesson text the sprite stands still until the player answers:
    decoration next to reading material lowers learning (research/learning-science.md). */
 .gate .sprite[data-state="idle"] .sp-fig,
