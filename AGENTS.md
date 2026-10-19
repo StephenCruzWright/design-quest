@@ -11,7 +11,7 @@ This file is the complete rulebook for the repository. There is no outside rule 
 - Judge functions in `src/engine/judges/` are pure: numbers in, `CheckResult` out. DOM reads belong in `src/engine/measure/`.
 - Client pages render in a sandboxed iframe (`allow-same-origin`, never `allow-scripts`) at a fixed 760px layout width so every player is measured the same way.
 - The build uses relative asset paths (`base: "./"`) so it works inside itch.io's nested iframe. Do not add absolute paths, a server or network calls.
-- Publishing to itch.io, buying anything or touching a live account is done by the owner. Agents prepare the build and the store text; they do not upload.
+- Agents may create Vercel preview deployments. Promoting a deployment to production, publishing to itch.io, buying anything or changing a live account is done by the owner. Agents prepare the build and the store text; they do not upload to itch.io.
 
 ## Where to read next
 

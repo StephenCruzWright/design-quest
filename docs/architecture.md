@@ -73,7 +73,7 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 
 ## Routing and screens
 
-`src/router.ts` is a hash router (`#/level/spacing/boss/bakery`), which works under any itch.io subpath. Each screen is `(root, params) => cleanup | void`. The router calls the previous cleanup, clears the root and moves focus to the new `h1`.
+`src/router.ts` is a hash router (`#/level/spacing/boss/bakery`), which works under any itch.io subpath. Vercel serves `dist/` as static files (`vercel.json`) and needs no rewrites for the same reason. Each screen is `(root, params) => cleanup | void`. The router calls the previous cleanup, clears the root and moves focus to the new `h1`.
 
 ## Characters and effects
 
