@@ -10,6 +10,7 @@ import { LEVELS } from "../../src/levels";
 declare global {
   interface Window {
     dq: {
+      /** Stylesheet clients only: puzzle clients have no CSS to judge. */
       bosses: () => { level: string; boss: string }[];
       run: (level: string, boss: string, css?: string, hard?: boolean) => Promise<CheckResult[]>;
     };
@@ -17,7 +18,10 @@ declare global {
 }
 
 window.dq = {
-  bosses: () => LEVELS.flatMap((l) => l.bosses.map((b) => ({ level: l.id, boss: b.id }))),
+  bosses: () =>
+    LEVELS.flatMap((l) =>
+      l.bosses.filter((b) => b.kind !== "puzzle").map((b) => ({ level: l.id, boss: b.id })),
+    ),
   async run(levelId, bossId, css, hard = false) {
     const level = LEVELS.find((l) => l.id === levelId);
     const boss = level?.bosses.find((b) => b.id === bossId);

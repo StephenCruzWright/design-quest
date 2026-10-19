@@ -127,7 +127,24 @@ Clients: a community newspaper article (full-width lines, a loose headline), a r
 
 ### 5. Gestalt
 
-Two puzzle clients (`BossDef.kind: "puzzle"`): drag items into groups, then name the principle at work. One CSS client checked on common region (each `data-dq-group` has a visible box or passes the level 1 proximity ratio) and similarity (elements with the same `data-dq-kind` share a style signature of colour, size and weight; different kinds differ in at least one).
+Data attributes: `data-dq-stack` and `data-dq-group` from level 1, `data-dq-kind="Label"` on elements of one kind, `data-dq-item="id"` on the items of a puzzle page.
+
+Two puzzle clients (`BossDef.kind: "puzzle"`) show a read-only page. The player sorts its items into the groups a visitor sees, then names the principle at work. Each group is a core check, and so is the principle. Bonus stars: no item dropped beside one from another group, and the principle named on the first answer. A wrong drop or a wrong answer lets the foe strike back.
+
+The CSS client:
+
+| Check | Kind | Threshold |
+| --- | --- | --- |
+| Common region | core | every group in a stack has a box that stands out from what is behind it (background, border or shadow at OKLab distance ≥ 0.02), or the stack passes the level 1 between/within ratio of 2× / 2.5× |
+| Similarity | core | elements of one `data-dq-kind` share colour (OKLab distance < 0.02), size (within 4%) and weight; every two kinds differ in at least one of colour (≥ 0.06), size (≥ 15%) and weight (≥ 200) |
+| Cues agree | bonus | every group has a box and the 2× / 2.5× spacing |
+| Cues add up | bonus | every two kinds differ in at least two of colour, size and weight |
+
+Every threshold is a studio rule on research-backed principles (`research/design-theory.md`, item 17).
+
+Lesson: similarity; shape as a weak cue; common region beating proximity; cues add up; good continuation; closure.
+
+Clients: a farm shop stock board coloured at random (puzzle, similarity), a community centre timetable whose day panels put the choir on Monday (puzzle, common region), a bike workshop price list whose packages run together and whose notes look like what is included (CSS).
 
 ### 6. Alignment and balance
 
@@ -227,7 +244,7 @@ Each milestone ends playable.
    - **2a.** Lesson gates, the integrity check, locked bonuses, the sprite, Ada's portrait and the game-feel effects; level 1 reviewed against the copy standard and given gates, sources and the story thread; level 2, Visual hierarchy.
    - **2b.** Level 3, Colour and OKLCH.
    - **2c.** Level 4, Typography.
-3. **Levels 5 to 7 and the final client.** Puzzle clients, alignment and grid checks, Lorem & Ipsum's site.
+3. **Levels 5 to 7 and the final client.** Level 5, Gestalt, with puzzle clients; then alignment and grid checks and Lorem & Ipsum's site.
 4. **Placement test and map ordering.**
 5. **Arcade mode.**
 6. **Case study export and polish.** Sound, keyboard paths through every demo, lazy-loading the editor, rank thresholds rescaled for eight levels.

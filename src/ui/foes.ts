@@ -74,6 +74,21 @@ export const FOES: Record<string, Foe> = {
       <path fill="none" d="M16 46c-6 2-9 6-10 11M64 46c6 2 9 6 10 11"/>
       <path fill="none" d="M28 84v3M52 84v3"/>`,
   },
+  gestalt: {
+    id: "gestalt",
+    name: "The Muddle",
+    flaw: "Puts things together that don't belong, and splits up things that do.",
+    art: `<path class="foe-body" d="M16 46c0-14 10-24 24-24s24 10 24 24v30q0 8-8 8H24q-8 0-8-8z"/>
+      <rect class="foe-patch foe-patch-1" x="20" y="60" width="12" height="12" rx="1"/>
+      <circle class="foe-patch foe-patch-2" cx="51" cy="67" r="7"/>
+      <path class="foe-patch foe-patch-3" d="M34 79l6-10 6 10z"/>
+      <circle class="foe-eye" cx="31" cy="44" r="4.5"/><rect class="foe-eye" x="43" y="39" width="10" height="10" rx="1"/>
+      <circle class="foe-pupil" cx="32" cy="44.5" r="1.4"/><circle class="foe-pupil" cx="47.5" cy="44.5" r="1.4"/>
+      <path fill="none" d="M25 37l9 3M55 35l-9 4"/>
+      <path fill="none" d="M31 55l3 3 3-3 3 3 3-3 3 3"/>
+      <path fill="none" d="M16 56c-6 2-9 7-10 13M64 56c4 0 6-3 7-6"/>
+      <path fill="none" d="M28 84v3M52 84v3"/>`,
+  },
 };
 
 const GREMLIN: Foe = {

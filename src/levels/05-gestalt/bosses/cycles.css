@@ -1,0 +1,60 @@
+/* Northgate Cycles: workshop price list */
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #1f2937;
+  background: #f8f7f3;
+  line-height: 1.5;
+}
+.top {
+  padding: 20px 32px;
+  background: #1f2937;
+  color: #f8f7f3;
+}
+.shop {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+.strap {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: #d1d5db;
+}
+.prices {
+  padding: 32px;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+.intro {
+  margin: 0 0 24px;
+  font-size: 16px;
+}
+.packages p {
+  margin: 0 0 12px;
+}
+.name {
+  font-size: 18px;
+  font-weight: 700;
+}
+/* The owner wanted the full service to stand out. */
+.featured .name {
+  font-size: 22px;
+  color: #b91c1c;
+}
+.price {
+  font-size: 18px;
+  font-weight: 700;
+}
+.incl,
+.note {
+  font-size: 15px;
+  color: #374151;
+}
+.credit {
+  padding: 16px 32px;
+  font-size: 12px;
+  color: #6b7280;
+}

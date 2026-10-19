@@ -19,6 +19,7 @@ import { confirmModal, openModal } from "../ui/modal";
 import { starsHtml } from "../ui/stars";
 import { $, debounce, el, esc, formatTime } from "../util/dom";
 import { notFound } from "./not-found";
+import { puzzleScreen } from "./puzzle";
 
 const MIN_RATIONALE = 30;
 
@@ -141,10 +142,67 @@ function showResults(opts: {
   });
 }
 
+/** Save a shipped job (only if it beats the best record), pay XP and show the results. */
+export function shipJob(job: {
+  level: LevelDef;
+  boss: BossDef;
+  hard: boolean;
+  stars: number;
+  results: CheckResult[];
+  css: string;
+  rationale: string;
+  seconds: number;
+  hintsUsed: number;
+}): void {
+  const { level, boss, hard, stars, results, seconds, hintsUsed } = job;
+  const key = hard ? `${boss.id}+` : boss.id;
+  const prev = store.level(level.id).bosses[key];
+  const prevStars = prev?.stars ?? 0;
+  const xp = improvement(bossXp(prevStars, hard), bossXp(stars, hard));
+  const bonuses = results.filter((r) => r.kind === "bonus" && r.pass).map((r) => r.id);
+  const shippedAll = () =>
+    level.bosses.every(
+      (b) => (store.level(level.id).bosses[hard ? `${b.id}+` : b.id]?.stars ?? 0) > 0,
+    );
+  const wasCleared = shippedAll();
+  commit(
+    (s) => {
+      s.levels[level.id] ??= emptyLevel();
+      const lp = s.levels[level.id];
+      if (!prev || stars >= prev.stars) {
+        lp.bosses[key] = {
+          stars,
+          css: job.css,
+          rationale: job.rationale,
+          seconds,
+          hintsUsed,
+          bonuses,
+          at: new Date().toISOString(),
+        };
+      }
+    },
+    xp,
+    `${boss.client}: ${stars}★`,
+  );
+  showResults({
+    level,
+    boss,
+    stars,
+    prevStars,
+    xp,
+    seconds,
+    hints: hintsUsed,
+    results,
+    deskCleared: !hard && !wasCleared && shippedAll(),
+  });
+}
+
 export const bossScreen: Screen = (root, params) => {
   const level = levelById(params.id);
   const boss = level?.bosses.find((b) => b.id === params.boss);
   if (!level || !boss) return notFound(root);
+  if (store.level(level.id).quizTotal && boss.kind === "puzzle")
+    return puzzleScreen(root, level, boss);
   if (!store.level(level.id).quizTotal) {
     root.append(
       el(
@@ -328,44 +386,7 @@ export const bossScreen: Screen = (root, params) => {
     const prev = store.level(level.id).bosses[key];
     const rationale = await askRationale(prev?.rationale ?? "");
     if (rationale === null || disposed) return;
-    const prevStars = prev?.stars ?? 0;
-    const xp = improvement(bossXp(prevStars, hard), bossXp(stars, hard));
-    const bonuses = results.filter((r) => r.kind === "bonus" && r.pass).map((r) => r.id);
-    const shippedAll = () =>
-      level.bosses.every(
-        (b) => (store.level(level.id).bosses[hard ? `${b.id}+` : b.id]?.stars ?? 0) > 0,
-      );
-    const wasCleared = shippedAll();
-    commit(
-      (s) => {
-        s.levels[level.id] ??= emptyLevel();
-        const lp = s.levels[level.id];
-        if (!prev || stars >= prev.stars) {
-          lp.bosses[key] = {
-            stars,
-            css,
-            rationale,
-            seconds,
-            hintsUsed,
-            bonuses,
-            at: new Date().toISOString(),
-          };
-        }
-      },
-      xp,
-      `${boss.client}: ${stars}★`,
-    );
-    showResults({
-      level,
-      boss,
-      stars,
-      prevStars,
-      xp,
-      seconds,
-      hints: hintsUsed,
-      results,
-      deskCleared: !hard && !wasCleared && shippedAll(),
-    });
+    shipJob({ level, boss, hard, stars, results, css, rationale, seconds, hintsUsed });
   };
   submitBtn.addEventListener("click", submit);
   const onKey = (e: KeyboardEvent) => {

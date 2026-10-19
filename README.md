@@ -11,7 +11,7 @@ Nothing is graded on taste. Every check reads numbers off the rendered page and 
 1. **Lesson.** The principle, the perceptual reason it works, and demos where you drag a control and watch a layout fall apart or come together.
 2. **Rule cards.** Finishing the lesson adds its rules of thumb to your Field Guide.
 3. **Trial.** Five judgment questions drawn from a pool of twelve. The options shuffle on every run.
-4. **Clients.** Three broken pages, each with a brief written by a client who can describe the symptom but not the fix. You edit the page's stylesheet while the judges re-measure it. When every must-pass check is green, the job can ship. Bonus checks add stars, up to three.
+4. **Clients.** Three broken pages, each with a brief written by a client who can describe the symptom but not the fix. You edit the page's stylesheet while the judges re-measure it. Some clients are puzzles instead: you read their page the way a visitor does and sort it into the groups a visitor sees. When every must-pass check is green, the job can ship. Bonus checks add stars, up to three.
 5. **Rationale.** Before you ship, you write a sentence or two on why the fix works.
 
 The trial opens after the lesson, and the clients open after the trial.
@@ -36,16 +36,14 @@ The judges for this desk:
 | Tokens | Bonus star | At least 90% of spacing declarations use custom properties | 100% |
 | Tiers | Bonus star | Section gaps are at least 1.5× the gaps between groups | 2× |
 
-Progress earns XP and ranks you up from Intern to Creative Director. Only improvements pay out, so replaying a client never farms XP. Nine badges reward specific feats, such as shipping without opening a hint or finishing a client in under five minutes. New Game+ (on the Profile screen) tightens every threshold, pays 1.5× XP and keeps its own star records.
+**Desks 2 to 5** are playable too: Visual hierarchy, Colour and OKLCH, Typography, and Gestalt, each with its own lesson, trial, judges and three clients.
+
+Progress earns XP and ranks you up from Intern to Creative Director. Only improvements pay out, so replaying a client never farms XP. Badges reward specific feats, such as shipping without opening a hint or finishing a client in under five minutes. New Game+ (on the Profile screen) tightens every threshold, pays 1.5× XP and keeps its own star records.
 
 ## What's next
 
 | Desk | Principle |
 | --- | --- |
-| 2 | Visual hierarchy |
-| 3 | Colour and OKLCH |
-| 4 | Typography |
-| 5 | Gestalt |
 | 6 | Alignment and balance |
 | 7 | Grids and proportion |
 | 8 | The final client: every judge on one page |
