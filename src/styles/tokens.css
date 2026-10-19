@@ -69,6 +69,25 @@
   --look-2: oklch(66% 0.15 25);
   --look-3: oklch(84% 0.15 85);
   --ada-coat: oklch(38% 0.04 265);
+  /* Foes: each desk's flaw as a creature, with eyes that glow against the body. */
+  --foe-cram: oklch(64% 0.11 50);
+  --foe-shouter: oklch(62% 0.17 18);
+  --foe-murk: oklch(70% 0.012 250);
+  --foe-wall: oklch(87% 0.035 85);
+  --foe-gremlin: oklch(62% 0.11 150);
+  --foe-shade: oklch(24% 0.03 265 / 0.16);
+  --foe-eye: oklch(88% 0.16 95);
+  --foe-eye-dim: oklch(80% 0.015 250);
+  --foe-mouth: oklch(32% 0.07 20);
+  --client-0: oklch(66% 0.1 200);
+  --client-1: oklch(72% 0.13 125);
+  --client-2: oklch(64% 0.13 350);
+  --client-3: oklch(76% 0.12 65);
+  /* The fight is drawn on a sketch pad, light in both themes like the characters. */
+  --stage: oklch(97% 0.014 85);
+  --stage-line: oklch(84% 0.02 85);
+  --stage-hit: oklch(50% 0.2 264);
+  --stage-damage: oklch(51% 0.19 27);
 
   color-scheme: light dark;
 }

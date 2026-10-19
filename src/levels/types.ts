@@ -77,6 +77,8 @@ export interface BossDef {
   brief: string;
   /** Who said it, e.g. "Rosa, owner". */
   from: string;
+  /** What the client says once the fix lands, in their own words. */
+  thanks: string;
   html: string;
   css: string;
   /** Progressive hints, gentlest first. */

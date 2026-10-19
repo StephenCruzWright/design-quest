@@ -4,8 +4,9 @@ import type { Screen } from "../router";
 import { improvement, quizXp } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
-import { centreOf, confetti, shake, stamp } from "../ui/fx";
-import { type Sprite, sprite } from "../ui/sprite";
+import { battle } from "../ui/battle";
+import { foeFor } from "../ui/foes";
+import { beat, centreOf, confetti, shake, stamp } from "../ui/fx";
 import { $, el, esc } from "../util/dom";
 import { notFound } from "./not-found";
 
@@ -33,11 +34,11 @@ export const trialScreen: Screen = (root, { id }) => {
     <div class="page trial">
       <a class="back" href="#/level/${level.id}">← ${esc(level.title)}</a>
       <div class="trial-meter" aria-hidden="true"></div>
+      <div class="trial-layout">
       <article class="trial-card">
         <div class="trial-head">
           <p class="eyebrow trial-count"></p>
           <p class="streak" aria-live="polite"></p>
-          <div class="trial-buddy"></div>
         </div>
         <h1 class="trial-prompt"></h1>
         <div class="trial-visual"></div>
@@ -45,6 +46,8 @@ export const trialScreen: Screen = (root, { id }) => {
         <div class="trial-feedback" aria-live="polite"></div>
         <div class="trial-actions"><button class="btn btn-primary" data-act="next" hidden>Next →</button></div>
       </article>
+      <aside class="trial-battle" aria-label="Battle"></aside>
+      </div>
     </div>`);
   root.append(shell);
 
@@ -56,8 +59,14 @@ export const trialScreen: Screen = (root, { id }) => {
   const feedback = $<HTMLElement>(shell, ".trial-feedback");
   const nextBtn = $<HTMLButtonElement>(shell, '[data-act="next"]');
   const streakEl = $<HTMLElement>(shell, ".streak");
-  const buddy: Sprite = sprite({ size: "s" });
-  $(shell, ".trial-buddy").append(buddy.el);
+  // One HP per question: every right answer is a hit on the desk's foe.
+  const foe = foeFor(level.id);
+  const arena = battle({
+    foe,
+    beaten: `${foe.name} is out of the trial. It is still hiding in three client pages.`,
+  });
+  $(shell, ".trial-battle").append(arena.el);
+  arena.sync(questions.length, questions.length, { instant: true });
   let streak = 0;
   const renderStreak = () => {
     streakEl.textContent = streak >= 2 ? `Streak ${streak}` : "";
@@ -111,12 +120,17 @@ export const trialScreen: Screen = (root, { id }) => {
     if (right) {
       streak++;
       stamp(buttons[i], "✓", "good");
-      buddy.set("cheer", 1000);
+      arena.sync(questions.length - correct, questions.length);
     } else {
       streak = 0;
       shake(buttons[i]);
-      buddy.set("wince", 900);
+      arena.strike();
     }
+    // Let the last exchange play out before an unbeaten foe leaves.
+    if (index === questions.length - 1 && correct < questions.length)
+      void beat(900).then(() =>
+        arena.retreat(`${foe.name} got away. It went to wait at the client desks.`),
+      );
     renderStreak();
     feedback.innerHTML = `<p class="verdict" data-right="${right}"><strong>${right ? "✓ Correct." : `✗ Not quite. The answer is ${LETTERS[q.answer]}.`}</strong> ${esc(q.note)}</p>`;
     nextBtn.hidden = false;

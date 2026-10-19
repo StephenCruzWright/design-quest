@@ -9,12 +9,13 @@ import { bossXp, improvement } from "../state/progress";
 import { commit } from "../state/rewards";
 import { emptyLevel, store } from "../state/save";
 import { adaHtml } from "../ui/ada";
+import { battle } from "../ui/battle";
 import { toggleGroup } from "../ui/controls";
 import { cssEditor, htmlViewer, setEditorText } from "../ui/editor";
+import { foeFor } from "../ui/foes";
 import { beat, centreOf, confetti, countUp, stamp } from "../ui/fx";
 import { renderJudgePanel } from "../ui/judge-panel";
 import { confirmModal, openModal } from "../ui/modal";
-import { type Sprite, sprite } from "../ui/sprite";
 import { starsHtml } from "../ui/stars";
 import { $, debounce, el, esc, formatTime } from "../util/dom";
 import { notFound } from "./not-found";
@@ -208,7 +209,7 @@ export const bossScreen: Screen = (root, params) => {
         </section>
         <section class="boss-judges" aria-label="Judges">
           <h2 class="visually-hidden">Judges</h2>
-          <div class="boss-buddy"></div>
+          <div class="boss-arena"></div>
           <div class="judge-panel" aria-live="polite"><p class="loading">Loading the client's site…</p></div>
         </section>
       </div>
@@ -223,8 +224,17 @@ export const bossScreen: Screen = (root, params) => {
   const beforeHost = q('[data-view="before"]');
   const problemsBar = q(".problems-bar");
   const problemsCount = q(".problems-count");
-  const buddy: Sprite = sprite();
-  q(".boss-buddy").append(buddy.el);
+  // The foe is this desk's flaw; beaten, it turns back into the client.
+  const arena = battle({
+    foe: foeFor(level.id),
+    client: {
+      variant: level.bosses.indexOf(boss) + level.num,
+      from: boss.from,
+      thanks: boss.thanks,
+    },
+  });
+  const buddy = arena.player;
+  q(".boss-arena").append(arena.el);
   let lastFailing = -1;
 
   q(".preview-bar").prepend(
@@ -257,13 +267,10 @@ export const bossScreen: Screen = (root, params) => {
     const failing = core.filter((r) => !r.pass).length;
     problemsBar.innerHTML = core.map((r) => `<span data-fixed="${r.pass}"></span>`).join("");
     problemsCount.textContent = failing === 0 ? "None left" : `${failing} of ${core.length} left`;
-    if (lastFailing >= 0 && failing !== lastFailing) {
-      if (failing === 0) {
-        stamp(q(".problems"), "Ship it", "ship");
-        buddy.set("cheer", 1400);
-      } else if (failing < lastFailing) buddy.set("cheer", 1000);
-      else buddy.set("wince", 900);
-    }
+    // Each fixed core check is a hit on the foe; a regression lets it strike back.
+    arena.sync(failing, core.length, { instant: lastFailing < 0 });
+    if (lastFailing >= 0 && failing === 0 && failing !== lastFailing)
+      stamp(q(".problems"), "Ship it", "ship");
     if (failing > 0) q(".problems").querySelector(":scope > .stamp")?.remove();
     else buddy.rest("idle");
     lastFailing = failing;

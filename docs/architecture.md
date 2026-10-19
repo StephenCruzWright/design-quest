@@ -8,7 +8,7 @@
 4. On each editor change (250ms debounce) the game writes the stylesheet into the `<style>` element's `textContent`, which avoids any `</style>` injection, then calls the level's `judge(doc, css, { hard })`.
 5. `judge` runs measurement functions against the iframe document and passes the numbers to judge functions. The result is a list of `CheckResult`.
 6. `starsFor()` (`src/engine/types.ts`) turns results into stars: 0 while any core check fails, otherwise 1 plus one per passed bonus check, capped at 3.
-7. The judge panel (`src/ui/judge-panel.ts`) shows bonus checks as locked while any core check fails. The client problems bar in the header has one segment per core check.
+7. The judge panel (`src/ui/judge-panel.ts`) shows bonus checks as locked while any core check fails. The client problems bar in the header has one segment per core check, and the battle arena above the judges uses the same count as the foe's HP.
 
 ## Measure vs judge
 
@@ -59,7 +59,7 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 ## Adding a challenge
 
 1. Add `bosses/<id>.html` (body markup with the data attributes) and a broken `bosses/<id>.css` to the level. Client pages use system font stacks only; parent page fonts do not reach the iframe.
-2. Register it in the level's `content.ts` with the client name, a tagline, the client's brief in their own words and three hints, gentlest first.
+2. Register it in the level's `content.ts` with the client name, a tagline, the client's brief in their own words, the line they say once it is fixed (`thanks`) and three hints, gentlest first. A new level also gets a foe in `src/ui/foes.ts`, keyed by level id; without one it fights The Gremlin.
 3. Write a 3-star reference fix at `tests/solutions/<level>/<id>.css`.
 4. `npm run test:browser` passes only when the original fails a core check and the fix passes every check.
 
@@ -78,6 +78,7 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 ## Characters and effects
 
 - `src/ui/sprite.ts`: the player sprite. `sprite()` returns `{ el, set(state, holdMs?), rest(state) }`; a pose is a `data-state` attribute and the CSS in `app.css` animates transforms only. `LOOKS` holds the four looks.
+- `src/ui/battle.ts`: the arena on the client and trial screens. `battle()` returns `{ el, player, sync(remaining, total, { instant }), strike(), retreat(caption) }`. The pure `battleStep(prev, next)` turns a change in HP into `hit`, `finish`, `heal`, `revive` or `none`, and `src/ui/foes.ts` draws each level's foe and the clients.
 - `src/ui/ada.ts`: Ada's portrait, with `data-expr` of neutral, eyebrow or nod.
 - `src/ui/fx.ts`: `stamp`, `shake`, `countUp`, `confetti` and `beat`. Each checks `prefersReducedMotion()` or relies on the global reduced-motion override in `base.css`.
 - That override sets `transition-duration: 1ms` on every element, and the default `transition-property` is `all`, so under reduced motion any style change becomes a 1ms transition. A demo that reads layout straight after changing a style sets `transition-property: none` on what it measures, as the level 4 demos do.
@@ -86,4 +87,4 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 ## Tests
 
 - `tests/unit/`: judges on hand-made numbers, contrast maths, save-code round trips, lesson progress, XP maths, badges, quiz draw, and the content shape of every level.
-- `tests/e2e/harness.html` loads the real sandbox and judges through the Vite dev server and exposes `window.dq.run(level, boss, css)`. `bosses.spec.ts` runs every challenge against its original CSS (which must fail a core check and pass `intact`) and its reference solution. `lesson-gates.spec.ts` drives the real lesson screen: goal and choice gates, locked pages, resuming, reduced motion.
+- `tests/e2e/harness.html` loads the real sandbox and judges through the Vite dev server and exposes `window.dq.run(level, boss, css)`. `bosses.spec.ts` runs every challenge against its original CSS (which must fail a core check and pass `intact`) and its reference solution. `lesson-gates.spec.ts` drives the real lesson screen: goal and choice gates, locked pages, resuming, reduced motion. `battle.spec.ts` beats a foe with a reference solution and checks that a trial answer moves the foe's HP only when it is right.

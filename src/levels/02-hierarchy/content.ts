@@ -254,6 +254,8 @@ export const bosses: BossDef[] = [
     brief:
       "Parents ring us to ask how to book a trial, and the offer is the first thing on the page. My daughter says the site sounds like it's shouting. I don't know what she means, but she's usually right.",
     from: "Marisol, head coach",
+    thanks:
+      "Parents find the trial booking straight away. My daughter says the site stopped shouting.",
     html: swimHtml,
     css: swimCss,
     hints: [
@@ -269,6 +271,8 @@ export const bosses: BossDef[] = [
     brief:
       "Customers email me to ask what's on the record. The tracklist is right there. They scroll past it because it looks like every other part of the page.",
     from: "Tomas, owner",
+    thanks:
+      "People find the tracklist without asking. One customer read it out to me at the counter.",
     html: recordsHtml,
     css: recordsCss,
     hints: [
@@ -284,6 +288,8 @@ export const bosses: BossDef[] = [
     brief:
       "People turn up on the wrong night. They see the dates, but they don't notice which show is on now. The last agency said dates are important, so they made them big.",
     from: "Priya, box office",
+    thanks:
+      "Tonight's show is the first thing people see. Nobody came on the wrong night this week.",
     html: theatreHtml,
     css: theatreCss,
     hints: [
