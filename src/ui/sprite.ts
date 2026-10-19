@@ -7,7 +7,7 @@ import { el } from "../util/dom";
  * it signals is also shown in text.
  */
 
-export type SpriteState = "idle" | "think" | "cheer" | "wince" | "sweat" | "walk";
+export type SpriteState = "idle" | "think" | "cheer" | "wince" | "sweat" | "walk" | "attack";
 
 export interface Look {
   name: string;
@@ -53,6 +53,11 @@ const FACES = `
     <path fill="none" d="M25 31l3 2-3 2M39 31l-3 2 3 2"/>
     <path fill="none" d="M29 40q3-2 6 0"/>
   </g>
+  <g class="sp-face" data-for="attack">
+    <path fill="none" d="M24 29.5l5 2M40 29.5l-5 2"/>
+    <circle cx="27" cy="33.5" r="1.6"/><circle cx="37" cy="33.5" r="1.6"/>
+    <path fill="none" d="M29 39.5h6"/>
+  </g>
   <g class="sp-face" data-for="sweat">
     <circle cx="27" cy="33" r="1.6"/><circle cx="37" cy="33" r="1.6"/>
     <path fill="none" d="M28 40q1.5-1.5 3 0t3 0 3 0"/>
@@ -67,6 +72,7 @@ function svg(look: Look): string {
       <path class="sp-leg sp-leg-r" d="M36 68v15h4"/>
       <path class="sp-arm sp-arm-l" d="M23 56c-4 4-6 8-6 12"/>
       <path class="sp-arm sp-arm-r" d="M41 56c4 4 6 8 6 12"/>
+      <path class="sp-arm sp-arm-r sp-ruler" d="M45 64l9 15"/>
       <path class="sp-shirt" d="M20 72c0-13 5-21 12-21s12 8 12 21z"/>
       <g class="sp-head">
         <circle class="sp-skin" cx="32" cy="32" r="15"/>

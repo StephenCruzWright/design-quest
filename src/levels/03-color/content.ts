@@ -241,6 +241,7 @@ export const bosses: BossDef[] = [
     brief:
       "Patients ring to say the form won't send. When I sit with them, the form has marked a box as wrong and they can't see which one. One gentleman said the small grey writing under the boxes might as well not be there.",
     from: "Gwen, practice manager",
+    thanks: "Patients can read the note under the box now, and the form goes through first time.",
     html: dentalHtml,
     css: dentalCss,
     hints: [
@@ -256,6 +257,8 @@ export const bosses: BossDef[] = [
     brief:
       "Every week we get emails asking how to book Rhyme time. The booking link is right there in the description. People also tell us they can't work out which part of the site they're on.",
     from: "Hollis, events librarian",
+    thanks:
+      "The Rhyme time bookings come through the link now, and people know which page they're on.",
     html: libraryHtml,
     css: libraryCss,
     hints: [
@@ -271,6 +274,8 @@ export const bosses: BossDef[] = [
     brief:
       "My older students say they can't read the class times, and one said the whole site looks washed out. And every week somebody books the Saturday wheel class, which has been full since June.",
     from: "Ines, studio owner",
+    thanks:
+      "My older students read the class times without their glasses, and the full Saturday class finally looks full.",
     html: potteryHtml,
     css: potteryCss,
     hints: [

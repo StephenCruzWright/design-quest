@@ -24,8 +24,11 @@ The studio desk is the metaphor, and each object looks like the thing it is:
 
 ## Characters
 
-- **The player sprite** is drawn in the marks style: 1.75 stroke in `currentColor`, flat fills from role tokens, no gradients. Four looks differ in hair, clothing colour and accessory, never in skin tone alone. States are separate poses (idle, think, cheer, wince, sweat, walk), animated with transforms on body parts only. The sprite is decorative (`aria-hidden`); anything it signals is also in text.
+- **The player sprite** is drawn in the marks style: 1.75 stroke in `currentColor`, flat fills from role tokens, no gradients. Four looks differ in hair, clothing colour and accessory, never in skin tone alone. States are separate poses (idle, think, cheer, wince, sweat, walk, attack), animated with transforms on body parts only. The sprite is decorative (`aria-hidden`); anything it signals is also in text.
 - **Ada** is a head-and-shoulders portrait in the same style, with three expressions: neutral, raised eyebrow, nod.
+- **Foes** are each desk's flaw drawn as a creature, in the same line style with flat sticker fills: The Cram (spacing) has its features jammed together, The Shouter (hierarchy) has four eyes of equal size, The Murk (colour) is grey on grey, and The Wall (typography) is a slab of over-long lines. Poses are idle, hurt, strike, defeated, enter and retreat.
+- **Clients** appear once their foe is beaten: the sprite's body with their own hair and shirt colour, arms up, and the client's thank-you line beside them.
+- The fight is drawn on a light sketch pad (`--stage`) in both themes, so the dark character lines stay visible.
 
 ## Motion
 
@@ -38,6 +41,9 @@ Motion explains a state change, gives feedback on an action or rewards the playe
 | A check that changes state pulses once | State change |
 | Sprite poses (cheer, wince, sweat, think) | Feedback on an answer, a check or typing |
 | Sprite walks to the focused desk | Shows where the player is going |
+| Player lunges and slashes the foe, which flashes and loses one HP | Feedback: a right trial answer or a newly passing core check |
+| Foe lunges at the player, who winces | Feedback: a wrong answer or a regression. The player has no HP to lose |
+| Foe is knocked out in a puff and the client pops up cheering | Reward: every core check passing |
 | Ada's expression changes | Story: her reaction to a result |
 | Rubber stamp lands on an answer, check or shipped job | Feedback: right, wrong, shipped |
 | Wrong answer shakes once | Feedback: wrong |

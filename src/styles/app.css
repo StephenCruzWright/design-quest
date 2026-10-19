@@ -1104,7 +1104,34 @@ a.desk-link:hover .desk-title {
 /* ── Trial ─────────────────────────────────────────────────────────────── */
 
 .trial {
-  max-inline-size: 46rem;
+  max-inline-size: 66rem;
+}
+/* The question on the left, the fight beside it. */
+.trial-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 46rem) minmax(15rem, 18rem);
+  gap: var(--space-l);
+  align-items: start;
+}
+.trial-battle {
+  position: sticky;
+  inset-block-start: var(--space-m);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--card);
+}
+.trial-battle .arena {
+  border-block-end: 0;
+}
+@media (max-width: 960px) {
+  .trial-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-m);
+  }
+  .trial-battle {
+    position: static;
+    order: -1;
+  }
 }
 .trial-meter {
   display: flex;
@@ -1800,6 +1827,7 @@ a.desk-link:hover .desk-title {
 .sprite[data-state="cheer"] .sp-face[data-for="cheer"],
 .sprite[data-state="wince"] .sp-face[data-for="wince"],
 .sprite[data-state="sweat"] .sp-face[data-for="sweat"],
+.sprite[data-state="attack"] .sp-face[data-for="attack"],
 .sprite[data-state="think"] .sp-bubble {
   display: inline;
 }
@@ -1845,6 +1873,20 @@ a.desk-link:hover .desk-title {
 }
 .sprite[data-state="wince"] .sp-arm-r {
   rotate: 25deg;
+}
+.sprite .sp-ruler {
+  display: none;
+  stroke: var(--look-3);
+  stroke-width: 3;
+}
+.sprite[data-state="attack"] .sp-ruler {
+  display: inline;
+}
+.sprite[data-state="attack"] .sp-fig {
+  animation: sp-lunge 620ms var(--ease-out);
+}
+.sprite[data-state="attack"] .sp-arm-r {
+  animation: sp-swing 620ms var(--ease-out) forwards;
 }
 .sprite[data-state="sweat"] .sp-drop {
   animation: sp-drip 1.3s ease-in infinite;
@@ -1895,6 +1937,28 @@ a.desk-link:hover .desk-title {
   }
   100% {
     transform: none;
+  }
+}
+/* Wind up, lunge at the foe, step back. */
+@keyframes sp-lunge {
+  25% {
+    transform: translateX(-3px);
+  }
+  55% {
+    transform: translateX(16px);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes sp-swing {
+  0%,
+  30% {
+    rotate: -150deg;
+  }
+  60%,
+  100% {
+    rotate: -40deg;
   }
 }
 @keyframes sp-flinch {
@@ -2334,9 +2398,6 @@ a.desk-link:hover .desk-title {
   gap: var(--space-s);
   align-items: end;
 }
-.trial-buddy {
-  margin-inline-start: auto;
-}
 .streak {
   font-family: var(--font-code);
   font-size: var(--step--1);
@@ -2397,11 +2458,6 @@ a.desk-link:hover .desk-title {
   inset-inline-end: auto;
   inset-inline-start: 0;
   font-size: var(--step--1);
-}
-.boss-buddy {
-  display: flex;
-  justify-content: center;
-  padding-block-start: var(--space-s);
 }
 .check[data-locked="true"] {
   border-color: var(--line);
@@ -2750,4 +2806,371 @@ a.desk-link:hover .desk-title {
 .gate .sprite[data-state="idle"] .sp-fig,
 .gate .sprite .sp-eyes {
   animation: none;
+}
+
+/* ── Battle arena ──────────────────────────────────────────────────────── */
+
+.arena {
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-s);
+  border-block-end: 1px solid var(--line);
+}
+.arena-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+.arena-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+.arena-hp-label {
+  font-family: var(--font-code);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+.arena-hp {
+  display: flex;
+  gap: var(--space-3xs);
+}
+.arena-hp span {
+  flex: 1;
+  block-size: 0.5rem;
+  border: 1px solid var(--bad);
+  border-radius: var(--radius-s);
+  background: var(--bad);
+  transition:
+    background var(--dur),
+    scale var(--dur) var(--ease-out);
+}
+.arena-hp span[data-on="false"] {
+  border-color: var(--line);
+  background: transparent;
+  scale: 1 0.6;
+}
+.arena[data-phase="won"] .arena-hp span {
+  border-color: var(--good);
+}
+.arena-stage {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  min-block-size: 7.5rem;
+  padding: var(--space-xs) var(--space-s) 0;
+  border-radius: var(--radius-s);
+  background: var(--stage);
+  box-shadow: inset 0 -2px var(--stage-line);
+}
+.arena-target {
+  position: relative;
+  display: grid;
+  place-items: end center;
+}
+.arena-target > * {
+  grid-area: 1 / 1;
+}
+/* The trial column has room for a bigger fight. */
+.trial-battle .foe {
+  inline-size: 8.5rem;
+}
+.trial-battle .arena-player .sprite,
+.trial-battle .arena-client {
+  --sprite-size: 5.5rem;
+}
+.arena-caption {
+  min-block-size: 2.9em;
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.arena[data-phase="won"] .arena-caption {
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  font-style: italic;
+  color: var(--ink);
+}
+.arena-from {
+  display: block;
+  margin-block-start: var(--space-3xs);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-style: normal;
+  color: var(--ink-2);
+}
+
+/* The foe. Line in the sprite ink, body in the foe's own sticker colour. */
+.foe {
+  display: block;
+  inline-size: 7rem;
+  color: var(--sprite-line);
+  --foe-fill: var(--foe-gremlin);
+}
+.foe[data-foe="spacing"] {
+  --foe-fill: var(--foe-cram);
+}
+.foe[data-foe="hierarchy"] {
+  --foe-fill: var(--foe-shouter);
+}
+.foe[data-foe="color"] {
+  --foe-fill: var(--foe-murk);
+}
+.foe[data-foe="typography"] {
+  --foe-fill: var(--foe-wall);
+}
+.foe svg,
+.arena-client svg {
+  display: block;
+  overflow: visible;
+}
+.foe .foe-body,
+.foe .foe-drip {
+  fill: var(--foe-fill);
+}
+.foe .foe-shade {
+  fill: var(--foe-shade);
+  stroke: none;
+}
+.foe .foe-smear {
+  stroke: var(--foe-shade);
+  stroke-width: 3;
+}
+.foe .foe-eye {
+  fill: var(--foe-eye);
+}
+.foe .foe-eye-dim {
+  fill: var(--foe-eye-dim);
+}
+.foe .foe-pupil {
+  fill: currentColor;
+  stroke: none;
+}
+.foe .foe-mouth {
+  fill: var(--foe-mouth);
+}
+.foe .foe-shadow {
+  fill: var(--sprite-line);
+  stroke: none;
+  opacity: 0.14;
+  transition: opacity 400ms;
+}
+.foe .foe-fig {
+  transform-box: view-box;
+  transform-origin: 40px 86px;
+}
+.foe[data-state="idle"] .foe-fig {
+  animation: foe-sway 3.4s ease-in-out infinite;
+}
+.foe[data-state="hurt"] .foe-fig {
+  animation: foe-hurt 560ms ease-out;
+}
+.foe[data-state="strike"] .foe-fig {
+  animation: foe-strike 620ms var(--ease-out);
+}
+.foe[data-state="defeated"] .foe-fig {
+  animation: foe-defeat 620ms ease-in forwards;
+}
+.foe[data-state="enter"] .foe-fig {
+  animation: foe-enter 520ms var(--ease-out);
+}
+.foe[data-state="retreat"] .foe-fig {
+  animation: foe-retreat 700ms ease-in forwards;
+}
+.foe[data-state="defeated"] .foe-shadow,
+.foe[data-state="retreat"] .foe-shadow {
+  opacity: 0;
+}
+.arena[data-phase="won"] .foe,
+.arena-client {
+  display: none;
+}
+.arena[data-phase="won"] .arena-client {
+  display: block;
+  animation: cl-pop 520ms var(--ease-out);
+}
+.arena-client .cl-shirt,
+.arena-client .cl-hat {
+  fill: var(--client-0);
+}
+.arena-client[data-variant="1"] .cl-shirt {
+  fill: var(--client-1);
+}
+.arena-client[data-variant="2"] .cl-shirt {
+  fill: var(--client-2);
+}
+.arena-client[data-variant="3"] .cl-shirt {
+  fill: var(--client-3);
+}
+.arena-client .cl-face path:not([fill="none"]) {
+  fill: currentColor;
+}
+
+/* Hit effects: a ruler slash across the foe and the HP it cost. */
+.arena-slash {
+  position: absolute;
+  inset: 10% 0 auto;
+  inline-size: 100%;
+  block-size: 70%;
+  overflow: visible;
+  pointer-events: none;
+}
+.arena-slash path {
+  stroke: var(--stage-hit);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+}
+.arena-target[data-fx="hit"] .arena-slash path {
+  animation: slash 420ms var(--ease-out);
+}
+.arena-dmg {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  font-family: var(--font-code);
+  font-weight: 700;
+  color: var(--stage-damage);
+  opacity: 0;
+}
+.arena-target[data-fx="hit"] .arena-dmg {
+  animation: dmg 800ms var(--ease-out);
+}
+.arena-puff {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.arena-puff span {
+  grid-area: 1 / 1;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border: 1.75px solid var(--sprite-line);
+  border-radius: 50%;
+  background: var(--stage);
+  opacity: 0;
+}
+.arena-target[data-puff="on"] .arena-puff span {
+  animation: puff 700ms ease-out;
+}
+
+/* Beside a trial question nothing moves until the player answers,
+   as with the sprite beside lesson gates (research/learning-science.md). */
+.trial-battle .foe[data-state="idle"] .foe-fig,
+.trial-battle .sprite[data-state="idle"] .sp-fig,
+.trial-battle .sprite .sp-eyes {
+  animation: none;
+}
+
+@keyframes foe-sway {
+  50% {
+    transform: translateY(-1.5px) rotate(-1.5deg);
+  }
+}
+/* Hit stop: the foe freezes in the flash for a beat, then takes the knock-back. */
+@keyframes foe-hurt {
+  0%,
+  18% {
+    opacity: 0.45;
+    transform: none;
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(8px) rotate(5deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes foe-strike {
+  30% {
+    transform: translateX(4px) scale(1.02, 0.96);
+  }
+  55% {
+    transform: translateX(-18px) scale(1.06);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes foe-defeat {
+  0%,
+  18% {
+    opacity: 0.45;
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(14px) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(10px) scale(0.15);
+  }
+}
+@keyframes foe-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+@keyframes foe-retreat {
+  20% {
+    transform: translateX(-4px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+}
+@keyframes cl-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes slash {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+  45% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+@keyframes dmg {
+  15% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
+@keyframes puff {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateX(0) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(2.75rem) scale(1.4);
+  }
 }

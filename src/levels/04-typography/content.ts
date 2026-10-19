@@ -224,6 +224,8 @@ export const bosses: BossDef[] = [
     brief:
       "Readers write in to say they lose their place in our longer stories and read the same line twice. Nobody ever sent us that letter about the print edition.",
     from: "Bernard, editor",
+    thanks:
+      "Readers stopped losing their place. One wrote in to say the long stories read like the paper.",
     html: gazetteHtml,
     css: gazetteCss,
     hints: [
@@ -239,6 +241,7 @@ export const bosses: BossDef[] = [
     brief:
       "My recipes look like a wall. Mum prints them out and says she can't see where one step ends and the next begins. I wrote them in short steps, so I don't understand it.",
     from: "Ifeoma, cook and writer",
+    thanks: "Mum printed the soup recipe and found every step on her own.",
     html: kitchenHtml,
     css: kitchenCss,
     hints: [
@@ -254,6 +257,7 @@ export const bosses: BossDef[] = [
     brief:
       "Guests tell me the website looks like a ransom note. My nephew said it first, and he's twelve, but I've heard it from grown-ups since. I chose every font myself, and I liked each one.",
     from: "Margit, owner",
+    thanks: "Two fonts, and my nephew approves. Guests say it looks like a proper guesthouse.",
     html: guesthouseHtml,
     css: guesthouseCss,
     hints: [
