@@ -30,6 +30,10 @@ const PATHS = {
   glyph: '<path d="M5 20 11 4h2l6 16M7.5 14h9"/>',
   lines: '<path d="M4 5h16M4 9h12M4 15h16M4 19h10"/>',
   drop: '<path d="M12 3.5s6.5 7 6.5 11a6.5 6.5 0 0 1-13 0c0-4 6.5-11 6.5-11z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
+  shapes:
+    '<circle cx="7" cy="7.5" r="3.5"/><rect x="13.5" y="4" width="7" height="7" rx="1"/><path d="M12 13.5 16.5 21h-9z"/>',
+  region:
+    '<rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/>',
 } as const;
 
 export type MarkName = keyof typeof PATHS;

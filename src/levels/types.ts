@@ -68,7 +68,7 @@ export interface Clue {
   body: string;
 }
 
-export interface BossDef {
+interface BossBase {
   id: string;
   client: string;
   /** One-line description shown on the client card. */
@@ -83,6 +83,34 @@ export interface BossDef {
   css: string;
   /** Progressive hints, gentlest first. */
   hints: string[];
+}
+
+/** A client whose broken stylesheet the player fixes in the editor. */
+export interface CssBoss extends BossBase {
+  kind?: "css";
+}
+
+/**
+ * A client whose page the player reads instead of edits: sort its items into
+ * the groups a visitor sees, then name the principle at work. `html` and `css`
+ * render the page, read-only.
+ */
+export interface PuzzleBoss extends BossBase {
+  kind: "puzzle";
+  puzzle: PuzzleDef;
+}
+
+export type BossDef = CssBoss | PuzzleBoss;
+
+export interface PuzzleDef {
+  /** What to do, shown above the sorting board. */
+  task: string;
+  /** Each id matches a `data-dq-item` element on the page. */
+  items: { id: string; label: string }[];
+  /** The groups a visitor sees, as item ids, with why once the group is found. */
+  groups: { items: string[]; why: string }[];
+  /** The principle question asked once every group is found. */
+  principle: Omit<ChoiceGate, "kind">;
 }
 
 export interface LevelDef {

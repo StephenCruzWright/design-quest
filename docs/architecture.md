@@ -23,6 +23,8 @@ Shared modules:
 - `measure/color.ts` parses computed colours with culori (`culori/fn`, only the modes a computed value can arrive in) and computes the WCAG 2.x contrast ratio against the effective background: every ancestor's background colour composited over white. Background images are ignored. Its `measureColor` feeds level 3: each `data-dq-state` element compared with its peer element by element (non-colour cues such as border width and style, weight, size, decoration, box-shadow geometry and `::before`/`::after` content, with small differences ignored), links inside running text and whether they are underlined, and every painted colour in OKLCH. The level's contrast check reuses `measure/type.ts`.
 - `judges/css.ts` reads the player's stylesheet as text: declarations, custom properties, `var()` resolution and the colours written in a value (`colourValues`). Checks about how CSS is written (tokens, `clamp()`, `oklch()` palettes) use it.
 - `measure/typography.ts` reads level 4: the paragraphs inside `data-dq-prose` with their rendered line boxes (merged by row from a DOM `Range`, the last short line counted as a fraction), the used line height (measured from the lines when it computes to `normal`) and the gap to the next paragraph; every heading's leading; and the first family in each text element's `font-family` stack, with `code` and `pre` exempt. The lesson demos reuse `lineBoxes` and `fullLines`, so a demo counts characters per line the same way the check does.
+- `measure/gestalt.ts` reads level 5. For each `data-dq-stack`, how many of its groups paint a box that stands out from the effective background behind them (a background, border or shadow at least 0.02 apart in OKLab), plus the level 1 between and within gaps. For each `data-dq-kind` element, its painted text colour in OKLab, size and weight.
+- `judges/puzzle.ts` is the judge for puzzle clients: the board state (items per bin, wrong drops, principle answers) in, the usual `CheckResult` list out, so stars, the problems bar and the battle need nothing new.
 - `judges/integrity.ts` with `measure/integrity.ts` is the `intact` core check every level runs first. Every element outside `data-dq-ignore` that carries its own text must have rendered line boxes (read with a DOM `Range`, so off-screen text indents fail), be at least 12px, sit inside the 760px page, and keep an opacity chain and text colour alpha of at least 0.6.
 
 ## Data attributes on client pages
@@ -39,6 +41,8 @@ Client HTML marks its structure so measurement knows what the designer meant:
 | `data-dq-state="Label"` | one element | Level 3: an element in a state (an error, the current page, sold out) |
 | `data-dq-peer="Label"` | one element | Level 3: an element of the same kind and structure, not in that state. The labels pair them |
 | `data-dq-prose` | a block of running text | Level 4: its paragraphs are the body text the measure, leading and rhythm checks read |
+| `data-dq-kind="Label"` | elements of one kind | Level 5: elements sharing a label should look alike, and different labels different |
+| `data-dq-item="id"` | an item on a puzzle page | Level 5 puzzles: the id of a card on the sorting board, outlined on the page when the card is picked |
 | `data-dq-ignore` | any element | Excluded from measurement. Every client footer carries the Lorem & Ipsum credit with it |
 
 Inside a group, children that sit side by side (vertical overlap) are skipped, because a name and a price on one line is a layout choice, not a grouping signal. Between groups, the gap is vertical if the boxes are stacked and horizontal if they sit side by side.
@@ -62,6 +66,10 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 2. Register it in the level's `content.ts` with the client name, a tagline, the client's brief in their own words, the line they say once it is fixed (`thanks`) and three hints, gentlest first. A new level also gets a foe in `src/ui/foes.ts`, keyed by level id; without one it fights The Gremlin.
 3. Write a 3-star reference fix at `tests/solutions/<level>/<id>.css`.
 4. `npm run test:browser` passes only when the original fails a core check and the fix passes every check.
+
+## Puzzle clients
+
+A `BossDef` with `kind: "puzzle"` carries a `puzzle`: the task, the items (ids matching `data-dq-item` on its page), the groups a visitor sees with a reason for each, and the principle question in the shape of a choice gate. `bossScreen` hands it to `src/screens/puzzle.ts`, which renders the page read-only beside a sorting board. Cards move by picking a card and then a group, or by dragging. Shipping goes through `shipJob` in `src/screens/boss.ts`, the same as a stylesheet client, with the principle's note as the rationale. Puzzle clients have no reference CSS; `tests/unit/gestalt-judges.test.ts` checks that every puzzle's groups cover its items exactly and that every item is marked on its page.
 
 ## Save data
 
@@ -87,4 +95,4 @@ A lesson section is HTML, optional `sources`, an optional `demo(host, ctx)` that
 ## Tests
 
 - `tests/unit/`: judges on hand-made numbers, contrast maths, save-code round trips, lesson progress, XP maths, badges, quiz draw, and the content shape of every level.
-- `tests/e2e/harness.html` loads the real sandbox and judges through the Vite dev server and exposes `window.dq.run(level, boss, css)`. `bosses.spec.ts` runs every challenge against its original CSS (which must fail a core check and pass `intact`) and its reference solution. `lesson-gates.spec.ts` drives the real lesson screen: goal and choice gates, locked pages, resuming, reduced motion. `battle.spec.ts` beats a foe with a reference solution and checks that a trial answer moves the foe's HP only when it is right.
+- `tests/e2e/harness.html` loads the real sandbox and judges through the Vite dev server and exposes `window.dq.run(level, boss, css)`. `bosses.spec.ts` runs every challenge against its original CSS (which must fail a core check and pass `intact`) and its reference solution. `lesson-gates.spec.ts` drives the real lesson screen: goal and choice gates, locked pages, resuming, reduced motion. `battle.spec.ts` beats a foe with a reference solution and checks that a trial answer moves the foe's HP only when it is right. `puzzle.spec.ts` plays a puzzle client through to the results.

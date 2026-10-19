@@ -2,19 +2,19 @@ import { spacingLevel } from "./01-spacing";
 import { hierarchyLevel } from "./02-hierarchy";
 import { colorLevel } from "./03-color";
 import { typographyLevel } from "./04-typography";
+import { gestaltLevel } from "./05-gestalt";
 import type { LevelDef, LockedLevel } from "./types";
 
-export const LEVELS: LevelDef[] = [spacingLevel, hierarchyLevel, colorLevel, typographyLevel];
+export const LEVELS: LevelDef[] = [
+  spacingLevel,
+  hierarchyLevel,
+  colorLevel,
+  typographyLevel,
+  gestaltLevel,
+];
 
 /** Levels still in production, shown on the map so players see the road ahead. */
 export const UPCOMING: LockedLevel[] = [
-  {
-    id: "gestalt",
-    num: 5,
-    title: "Gestalt",
-    subtitle: "Similarity, common region, continuity, closure",
-    locked: true,
-  },
   {
     id: "alignment",
     num: 6,

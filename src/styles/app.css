@@ -2921,6 +2921,19 @@ a.desk-link:hover .desk-title {
 .foe[data-foe="typography"] {
   --foe-fill: var(--foe-wall);
 }
+/* The Muddle is a patchwork: its patches borrow the other foes' colours. */
+.foe[data-foe="gestalt"] {
+  --foe-fill: var(--foe-muddle);
+}
+.foe .foe-patch-1 {
+  fill: var(--foe-shouter);
+}
+.foe .foe-patch-2 {
+  fill: var(--foe-murk);
+}
+.foe .foe-patch-3 {
+  fill: var(--foe-cram);
+}
 .foe svg,
 .arena-client svg {
   display: block;
@@ -3173,4 +3186,223 @@ a.desk-link:hover .desk-title {
     opacity: 0;
     transform: rotate(var(--a)) translateX(2.75rem) scale(1.4);
   }
+}
+
+/* ── Puzzle clients: the sorting board ─────────────────────────────────── */
+
+.boss-board {
+  grid-area: code;
+  display: grid;
+  /* Rows keep their content height; the pane scrolls instead of squeezing them. */
+  grid-auto-rows: max-content;
+  align-content: start;
+  gap: var(--space-s);
+  min-block-size: 0;
+  overflow-y: auto;
+  padding: var(--space-s) var(--space-m);
+  border-inline-end: 1px solid var(--line);
+  background: var(--card);
+}
+.board-task {
+  font-weight: 600;
+}
+.board-help {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.sort-bins {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-xs);
+}
+.sort-bin {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+  min-block-size: 6rem;
+  padding: var(--space-xs);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-m);
+  background: var(--paper);
+}
+.sort-bin[data-bin="-1"] {
+  min-block-size: 0;
+  border-style: solid;
+  background: var(--sunk);
+}
+.sort-bin[data-found="true"] {
+  border: 1px solid var(--good);
+  background: var(--good-bg);
+}
+.boss-board[data-picking="true"] .sort-bin {
+  cursor: pointer;
+}
+.sort-bin-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.bin-put {
+  white-space: nowrap;
+}
+.sort-bin-head h3 {
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.sort-bin[data-found="true"] .sort-bin-head h3::after {
+  content: " · found";
+  color: var(--good);
+}
+.bin-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+.sort-card {
+  padding: var(--space-3xs) var(--space-xs);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  background: var(--card);
+  font-size: var(--step--1);
+  cursor: grab;
+  transition:
+    border-color var(--dur),
+    transform var(--dur) var(--ease-out);
+}
+.sort-card:hover {
+  border-color: var(--ink);
+}
+.sort-card[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+.board-principle {
+  display: grid;
+  gap: var(--space-xs);
+  padding-block-start: var(--space-s);
+  border-block-start: 1px solid var(--line);
+}
+.board-principle h3 {
+  font-size: var(--step-1);
+}
+.board-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2xs);
+}
+.board-options .option {
+  grid-template-columns: 1fr;
+}
+.board-why {
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+.puzzle .preview-host {
+  block-size: 100%;
+}
+
+/* ── Level 5 demos ─────────────────────────────────────────────────────── */
+
+.gs-stage {
+  display: grid;
+  place-items: center;
+  min-block-size: 12rem;
+}
+.gs-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1.25rem);
+  gap: var(--space-s);
+}
+/* Spacing as a grouping cue: tight within a row (or column), wide between them. */
+.gs-grid[data-space="rows"] {
+  row-gap: var(--space-l);
+  column-gap: var(--space-3xs);
+}
+.gs-grid[data-space="cols"] {
+  row-gap: var(--space-3xs);
+  column-gap: var(--space-l);
+}
+.gs-dot {
+  display: block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: 50%;
+  background: oklch(45% 0.12 255);
+}
+.gs-dot[data-c="1"] {
+  background: oklch(68% 0.15 60);
+}
+.gs-dot[data-s="1"] {
+  border-radius: 2px;
+}
+.gs-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+.gs-box {
+  display: flex;
+  gap: var(--space-xl);
+  padding: var(--space-2xs);
+  border-radius: var(--radius-m);
+}
+.gs-row[data-boxes="on"] .gs-box {
+  background: oklch(90% 0.03 255);
+}
+.gs-list {
+  display: grid;
+  gap: var(--space-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-ui);
+}
+.gs-list li {
+  translate: var(--x) 0;
+}
+.gs-list[data-aligned="true"] li {
+  translate: 0 0;
+}
+.gs-card {
+  position: relative;
+  max-inline-size: 20rem;
+  padding: var(--space-s) var(--space-m);
+  font-family: var(--font-ui);
+}
+.gs-card p {
+  margin: 0;
+}
+.gs-card-title {
+  font-weight: 700;
+}
+.gs-card[data-mark="frame"] {
+  border: 2px solid oklch(30% 0.02 60);
+}
+.gs-card[data-mark="fill"] {
+  background: oklch(92% 0.02 85);
+}
+.gs-card[data-mark="corners"]::before,
+.gs-card[data-mark="corners"]::after {
+  content: "";
+  position: absolute;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 2px solid oklch(30% 0.02 60);
+}
+.gs-card[data-mark="corners"]::before {
+  inset: 0 auto auto 0;
+  border-inline-end: 0;
+  border-block-end: 0;
+}
+.gs-card[data-mark="corners"]::after {
+  inset: auto 0 0 auto;
+  border-inline-start: 0;
+  border-block-start: 0;
 }

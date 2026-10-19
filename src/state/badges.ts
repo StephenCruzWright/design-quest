@@ -134,6 +134,27 @@ export const BADGES: BadgeDef[] = [
     earned: (s) => shippedIn(s, "typography") >= 3,
   },
   {
+    id: "at-a-glance",
+    name: "At a Glance",
+    description: "Ship a Gestalt job.",
+    mark: "eye",
+    earned: (s) => winsIn(s, "gestalt").length > 0,
+  },
+  {
+    id: "kindred",
+    name: "Kindred",
+    description: "Ship a fix where every two kinds differ in two cues or more.",
+    mark: "shapes",
+    earned: (s) => allBossRecords(s).some((r) => r.bonuses.includes("cues-add")),
+  },
+  {
+    id: "the-whole",
+    name: "The Whole",
+    description: "Ship work for all three Gestalt clients.",
+    mark: "region",
+    earned: (s) => shippedIn(s, "gestalt") >= 3,
+  },
+  {
     id: "unassisted",
     name: "Unassisted",
     description: "Beat a client without opening a single hint.",

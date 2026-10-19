@@ -4,7 +4,7 @@ Unfinished work only. Delete an entry when it ships.
 
 ## Next milestones
 
-- **Levels 5 to 7 and the final client**: puzzle clients (`BossDef.kind: "puzzle"`), alignment and grid checks, Lorem & Ipsum's site.
+- **Levels 6, 7 and the final client**: alignment and grid checks, Lorem & Ipsum's site.
 - **Placement test and map ordering.**
 - **Arcade mode "Spot the Flaw"**: layout generator, flaw injection, lives and streak scoring.
 - **Case study export**: self-contained HTML with before/after sliders, the player's CSS and rationale per client.
